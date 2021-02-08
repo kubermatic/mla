@@ -1,0 +1,2 @@
+config:
+  lokiAddress: http://loki:password@loki-loki-distributed-gateway.loki.svc/loki/api/v1/push
