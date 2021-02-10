@@ -1,2 +1,10 @@
 service:
   type: LoadBalancer
+
+adminUser: admin
+adminPassword: admin
+
+persistence:
+  type: pvc
+  enabled: true
+  storageClassName: standard-v2

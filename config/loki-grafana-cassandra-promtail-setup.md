@@ -9,12 +9,13 @@ helm repo add grafana https://grafana.github.io/helm-charts
 ```
 
 ### Install Cassandra Database in Kubernetes cluster
-Currently Cassandra is used for both index and chunk storage for logs.  
-[Cassandra manifests](cassandra) are originally from [Scalable-Cassandra-deployment-on-Kubernetes](https://github.com/IBM/Scalable-Cassandra-deployment-on-Kubernetes), the only changes are:
-- Change `StorageClassName` to `standard-v2` for AWS usage.  
-  For install it, just run:
- ```bash
-kubectl apply -f cassandra/
+Make sure to add the bitnami chart repo to Helm:
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+Then install cassandra in the cluster:
+```bash
+helm --namespace cassandra upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --values cassandra/values.yaml
 ```
 
 
