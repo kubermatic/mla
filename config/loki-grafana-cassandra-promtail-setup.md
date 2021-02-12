@@ -15,23 +15,23 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 Then install cassandra in the cluster:
 ```bash
-helm --namespace cassandra upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --values cassandra/values.yaml
+helm --namespace mla upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --values cassandra/values.yaml
 ```
 
 
 ## Install Grafana in a cluster
 ```bash
-helm --namespace grafana upgrade --atomic --create-namespace --install grafana grafana/grafana --values grafana/values.yaml
+helm --namespace mla upgrade --atomic --create-namespace --install grafana grafana/grafana --values grafana/values.yaml
 ```
 
 ## Install Loki
 ```bash
-helm --namespace loki upgrade --atomic --create-namespace --install loki grafana/loki-distributed --values loki/values.yaml
+helm --namespace mla upgrade --atomic --create-namespace --install loki-distributed grafana/loki-distributed --values loki/values.yaml
 ```
 
 ## Install Promtail
 ```bash
-helm --namespace promtail upgrade --atomic --create-namespace --install promail grafana/promtail --values promtail/values.yaml
+helm --namespace promtail upgrade --atomic --create-namespace --install promtail grafana/promtail --values promtail/values.yaml
 ```
 
 ## Add Loki to Grafana
