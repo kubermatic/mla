@@ -39,7 +39,7 @@ loki:
           store: cassandra
     storage_config:
       cassandra:
-        addresses: cassandra.cassandra.svc.cluster.local
+        addresses: cassandra.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
         auth: true
         username: cassandra
         password: cassandra
