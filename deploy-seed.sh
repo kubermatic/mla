@@ -6,6 +6,7 @@ MLA_NS=mla
 echo "Adding Helm repos"
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 
 echo ""
 echo "Installing Cassandra"
