@@ -26,4 +26,4 @@ helm --namespace cluster-xyz upgrade --atomic --create-namespace --install mla-g
 
 echo ""
 echo "Installing Promtail"
-helm --namespace promtail upgrade --atomic --create-namespace --install promtail grafana/promtail --set config.lokiAddress=http://mla-gateway.cluster-xyz.svc.cluster.local/loki/api/v1/push
+helm --namespace promtail upgrade --atomic --create-namespace --install promtail grafana/promtail --set config.lokiAddress=http://mla-gateway-ext.cluster-xyz.svc.cluster.local/loki/api/v1/push
