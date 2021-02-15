@@ -19,11 +19,6 @@ echo ""
 echo "Installing Grafana"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana grafana/grafana --values config/grafana/values.yaml
 
-
 echo ""
 echo "Installing a Gateway for cluster-xyz"
 helm --namespace cluster-xyz upgrade --atomic --create-namespace --install mla-gw charts/gateway --set mla.namespace=${MLA_NS}
-
-echo ""
-echo "Installing Promtail"
-helm --namespace promtail upgrade --atomic --create-namespace --install promtail grafana/promtail --set config.lokiAddress=http://mla-gateway-ext.cluster-xyz.svc.cluster.local/loki/api/v1/push

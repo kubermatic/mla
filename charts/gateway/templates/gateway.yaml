@@ -83,7 +83,7 @@ kind: Service
 metadata:
   name: mla-gateway-ext
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: http-ext
       port: 80
