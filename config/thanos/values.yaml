@@ -1,0 +1,36 @@
+## Objstore Configuration
+## Specify content for objstore.yml
+##
+objstoreConfig:
+  type: S3
+  config:
+    bucket: "thanos"
+    endpoint: "thanos-minio.mla.svc.cluster.local:9000"
+    access_key: "minio"
+    secret_key: "minio123"
+    insecure: true
+query:
+  grpcTLS:
+    # TLS server side
+    server:
+      # enable TLS for GRPC server
+      secure: false
+receive:
+  enabled: true
+  service:
+    additionalHeadless: true
+  persistence:
+    enabled: false
+compactor:
+  enabled: true
+storegateway:
+  enabled: true
+metrics:
+  enabled: true
+minio:
+  enabled: true
+  accessKey:
+    password: "minio"
+  secretKey:
+    password: "minio123"
+  defaultBuckets: "thanos"

@@ -34,9 +34,15 @@ data:
       server {
         listen             8080;
         proxy_set_header   X-Scope-OrgID 1;
+        proxy_set_header THANOS-TENANT 1;
+
 
         location = /api/prom/push {
           proxy_pass       http://loki-distributed-distributor.{{ .Values.mla.namespace }}.svc.cluster.local:3100$request_uri;
+        }
+
+        location = /api/v1/receive {
+          proxy_pass       http://thanos-receive.{{ .Values.mla.namespace }}.svc.cluster.local:19291$request_uri;
         }
 
         location = /loki/api/v1/push {
