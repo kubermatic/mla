@@ -24,7 +24,10 @@ Use that to deploy User Cluster components to a different cluster:
 ./deploy-user-cluster.sh a54afbcdd28d5404f940d382362b2e06-2091261264.eu-central-1.elb.amazonaws.com
 ```
 
-### Add Loki to Grafana
+### Add Loki and Prometheus to Grafana
 After all pods are ready, you can add Loki as a datasource in Grafana.
-Go to your Grafana page, login with username `admin`, password `admin`. Then add Loki as a datasource.
+Go to your Grafana page, login with username `admin`, password `admin`.
+Then add Loki as a datasource.
 The URL is `http://mla-gateway.cluster-xyz.svc.cluster.local`. Click `Save & Test`.
+
+And do the same for Prometheus with URL `http://thanos-query.mla.svc.cluster.local:9090`

@@ -23,3 +23,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana
 echo ""
 echo "Installing a Gateway for cluster-xyz"
 helm --namespace cluster-xyz upgrade --atomic --create-namespace --install mla-gw charts/gateway --set mla.namespace=${MLA_NS}
+
+echo ""
+echo "Installing a Thanos"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install thanos bitnami/thanos --values config/thanos/values.yaml
