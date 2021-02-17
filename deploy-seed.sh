@@ -22,7 +22,11 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana
 
 echo ""
 echo "Installing a Gateway for cluster-xyz"
-helm --namespace cluster-xyz upgrade --atomic --create-namespace --install mla-gw charts/gateway --set mla.namespace=${MLA_NS}
+helm --namespace cluster-xyz upgrade --atomic --create-namespace --install mla-gw charts/gateway --set mla.namespace=${MLA_NS} --set mla.tenantID=user1
+
+echo ""
+echo "Installing a PromLabelProxy"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install prom-label-proxy charts/prom-label-proxy
 
 echo ""
 echo "Installing a Thanos"
