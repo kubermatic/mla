@@ -21,5 +21,6 @@ helm --namespace monitoring upgrade --atomic --create-namespace --install promta
 
 echo ""
 echo "Installing Prometheus"
-helm --namespace prometheus upgrade --atomic --create-namespace --install prometheus prometheus-community/prometheus \
+helm --namespace monitoring upgrade --atomic --create-namespace --install prometheus prometheus-community/prometheus \
+    --set alertmanager.enabled=false \
     --set server.remoteWrite[0].url=http://${GW_ADDRESS}/api/v1/receive
