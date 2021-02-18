@@ -47,7 +47,8 @@ spec:
       containers:
         - name: prom-label-proxy
           args:
-            - -label=tenant
+            - -enable-label-apis
+            - -label=tenant_id
             - -upstream=http://thanos-query-frontend.{{ .Values.mla.namespace }}.svc.cluster.local:9090
             - -insecure-listen-address=0.0.0.0:8080
           image: quay.io/prometheuscommunity/prom-label-proxy:master
