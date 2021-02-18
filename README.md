@@ -13,10 +13,17 @@ At least 2 clusters:
 ./deploy-seed.sh
 ```
 
+### Deploy Tenant MLA Gateway(s) in Seed Cluster
+```bash
+./deploy-tenant-gateway.sh abc
+
+./deploy-tenant-gateway.sh xyz
+```
+
 ### Deploy User Cluster Components
 Get External IP of the MLA Gateway in "Seed Cluster":
 ```bash
-kubectl get svc mla-gateway-ext -n cluster-xyz
+kubectl get svc mla-gateway-ext -n cluster-abc
 ```
 
 Use that to deploy User Cluster components to a different cluster:
