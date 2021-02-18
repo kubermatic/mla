@@ -81,13 +81,9 @@ data:
           proxy_pass       http://loki-distributed-query-frontend.{{ .Values.mla.namespace }}.svc.cluster.local:3100$request_uri;
         }
 
-        location ~ /api/v1/query {
+        location ~ /api/v1/.* {
           set $args $args&tenant_id={{ .Values.mla.tenantID }};
           proxy_pass       http://prom-label-proxy.{{ .Values.mla.namespace }}.svc.cluster.local$uri$is_args$args;
-        }
-
-        location ~ /api/v1/.* {
-          proxy_pass       http://thanos-query-frontend.{{ .Values.mla.namespace }}.svc.cluster.local:9090$request_uri;
         }
       }
     }
