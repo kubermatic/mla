@@ -37,4 +37,6 @@ Go to your Grafana page, login with username `admin`, password `admin`.
 Then add Loki as a datasource.
 The URL is `http://mla-gateway.cluster-xyz.svc.cluster.local`. Click `Save & Test`.
 
-And do the same for Prometheus with URL `http://thanos-query.mla.svc.cluster.local:9090`
+And do the same for Prometheus with URL
+* `http://thanos-query-frontend.mla.svc.cluster.local:9090` for SuperUser
+* `http://mla-gateway.cluster-xyz.svc.cluster.local` for tenant user

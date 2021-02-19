@@ -10,7 +10,7 @@ helm repo update
 
 echo ""
 echo "Installing Cassandra"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --values config/cassandra/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --version 7.3.2 --values config/cassandra/values.yaml
 
 echo ""
 echo "Installing Loki"
@@ -18,7 +18,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-di
 
 echo ""
 echo "Installing Grafana"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana grafana/grafana --values config/grafana/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana grafana/grafana --version 6.4.2 --values config/grafana/values.yaml
 
 echo ""
 echo "Installing PromLabelProxy"
@@ -26,4 +26,4 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install prom-la
 
 echo ""
 echo "Installing Thanos"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install thanos bitnami/thanos --values config/thanos/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install thanos bitnami/thanos --version 3.10.1 --values config/thanos/values.yaml

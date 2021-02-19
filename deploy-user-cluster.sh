@@ -16,11 +16,11 @@ helm repo update
 
 echo ""
 echo "Installing Promtail"
-helm --namespace monitoring upgrade --atomic --create-namespace --install promtail grafana/promtail \
+helm --namespace monitoring upgrade --atomic --create-namespace --install promtail grafana/promtail --version 3.1.0 \
     --set config.lokiAddress=http://${GW_ADDRESS}/loki/api/v1/push
 
 echo ""
 echo "Installing Prometheus"
-helm --namespace monitoring upgrade --atomic --create-namespace --install prometheus prometheus-community/prometheus \
+helm --namespace monitoring upgrade --atomic --create-namespace --install prometheus prometheus-community/prometheus --version 13.3.2 \
     --set alertmanager.enabled=false \
     --set server.remoteWrite[0].url=http://${GW_ADDRESS}/api/v1/receive
