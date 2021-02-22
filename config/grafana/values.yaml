@@ -8,3 +8,12 @@ persistence:
   type: pvc
   enabled: true
   storageClassName: standard-v2
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://thanos-query-frontend.{{ template "grafana.namespace" . }}.svc.cluster.local:9090
+      isDefault: true
