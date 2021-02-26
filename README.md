@@ -47,4 +47,4 @@ The first argument is the address of **mla-gateway-alert**, and the second argum
 in Alertmanger configuration.
 
 After this, you should be able to see the alertmanager UI at:
-`http://<mla-gateway-alert adress>/api/prom/alertmanager`.
+`http://<mla-gateway-alert address>/api/prom/alertmanager`.
