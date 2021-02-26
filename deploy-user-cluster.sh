@@ -23,4 +23,4 @@ echo ""
 echo "Installing Prometheus"
 helm --namespace monitoring upgrade --atomic --create-namespace --install prometheus prometheus-community/prometheus --version 13.3.2 \
     --set alertmanager.enabled=false \
-    --set server.remoteWrite[0].url=http://${GW_ADDRESS}/api/v1/receive
+    --set server.remoteWrite[0].url=http://${GW_ADDRESS}/api/v1/push
