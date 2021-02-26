@@ -1,0 +1,8 @@
+accessKey: "minio"
+secretKey: "minio123"
+replicas: 1
+defaultBucket:
+  enabled: true
+  name: cortex
+  ## This gives the Alertmanger permission to read and write configurations to minio
+  policy: public

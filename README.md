@@ -36,7 +36,15 @@ After all pods are ready, you can add Loki as a datasource in Grafana.
 Go to your Grafana page, login with username `admin`, password `admin`.
 Then add Loki as a datasource.
 The URL is `http://mla-gateway.cluster-xyz.svc.cluster.local`. Click `Save & Test`.
+For Prometheus, the URL is `http://mla-gateway.cluster-xyz.svc.cluster.local/api/prom`.
 
-And do the same for Prometheus with URL
-* `http://thanos-query-frontend.mla.svc.cluster.local:9090` for SuperUser
-* `http://mla-gateway.cluster-xyz.svc.cluster.local` for tenant user
+### Check Alertmanager UI
+Currently, to be able to see the Alertmanager UI, we need to create a alertmanager configuration first:
+```bash
+./create-alert-config.sh  a24c848bd4d914cdcbbc7c860f4fe9d4-1893886320.eu-central-1.elb.amazonaws.com tenant-2
+```
+The first argument is the address of **mla-gateway-alert**, and the second argument is used for creating the receiver 
+in Alertmanger configuration.
+
+After this, you should be able to see the alertmanager UI at:
+`http://<mla-gateway-alert adress>/api/prom/alertmanager`.

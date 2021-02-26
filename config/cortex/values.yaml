@@ -1,0 +1,62 @@
+ingress:
+  enabled: false
+
+distributor:
+  replicas: 1
+
+ingester:
+  replicas: 2
+
+querier:
+  replicas: 1
+
+query_frontend:
+  replicas: 1
+
+nginx:
+  enabled: false
+
+alertmanager:
+  extraVolumeMounts:
+    - mountPath: /tmp
+      name: storage
+
+config:
+  auth_enabled: true
+  ingester:
+    lifecycler:
+      ring:
+        kvstore:
+          store: consul
+          prefix: 'collectors/'
+          consul:
+            host: 'consul-consul-server:8500'
+  ruler:
+    enable_api: true
+    storage:
+      type: s3
+      s3:
+        bucketnames: "cortex"
+        endpoint: "minio.mla.svc.cluster.local:9000"
+        access_key_id: "minio"
+        secret_access_key: "minio123"
+        s3forcepathstyle: true
+        insecure: true
+  alertmanager:
+    enable_api: true
+    storage:
+      type: s3
+      s3:
+        bucketnames: "cortex"
+        endpoint: "minio.mla.svc.cluster.local:9000"
+        access_key_id: "minio"
+        secret_access_key: "minio123"
+        s3forcepathstyle: true
+        insecure: true
+  storage:
+    cassandra:
+      addresses: cassandra.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+      keyspace: cortex
+      auth: true
+      username: cassandra
+      password: cassandra
