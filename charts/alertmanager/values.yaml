@@ -1,0 +1,9 @@
+mla:
+  namespace: mla
+
+amProxy:
+  domain: alerts.rasto.me
+  oidcProvider: https://dev.kubermatic.io/dex
+  clientID: uc-alertmanager
+  clientSecret: OoG1oyodootooj4che6die8pahthoong
+  cookieSecret: cho9eo0xo4Hi2equuobei7oos2ohqu4r

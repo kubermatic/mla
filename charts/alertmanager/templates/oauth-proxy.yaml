@@ -1,8 +1,8 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: oauth-alertmanager
-  namespace: mla-test
   labels:
     app: oauth-proxy
     target: alertmanager
@@ -38,9 +38,9 @@ spec:
       containers:
       - args:
         - --provider=oidc
-        - --oidc-issuer-url=https://dev.kubermatic.io/dex
+        - --oidc-issuer-url={{ .Values.amProxy.oidcProvider }}
         - --http-address=0.0.0.0:3000
-        - --upstream=http://authz-proxy-alertmanager.mla-test.svc.cluster.local:8080
+        - --upstream=http://authz-proxy-alertmanager.{{ .Values.mla.namespace }}.svc.cluster.local:8080
         - --cookie-name=uc_alertmanager_oauth2_proxy
         - --proxy-prefix=/oauth
         - --ping-path=/oauth/healthy
@@ -48,9 +48,13 @@ spec:
         - --reverse-proxy=true
         - --skip-provider-button=true
         - --pass-user-headers=true
+        - --set-xauthrequest=true
+        - --set-authorization-header=true
         - --config=/config/config.yaml
-        # TODO: do not use cookie-secure=false for producation
+        # TODO: do not use cookie-secure=false for production
         - --cookie-secure=false
+        # TODO: redirect-url seems to be needed for HTTP
+        - --redirect-url=http://{{ .Values.amProxy.domain }}/oauth/callback
         envFrom:
         - secretRef:
             name: oauth-alertmanager-secret
@@ -115,7 +119,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: oauth-alertmanager-configmap
-  namespace: mla-test
 data:
   config.yaml: |
     email_domains = ["*"]
@@ -127,20 +130,18 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: oauth-alertmanager-secret
-  namespace: mla-test
 type: Opaque
 data:
-  OAUTH2_PROXY_CLIENT_ID: dWMtYWxlcnRtYW5hZ2Vy
-  OAUTH2_PROXY_CLIENT_SECRET: T29HMW95b2Rvb3Rvb2o0Y2hlNmRpZThwYWh0aG9vbmc=
-  OAUTH2_PROXY_COOKIE_SECRET: Y2hvOWVvMHhvNEhpMmVxdXVvYmVpN29vczJvaHF1NHI=
+  OAUTH2_PROXY_CLIENT_ID: {{ .Values.amProxy.clientID | b64enc }}
+  OAUTH2_PROXY_CLIENT_SECRET: {{ .Values.amProxy.clientSecret | b64enc }}
+  OAUTH2_PROXY_COOKIE_SECRET: {{ .Values.amProxy.cookieSecret | b64enc }}
 
 ---
-### NOTE THAT THIS IS TEMPORARY
+### TODO: THIS IS TEMPORARY, WILL BE EXPOSED VIA INGRESS
 apiVersion: v1
 kind: Service
 metadata:
   name: mla-aletrmanager
-  namespace: mla-test
 spec:
   type: LoadBalancer
   ports:

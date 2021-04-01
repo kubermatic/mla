@@ -3,7 +3,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authz-proxy-alertmanager-config
-  namespace: mla-test
 data:
   envoy.yaml: |
     admin:
@@ -42,6 +41,7 @@ data:
                   domains: ["*"]
                   routes:
 
+                  # redirect if path does not end with slash
                   - match:
                       safe_regex:
                         google_re2: {}
@@ -53,6 +53,7 @@ data:
                           regex: '^(.*)$'
                         substitution: '\1/'
 
+                  # strip tenant ID from the path
                   - match:
                       safe_regex:
                         google_re2: {}
@@ -64,13 +65,15 @@ data:
                           regex: '^/(.+)/alertmanager/(.*)'
                         substitution: '/api/prom/alertmanager/\2'
                       cluster: service_backend
-                    request_headers_to_add:
-                      - header:
-                          key: "X-Scope-OrgID"
-                          value: "abc"
-                        append: true
 
-              http_filters:  
+              http_filters:
+              - name: envoy.filters.http.ext_authz
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
+                  transport_api_version: V3
+                  grpc_service:
+                    envoy_grpc:
+                      cluster_name: ext-authz
               - name: envoy.filters.http.router
 
       ### limited access to envoy stats and health ###
@@ -116,8 +119,22 @@ data:
             - endpoint:
                 address:
                   socket_address:
-                    address: cortex-alertmanager.mla-test.svc.cluster.local
+                    address: cortex-alertmanager.{{ .Values.mla.namespace }}.svc.cluster.local
                     port_value: 8080
+
+      - name: ext-authz
+        type: static
+        connect_timeout: 0.1s
+        http2_protocol_options: {}
+        load_assignment:
+          cluster_name: ext-authz
+          endpoints:
+            - lb_endpoints:
+                - endpoint:
+                    address:
+                      socket_address:
+                        address: 127.0.0.1
+                        port_value: 50051
 
       - name: service_stats
         connect_timeout: 0.1s
@@ -138,7 +155,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: authz-proxy-alertmanager
-  namespace: mla-test
 spec:
   selector:
     matchLabels:
@@ -178,6 +194,13 @@ spec:
         volumeMounts:
           - name:  envoy-config
             mountPath: /etc/envoy
+
+      # TODO: for POC only - this will be a separate component
+      - name: authz-server
+        image: rastislavszabo/authz-server
+        ports:
+          - containerPort: 50051
+
       volumes:
         - name:  envoy-config
           configMap:
@@ -188,7 +211,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: authz-proxy-alertmanager
-  namespace: mla-test
   labels:
     app.kubernetes.io/name: authz-proxy-alertmanager
 spec:
