@@ -2,7 +2,7 @@ mla:
   namespace: mla
 
 amProxy:
-  domain: alerts.rasto.me
+  domain: alerts.dev.kubermatic.io
   oidcProvider: https://dev.kubermatic.io/dex
   clientID: uc-alertmanager
   clientSecret: OoG1oyodootooj4che6die8pahthoong

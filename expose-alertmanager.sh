@@ -12,7 +12,7 @@ fi
 
 echo ""
 echo "Exposing Alertmanager at domain ${DOMAIN}"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install mla-am-proxy charts/alertmanager \
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install mla-am-proxy charts/alertmanager-proxy \
     --set mla.namespace=${MLA_NS} \
     --set amProxy.domain=${DOMAIN}
 
