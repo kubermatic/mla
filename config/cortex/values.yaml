@@ -37,7 +37,7 @@ config:
       type: s3
       s3:
         bucketnames: "cortex"
-        endpoint: "minio.mla.svc.cluster.local:9000"
+        endpoint: "minio:9000"
         access_key_id: "minio"
         secret_access_key: "minio123"
         s3forcepathstyle: true
@@ -48,7 +48,7 @@ config:
       type: s3
       s3:
         bucketnames: "cortex"
-        endpoint: "minio.mla.svc.cluster.local:9000"
+        endpoint: "minio:9000"
         access_key_id: "minio"
         secret_access_key: "minio123"
         s3forcepathstyle: true
