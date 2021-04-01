@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/gogo/googleapis/google/rpc"
+	"google.golang.org/genproto/googleapis/rpc/code"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc"
 
@@ -39,7 +39,7 @@ func (a *AuthorizationServer) Check(ctx context.Context, req *authV3.CheckReques
 		log.Println("Missing user ID passed form the OAuth proxy")
 		return &authV3.CheckResponse{
 			Status: &status.Status{
-				Code: int32(rpc.UNAUTHENTICATED),
+				Code: int32(code.Code_UNAUTHENTICATED),
 			},
 			HttpResponse: &authV3.CheckResponse_DeniedResponse{
 				DeniedResponse: &authV3.DeniedHttpResponse{
@@ -55,7 +55,7 @@ func (a *AuthorizationServer) Check(ctx context.Context, req *authV3.CheckReques
 		log.Printf("User %s NOT authorized\n", mail)
 		return &authV3.CheckResponse{
 			Status: &status.Status{
-				Code: int32(rpc.PERMISSION_DENIED),
+				Code: int32(code.Code_PERMISSION_DENIED),
 			},
 			HttpResponse: &authV3.CheckResponse_DeniedResponse{
 				DeniedResponse: &authV3.DeniedHttpResponse{
@@ -78,7 +78,7 @@ func (a *AuthorizationServer) Check(ctx context.Context, req *authV3.CheckReques
 		log.Println("OrgID cannot be parsed")
 		return &authV3.CheckResponse{
 			Status: &status.Status{
-				Code: int32(rpc.NOT_FOUND),
+				Code: int32(code.Code_NOT_FOUND),
 			},
 			HttpResponse: &authV3.CheckResponse_DeniedResponse{
 				DeniedResponse: &authV3.DeniedHttpResponse{
@@ -93,7 +93,7 @@ func (a *AuthorizationServer) Check(ctx context.Context, req *authV3.CheckReques
 	log.Printf("User %s authorized for tenat %s\n", mail, orgID)
 	return &authV3.CheckResponse{
 		Status: &status.Status{
-			Code: int32(rpc.OK),
+			Code: int32(code.Code_OK),
 		},
 		HttpResponse: &authV3.CheckResponse_OkResponse{
 			OkResponse: &authV3.OkHttpResponse{
