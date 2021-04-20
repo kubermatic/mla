@@ -1,10 +1,19 @@
 service:
   type: LoadBalancer
 
-adminUser: admin
-adminPassword: admin
+admin:
+  userKey: admin-user
+  passwordKey: admin-password
 
 persistence:
   type: pvc
   enabled: true
-  storageClassName: standard-v2
+  storageClassName: "kubermatic-fast"
+
+grafana.ini:
+  auth.proxy:
+    enabled: true
+    header_name: "X-WEBAUTH-USER"
+    header_property: "username"
+    auto_sign_up: "true"
+

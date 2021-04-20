@@ -27,10 +27,9 @@ config:
     lifecycler:
       ring:
         kvstore:
-          store: consul
-          prefix: 'collectors/'
-          consul:
-            host: 'consul-consul-server:8500'
+          store: memberlist
+  memberlist:
+    join_members: []
   ruler:
     enable_api: true
     storage:

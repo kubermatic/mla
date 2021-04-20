@@ -1,6 +1,10 @@
 accessKey: "minio"
 secretKey: "minio123"
 replicas: 1
+persistence:
+  enabled: true
+  storageClass: "kubermatic-fast"
+  size: 50Gi
 defaultBucket:
   enabled: true
   name: cortex

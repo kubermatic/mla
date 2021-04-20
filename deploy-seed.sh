@@ -20,9 +20,6 @@ echo ""
 echo "Installing Cassandra"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --version 7.3.2 --values config/cassandra/values.yaml
 
-echo "Installing Consul"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul hashicorp/consul  --version 0.30.0 --values config/consul/values.yaml
-
 echo ""
 echo "Installing Grafana"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana grafana/grafana --version 6.4.2 --values config/grafana/values.yaml

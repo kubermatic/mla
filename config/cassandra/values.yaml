@@ -5,4 +5,4 @@ dbUser:
   password: cassandra
 
 persistence:
-  storageClass: standard-v2
+  storageClass: "kubermatic-fast"
