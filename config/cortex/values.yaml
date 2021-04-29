@@ -25,13 +25,13 @@ compactor:
   replicas: 1
   persistentVolume:
     enabled: true
-    # storageClass: "kubermatic-fast"
+    storageClass: "kubermatic-fast"
 
 store_gateway:
   replicas: 1
   persistentVolume:
     enabled: true
-    # storageClass: "kubermatic-fast"
+    storageClass: "kubermatic-fast"
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)

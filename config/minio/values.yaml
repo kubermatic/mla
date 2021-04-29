@@ -1,7 +1,7 @@
 replicas: 1
 persistence:
   enabled: true
-  # storageClass: "kubermatic-fast"
+  storageClass: "kubermatic-fast"
   size: 50Gi
 buckets:
   - name: cortex

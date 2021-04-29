@@ -10,7 +10,7 @@ admin:
 persistence:
   type: pvc
   enabled: true
-  # storageClassName: "kubermatic-fast"
+  storageClassName: "kubermatic-fast"
 
 grafana.ini:
   auth.proxy:
