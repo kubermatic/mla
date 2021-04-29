@@ -1,0 +1,6 @@
+dependencies:
+- name: memcached
+  repository: file://subcharts/memcached
+  version: 3.2.3
+digest: sha256:3dc1ce0d94a131a289a4ccd4342ef3a54c6e4d68952b776dbfc09ae3f380f540
+generated: "2021-04-29T15:16:03.369439+03:00"

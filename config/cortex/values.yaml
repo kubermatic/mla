@@ -4,19 +4,107 @@ ingress:
 distributor:
   replicas: 1
 
+ruler:
+  replicas: 0
+  extraArgs:
+    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  env:
+    - name: ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: accesskey
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: secretkey
+
+compactor:
+  replicas: 1
+  persistentVolume:
+    enabled: true
+    storageClass: "kubermatic-fast"
+
+store_gateway:
+  replicas: 1
+  persistentVolume:
+    enabled: true
+    storageClass: "kubermatic-fast"
+  extraArgs:
+    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  env:
+    - name: ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: accesskey
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: secretkey
+
 ingester:
   replicas: 2
+  extraArgs:
+    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  env:
+    - name: ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: accesskey
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: secretkey
 
 querier:
   replicas: 1
+  extraArgs:
+    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  env:
+    - name: ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: accesskey
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: secretkey
 
 query_frontend:
   replicas: 1
+
+tags:
+  blocks-storage-memcached: true
 
 nginx:
   enabled: false
 
 alertmanager:
+  extraArgs:
+    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  env:
+    - name: ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: accesskey
+    - name: SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: secretkey
   extraVolumeMounts:
     - mountPath: /tmp
       name: storage
@@ -27,36 +115,58 @@ config:
     lifecycler:
       ring:
         kvstore:
-          store: consul
-          prefix: 'collectors/'
-          consul:
-            host: 'consul-consul-server:8500'
+          store: memberlist
+  distributor:
+    ring:
+      kvstore:
+        store: memberlist
+  store_gateway:
+    sharding_enabled: true
+    sharding_ring:
+      replication_factor: 2
+      kvstore:
+        store: memberlist
+  compactor:
+    data_dir: /data/cortex/compactor
+    compaction_interval: 30m
+    sharding_enabled: true
+    sharding_ring:
+      kvstore:
+        store: memberlist
+  memberlist:
+    join_members:
+      - cortex-ingester-headless
   ruler:
     enable_api: true
+    ring:
+      kvstore:
+        store: memberlist
     storage:
       type: s3
       s3:
         bucketnames: "cortex"
         endpoint: "minio:9000"
-        access_key_id: "minio"
-        secret_access_key: "minio123"
         s3forcepathstyle: true
         insecure: true
   alertmanager:
     enable_api: true
+    data_dir: /data/cortex/alert-data
     storage:
       type: s3
       s3:
         bucketnames: "cortex"
         endpoint: "minio:9000"
-        access_key_id: "minio"
-        secret_access_key: "minio123"
         s3forcepathstyle: true
         insecure: true
   storage:
-    cassandra:
-      addresses: cassandra.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-      keyspace: cortex
-      auth: true
-      username: cassandra
-      password: cassandra
+    engine: blocks
+  blocks_storage:
+    backend: s3
+    s3:
+      bucket_name: "cortex"
+      endpoint: "minio:9000"
+      insecure: true
+    tsdb:
+      dir: /data/cortex/tsdb
+      retention_period: 12h
+      wal_compression_enabled: true

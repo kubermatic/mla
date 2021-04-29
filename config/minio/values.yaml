@@ -1,8 +1,10 @@
-accessKey: "minio"
-secretKey: "minio123"
 replicas: 1
-defaultBucket:
+persistence:
   enabled: true
-  name: cortex
-  ## This gives the Alertmanger permission to read and write configurations to minio
-  policy: public
+  storageClass: "kubermatic-fast"
+  size: 50Gi
+buckets:
+  - name: cortex
+    policy: public
+  - name: loki
+    policy: public

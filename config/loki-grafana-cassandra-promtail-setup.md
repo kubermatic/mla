@@ -8,16 +8,6 @@ Before you start, make sure to add the chart repo to Helm:
 helm repo add grafana https://grafana.github.io/helm-charts
 ```
 
-### Install Cassandra Database in Kubernetes cluster
-Make sure to add the bitnami chart repo to Helm:
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-```
-Then install cassandra in the cluster:
-```bash
-helm --namespace mla upgrade --atomic --create-namespace --install cassandra bitnami/cassandra --values cassandra/values.yaml
-```
-
 
 ## Install Grafana in a cluster
 ```bash
