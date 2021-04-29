@@ -4,11 +4,13 @@ service:
 admin:
   userKey: admin-user
   passwordKey: admin-password
+# adminUser: admin
+# adminPassword: admin
 
 persistence:
   type: pvc
   enabled: true
-  storageClassName: "kubermatic-fast"
+  # storageClassName: "kubermatic-fast"
 
 grafana.ini:
   auth.proxy:

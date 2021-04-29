@@ -32,18 +32,22 @@ loki:
             prefix: loki_chunk_
           from: "2021-02-01"
           index:
-            period: 360h
+            period: 24h
             prefix: loki_index_
-          object_store: cassandra
+          object_store: aws
           schema: v11
-          store: cassandra
+          store: boltdb-shipper
     storage_config:
-      cassandra:
-        addresses: cassandra.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}
-        auth: true
-        username: cassandra
-        password: cassandra
-        keyspace: loki
+      boltdb_shipper:
+        shared_store: aws
+        active_index_directory: /var/loki/index
+        cache_location: /var/loki/cache
+        cache_ttl: 168h
+      aws:
+        bucketnames: "loki"
+        endpoint: "minio:9000"
+        s3forcepathstyle: true
+        insecure: true
     chunk_store_config:
       max_look_back_period: 0s
     table_manager:
@@ -99,6 +103,23 @@ memcachedIndexQueries:
 memcachedIndexWrites:
   enabled: true
 
+ingester:
+  replicas: 2
+  extraArgs:
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
+  extraEnvFrom:
+    - secretRef:
+        name: minio
+
+querier:
+  replicas: 1
+  extraArgs:
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
+  extraEnvFrom:
+    - secretRef:
+        name: minio
 gateway:
   basicAuth:
     enabled: true

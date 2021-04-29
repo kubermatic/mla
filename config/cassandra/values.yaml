@@ -1,8 +1,0 @@
-replicaCount: 3
-
-dbUser:
-  user: cassandra
-  password: cassandra
-
-persistence:
-  storageClass: "kubermatic-fast"
