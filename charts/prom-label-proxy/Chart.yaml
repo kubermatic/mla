@@ -1,6 +1,0 @@
-apiVersion: v2
-name: prom-label-proxy
-description: Helm chart for KKP MLA PromLabelProxy
-type: application
-appVersion: 2.1.0
-version: 0.0.1
