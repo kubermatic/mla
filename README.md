@@ -1,50 +1,70 @@
 # MLA
 **Work in progress** implementation of User Cluster MLA (Monitoring Logging & Alerting) for KKP.
 
-### Requirements
-At least 2 clusters:
- - for the "Seed Cluster": 4 CPUs, 16 Gi of RAM (e.g. `T3A.xlarge`)
- - for the "User Cluster": 1 CPU, 2 Gi or RAM (e.g. `T3A.small`)
+## Requirements
+The User Cluster MLA Stack has to be installed into each Seed Cluster of KKP. In each Seed Cluster, it will need
+about:
+ - 2 vCPUs
+ - 14 GB of RAM
 
-(optionally, User Cluster components can be installed into the Seed Cluster for testing with 1 cluster as well)
+Apart from that, it will by default claim the following storage from the `kubermatic-fast` storage class:
+- 50 Gi for minio (storage for logs & metrics)
+- 10 Gi for Grafana
+- 4 x 2 Gi for internal processing services (ingesters, compactor, store gateway)
+
+## Limitations & Known Issues
+TODO: enabled in all seeds
+TODO: expose strategy
+TODO: datasources in Grafana
+TODO: Grafana exposed via a LB Service, secret auth
+TODO: alertmanager
+
+## Installation
+The MLA stack has to be installed manually into each KKP Seed Cluster. Apart from that, it has to be
+explicitly enabled in the global KKP Configuration, Seed configuration and in each User Cluster.
 
 ### Deploy Seed Cluster Components
+The MLA stack can be deployed into a KKP Seed Cluster using the following helper script:
 ```bash
-./deploy-seed.sh
+./hack/deploy-seed.sh
 ```
 
-### Deploy Tenant MLA Gateway(s) in Seed Cluster
-```bash
-./deploy-tenant-gateway.sh abc
-
-./deploy-tenant-gateway.sh xyz
+## Enable The MLA feature in KKP Configuration
+TODO: feature gate
+```yaml
+apiVersion: operator.kubermatic.io/v1alpha1
+kind: KubermaticConfiguration
+metadata:
+  name: kubermatic
+  namespace: kubermatic
+spec:
+  featureGates:
+    UserClusterMLA:
+      enabled: true
 ```
 
-### Deploy User Cluster Components
-Get External IP of the MLA Gateway in "Seed Cluster":
-```bash
-kubectl get svc mla-gateway-ext -n cluster-abc
+## Enable The MLA Stack in Seed
+TODO: seed config
+```yaml
+apiVersion: kubermatic.k8s.io/v1
+kind: Seed
+metadata:
+  name: europe-west3-c
+  namespace: kubermatic
+spec:
+  mla:
+    user_cluster_mla_enabled: true
 ```
 
-Use that to deploy User Cluster components to a different cluster:
-```bash
-./deploy-user-cluster.sh a54afbcdd28d5404f940d382362b2e06-2091261264.eu-central-1.elb.amazonaws.com
+## Enable MLA for a User Cluster
+TODO: cluster API
+```yaml
+apiVersion: kubermatic.k8s.io/v1
+kind: Cluster
+metadata:
+  name: <cluster-name>
+spec:
+  mla:
+    monitoringEnabled: true
+    loggingEnabled: true
 ```
-
-### Add Loki and Prometheus to Grafana
-After all pods are ready, you can add Loki as a datasource in Grafana.
-Go to your Grafana page, login with username `admin`, password `admin`.
-Then add Loki as a datasource.
-The URL is `http://mla-gateway.cluster-xyz.svc.cluster.local`. Click `Save & Test`.
-For Prometheus, the URL is `http://mla-gateway.cluster-xyz.svc.cluster.local/api/prom`.
-
-### Check Alertmanager UI
-Currently, to be able to see the Alertmanager UI, we need to create a alertmanager configuration first:
-```bash
-./create-alert-config.sh  a24c848bd4d914cdcbbc7c860f4fe9d4-1893886320.eu-central-1.elb.amazonaws.com tenant-2
-```
-The first argument is the address of **mla-gateway-alert**, and the second argument is used for creating the receiver 
-in Alertmanger configuration.
-
-After this, you should be able to see the alertmanager UI at:
-`http://<mla-gateway-alert address>/api/prom/alertmanager`.
