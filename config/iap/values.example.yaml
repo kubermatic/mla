@@ -1,0 +1,24 @@
+iap:
+  oidc_issuer_url: https://kkp.example.com/dex
+  deployments:
+    grafana:
+     name: grafana-mla
+     client_id: grafana-mla
+     client_secret: YOUR_CLIENT_SECRET
+     encryption_key: YOUR_ENCRYPTION_KEY
+     config:
+       scope: "groups openid email"
+       email_domains:
+         - '*'
+       ## do not route health endpoint through the proxy
+       skip_auth_regex:
+         - '/api/health'
+       ## auto-register users based on their email address
+       ## Grafana is configured to look for the X-Forwarded-Email header
+       pass_user_headers: true
+       github_org: "YOUR_GITHUB_ORG"
+       github_team: "YOUR_GITHUB_TEAM"
+     upstream_service: grafana.mla.svc.cluster.local
+     upstream_port: 80
+     ingress:
+       host: "grafana.mla.kkp.example.com"

@@ -1,6 +1,0 @@
-apiVersion: v2
-name: mla-gateway
-description: Helm chart for KKP MLA Gateway
-type: application
-appVersion: 2.1.0
-version: 0.0.1
