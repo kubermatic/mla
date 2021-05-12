@@ -17,7 +17,9 @@ Apart from that, it will by default claim the following storage from the `kuberm
 
 ## Limitations & Known Issues
 As the MLA stack is still work in progress, there are some known limitations and issues:
-- Alertmanager UI is not yet exposed, as it requires the Alertmanager authorization proxy implementation to be finished
+- Alertmanager UI is not yet exposed, as it requires the Alertmanager authorization proxy implementation to be finished.
+- Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever.
+- Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level.
 
 ## Installation
 The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
