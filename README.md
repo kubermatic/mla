@@ -17,11 +17,9 @@ Apart from that, it will by default claim the following storage from the `kuberm
 
 ## Limitations & Known Issues
 As the MLA stack is still work in progress, there are some known limitations and issues:
-- MLA is always enabled (and has to be installed) in every Seed Cluster of a KKP installation (fixed in [#6967](https://github.com/kubermatic/kubermatic/pull/6967) on 2020-05-04)
-- MLA does not work if the Tunneling expose strategy is used (fixed in [#6936](https://github.com/kubermatic/kubermatic/pull/6936) on 2020-05-04)
-- Race condition in Grafana datasource controller, which may cause Grafana data sources to appear in a wrong Organization / KKP Project (issue: [#6981](https://github.com/kubermatic/kubermatic/issues/6981))
-- Grafana is exposed via a LB Service, accessible for a single admin user with password authentication (auto-generated, stored in a secret)
-- Alertmanager UI is not yet exposed, as it requires the Alertmanager authorization proxy implementation to be finished
+- Alertmanager UI is not yet exposed, as it requires the Alertmanager authorization proxy implementation to be finished.
+- Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever.
+- Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level.
 
 ## Installation
 The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
@@ -35,6 +33,44 @@ all necessary Helm charts:
 ./hack/deploy-seed.sh
 ```
 If any customization is needed, the steps in the script can be manually reproduced with tweaked Helm values.
+
+### Expose Grafana
+At this point, the Grafana UI is exposed only via a ClusterIP service. To expose it to users outside of the cluster
+with proper authentication in place, we will use the [IAP Helm Chart](https://github.com/kubermatic/kubermatic/tree/master/charts/iap)
+from the Kubermatic repository.
+
+Let's start with preparing the values.yaml for the IAP Helm Chart. A good starting point can be found in the
+[config/iap/values.example.yaml](config/iap/values.example.yaml) file of the MLA repository:
+ - modify the base domain under which your KKP installation is available (`kkp.example.com` in `iap.oidc_issuer_url`
+   and `iap.deployments.grafana.ingress.host`),
+ - set `iap.deployments.grafana.client_secret` and `iap.deployments.grafana.encryption_key` to newly generated keys
+   (they can be generated e.g. with `cat /dev/urandom | tr -dc A-Za-z0-9 | head -c32`),
+ - configure how the users should be authenticated in `iap.deployments.grafana.config` (e.g. modify `YOUR_GITHUB_ORG`
+   and `YOUR_GITHUB_TEAM` placeholders) - see the [OAuth Provider Configuration](https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider)
+   for more details.
+
+It is also necessary to set up your infrastructure accordingly:
+ - configure your DNS with the DNS entry for the domain name that you used in `iap.deployments.grafana.ingress.host`
+   so that it points to the ingress-controller service of KKP,
+ - configure the Dex in KKP with the proper configuration for Grafana IAP, e.g. using the following snippet that
+   can be placed into the KKP `values.yaml`. Make sure to modify the `RedirectURIs` with your domain name used in
+   `iap.deployments.grafana.ingress.host` and secret with your `iap.deployments.grafana.client_secret`:
+
+```yaml
+dex:
+  clients:
+  - RedirectURIs:
+    - https://grafana.mla.kkp.example.com/oauth/callback
+    id: grafana-mla
+    name: grafana-mla
+    secret: YOUR_CLIENT_SECRET
+```
+
+At this point, we can install the IAP Helm chart into the `mla` namespace, e.g. as follows:
+```sh
+git clone --depth 1 https://github.com/kubermatic/kubermatic.git
+helm --namespace mla upgrade --atomic --create-namespace --install grafana-iap kubermatic/charts/iap --values config/iap/values.yaml
+```
 
 ### Enable The MLA Feature in KKP Configuration
 Since the User Cluster MLA feature is still under development, it has to be explicitly enabled via a feature gate
@@ -84,24 +120,6 @@ spec:
 ```
 
 ## Accessing the Logs & Metrics
-At this point, the Grafana UI which provides access to the metrics and logs of individual User Clusters,
-which is running in each Seed Cluster, is exposed via a LB Service in the `mla` namespace in the Seed Cluster.
-To retrieve its external IP:
-
-```bash
-$ kubectl get svc grafana -n mla
-NAME      TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
-grafana   LoadBalancer   10.47.243.92   35.234.122.67   80:30289/TCP   4d1h
-```
-
-The Grafana is currently accessible only for a single admin user with password authentication. The auto-generated
-password is stored in the `grafana` secret in the `mla` namespace:
-
-```bash
-kubectl get secret grafana -n mla
-NAME      TYPE     DATA   AGE
-grafana   Opaque   3      4d1h
-```
-
-Once you are logged in the Grafana UI as the admin user, you can switch between individual Organizations
-(KKP Projects) via the icon in the bottom left corner of the UI.
+The Grafana UI is avaialable via the ingress configured in the "Expose Grafana" installation step. Once you are
+logged in the Grafana UI, you can switch between individual Organizations (KKP Projects) that you have access to
+using the user avatar icon in the bottom left corner of the UI: "Current Org:" > "Switch".

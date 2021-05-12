@@ -1,11 +1,9 @@
 service:
-  type: LoadBalancer
+  type: ClusterIP
 
 admin:
   userKey: admin-user
   passwordKey: admin-password
-# adminUser: admin
-# adminPassword: admin
 
 persistence:
   type: pvc
@@ -15,7 +13,6 @@ persistence:
 grafana.ini:
   auth.proxy:
     enabled: true
-    header_name: "X-WEBAUTH-USER"
+    header_name: "X-Forwarded-Email"
     header_property: "username"
     auto_sign_up: "true"
-
