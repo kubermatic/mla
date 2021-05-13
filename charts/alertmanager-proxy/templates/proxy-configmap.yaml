@@ -1,8 +1,21 @@
----
+# Copyright 2021 The Kubermatic Kubernetes Platform contributors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: authz-proxy-alertmanager-config
+  name: alertmanager-proxy-config
 data:
   envoy.yaml: |
     admin:
@@ -119,12 +132,12 @@ data:
             - endpoint:
                 address:
                   socket_address:
-                    address: cortex-alertmanager.{{ .Values.mla.namespace }}.svc.cluster.local
-                    port_value: 8080
+                    address: {{ .Values.alertmanagerProxy.backendAddress }}
+                    port_value: {{ .Values.alertmanagerProxy.backendPort }}
 
       - name: ext-authz
-        type: static
-        connect_timeout: 0.1s
+        type: STRICT_DNS
+        connect_timeout: 0.5s
         http2_protocol_options: {}
         load_assignment:
           cluster_name: ext-authz
@@ -133,7 +146,7 @@ data:
                 - endpoint:
                     address:
                       socket_address:
-                        address: 127.0.0.1
+                        address: alertmanager-authz-server
                         port_value: 50051
 
       - name: service_stats
@@ -149,76 +162,3 @@ data:
                   socket_address:
                     address: 127.0.0.1
                     port_value: 9901
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: authz-proxy-alertmanager
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: authz-proxy-alertmanager
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  progressDeadlineSeconds: 600
-  revisionHistoryLimit: 10
-  template:
-    metadata:
-      annotations:
-        prometheus.io/metrics_path: /stats/prometheus
-        prometheus.io/port: "9902"
-        prometheus.io/scrape: "true"
-      labels:
-        app.kubernetes.io/name: authz-proxy-alertmanager
-    spec:
-      containers:
-      - name: envoy
-        image: envoyproxy/envoy:v1.17.1
-        ports:
-        - containerPort: 8080
-        - containerPort: 9902
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /ready
-            port: 9902
-            scheme: HTTP
-          periodSeconds: 3
-          successThreshold: 1
-          timeoutSeconds: 1
-        volumeMounts:
-          - name:  envoy-config
-            mountPath: /etc/envoy
-
-      # TODO: for POC only - this will be a separate component
-      - name: authz-server
-        image: rastislavszabo/authz-server
-        ports:
-          - containerPort: 50051
-
-      volumes:
-        - name:  envoy-config
-          configMap:
-            name: authz-proxy-alertmanager-config
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: authz-proxy-alertmanager
-  labels:
-    app.kubernetes.io/name: authz-proxy-alertmanager
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 8080
-    targetPort: 8080
-    protocol: TCP
-  selector:
-    app.kubernetes.io/name: authz-proxy-alertmanager

@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v2
-name: alertmanager-proxy
-version: 1.0.1
-appVersion: 1.0.1
-description: A Helm chart to install KKP MLA Alertmanager Proxy.
-keywords:
-  - kubermatic
-  - alertmanager
-  - authz-proxy
-home: https://www.kubermatic.io/
-maintainers:
-  - name: Kubermatic GmbH
-    email: support@kubermatic.com
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-authz-server
+  labels:
+    app.kubernetes.io/name: alertmanager-authz-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 50051
+      targetPort: 50051
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: alertmanager-authz-server
