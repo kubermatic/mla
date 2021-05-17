@@ -54,28 +54,28 @@ data:
                   domains: ["*"]
                   routes:
 
-                  # redirect if path does not end with slash
+                  # redirect if the path contains only cluster ID without slash (append slash at the end)
                   - match:
                       safe_regex:
                         google_re2: {}
-                        regex: '^/(.+)/alertmanager$'
+                        regex: '^/([[:alnum:]]+)$'
                     redirect:
                       regex_rewrite:
                         pattern:
                           google_re2: {}
-                          regex: '^(.*)$'
-                        substitution: '\1/'
+                          regex: '^/([[:alnum:]]+)$'
+                        substitution: '/\1/'
 
                   # strip tenant ID from the path
                   - match:
                       safe_regex:
                         google_re2: {}
-                        regex: '^/(.+)/alertmanager/(.*)'
+                        regex: '^/(.+?)/(.*)'
                     route:
                       regex_rewrite:
                         pattern:
                           google_re2: {}
-                          regex: '^/(.+)/alertmanager/(.*)'
+                          regex: '^/(.+?)/(.*)'
                         substitution: '/api/prom/alertmanager/\2'
                       cluster: service_backend
 

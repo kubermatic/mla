@@ -17,9 +17,10 @@ Apart from that, it will by default claim the following storage from the `kuberm
 
 ## Limitations & Known Issues
 As the MLA stack is still work in progress, there are some known limitations and issues:
-- Alertmanager UI is not yet exposed, as it requires the Alertmanager authorization proxy implementation to be finished.
-- Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever.
-- Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level.
+- KKP Admin users can not access all Grafana organizations (KKP Projects) in Grafana UI (issue [#7045](https://github.com/kubermatic/kubermatic/issues/7045)).
+- Alertmanager UI is not yet fully exposed, as it requires the Alertmanager authorization proxy implementation to be finished (issue [#6803](https://github.com/kubermatic/kubermatic/issues/6803)).
+- Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever (issue [#7021](https://github.com/kubermatic/kubermatic/issues/7021)).
+- Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level (issue [7019](https://github.com/kubermatic/kubermatic/issues/7019)).
 
 ## Installation
 The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
@@ -34,42 +35,50 @@ all necessary Helm charts:
 ```
 If any customization is needed, the steps in the script can be manually reproduced with tweaked Helm values.
 
-### Expose Grafana
-At this point, the Grafana UI is exposed only via a ClusterIP service. To expose it to users outside of the cluster
+### Expose Grafana & Alertmanager UI
+At this point, the Grafana & Alertmanager UI are exposed only via a ClusterIP service. To expose it to users outside of the cluster
 with proper authentication in place, we will use the [IAP Helm Chart](https://github.com/kubermatic/kubermatic/tree/master/charts/iap)
 from the Kubermatic repository.
 
-Let's start with preparing the values.yaml for the IAP Helm Chart. A good starting point can be found in the
+Let's start with preparing the values.yaml for the IAP Helm Chart. A starting point can be found in the
 [config/iap/values.example.yaml](config/iap/values.example.yaml) file of the MLA repository:
  - modify the base domain under which your KKP installation is available (`kkp.example.com` in `iap.oidc_issuer_url`
    and `iap.deployments.grafana.ingress.host`),
- - set `iap.deployments.grafana.client_secret` and `iap.deployments.grafana.encryption_key` to newly generated keys
+ - set `iap.deployments.grafana.client_secret` + `iap.deployments.grafana.encryption_key` and
+   `iap.deployments.alertmanager.client_secret` + `iap.deployments.alertmanager.encryption_key` to newly generated keys
    (they can be generated e.g. with `cat /dev/urandom | tr -dc A-Za-z0-9 | head -c32`),
- - configure how the users should be authenticated in `iap.deployments.grafana.config` (e.g. modify `YOUR_GITHUB_ORG`
-   and `YOUR_GITHUB_TEAM` placeholders) - see the [OAuth Provider Configuration](https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider)
+ - configure how the users should be authenticated in `iap.deployments.grafana.config` and
+   `iap.deployments.alertmanager.config` (e.g. modify `YOUR_GITHUB_ORG` and `YOUR_GITHUB_TEAM` placeholders)
+    - see the [OAuth Provider Configuration](https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider)
    for more details.
 
 It is also necessary to set up your infrastructure accordingly:
  - configure your DNS with the DNS entry for the domain name that you used in `iap.deployments.grafana.ingress.host`
-   so that it points to the ingress-controller service of KKP,
- - configure the Dex in KKP with the proper configuration for Grafana IAP, e.g. using the following snippet that
-   can be placed into the KKP `values.yaml`. Make sure to modify the `RedirectURIs` with your domain name used in
-   `iap.deployments.grafana.ingress.host` and secret with your `iap.deployments.grafana.client_secret`:
+   and `iap.deployments.alertmanager.ingress.host` so that it points to the ingress-controller service of KKP,
+ - configure the Dex in KKP with the proper configuration for Grafana and Alertmanager IAP, e.g. using the following
+   snippet that can be placed into the KKP `values.yaml`. Make sure to modify the `RedirectURIs` with your domain name used in
+   `iap.deployments.grafana.ingress.host` and `iap.deployments.alertmanager.ingress.host` and secret with your
+   `iap.deployments.grafana.client_secret` and `iap.deployments.alertmanager.client_secret`:
 
 ```yaml
 dex:
   clients:
   - RedirectURIs:
     - https://grafana.mla.kkp.example.com/oauth/callback
-    id: grafana-mla
-    name: grafana-mla
+    id: mla-grafana
+    name: mla-grafana
+    secret: YOUR_CLIENT_SECRET
+  - RedirectURIs:
+    - https://alertmanager.mla.kkp.example.com/oauth/callback
+    id: mla-alertmanager
+    name: mla-alertmanager
     secret: YOUR_CLIENT_SECRET
 ```
 
 At this point, we can install the IAP Helm chart into the `mla` namespace, e.g. as follows:
 ```sh
 git clone --depth 1 https://github.com/kubermatic/kubermatic.git
-helm --namespace mla upgrade --atomic --create-namespace --install grafana-iap kubermatic/charts/iap --values config/iap/values.yaml
+helm --namespace mla upgrade --atomic --create-namespace --install iap kubermatic/charts/iap --values config/iap/values.yaml
 ```
 
 ### Enable The MLA Feature in KKP Configuration
