@@ -19,3 +19,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex 
 echo ""
 echo "Installing Loki"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml
+
+echo ""
+echo "Installing Alertmanager Proxy"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install alertmanager-proxy charts/alertmanager-proxy
