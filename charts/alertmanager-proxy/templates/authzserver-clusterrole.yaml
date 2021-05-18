@@ -21,11 +21,9 @@ rules:
       - kubermatic.k8s.io
     resources:
       - clusters
-    verbs:
-      - get
-  - apiGroups:
-      - kubermatic.k8s.io
-    resources:
+      - users
       - userprojectbindings
     verbs:
+      - get
       - list
+      - watch
