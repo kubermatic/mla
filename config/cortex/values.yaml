@@ -2,10 +2,10 @@ ingress:
   enabled: false
 
 distributor:
-  replicas: 1
+  replicas: 2
 
 ruler:
-  replicas: 0
+  replicas: 1
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -48,7 +48,9 @@ store_gateway:
           key: secretkey
 
 ingester:
-  replicas: 2
+  replicas: 3
+  statefulSet:
+    enabled: true
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
