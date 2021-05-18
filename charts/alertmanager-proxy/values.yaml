@@ -57,7 +57,7 @@ alertmanagerAuthzServer:
         - podAffinityTerm:
             labelSelector:
               matchLabels:
-                app.kubernetes.io/name: alertmanager-proxy
+                app.kubernetes.io/name: alertmanager-authz-server
             topologyKey: kubernetes.io/hostname
           weight: 100
   tolerations: []
