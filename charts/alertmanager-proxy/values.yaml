@@ -39,11 +39,11 @@ alertmanagerAuthzServer:
   replicas: 1
   resources:
     requests:
-      cpu: 50m
-      memory: 32Mi
-    limits:
-      cpu: 200m
+      cpu: 500m
       memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 128Mi
   nodeSelector: {}
   affinity:
     podAntiAffinity:
