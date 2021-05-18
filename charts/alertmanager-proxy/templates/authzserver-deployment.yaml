@@ -33,11 +33,16 @@ spec:
       labels:
         app.kubernetes.io/name: alertmanager-authz-server
     spec:
+      serviceAccountName: alertmanager-authz-server
       containers:
         - name: authz-server
-          image: rastislavszabo/authz-server
+          image: '{{ .Values.alertmanagerAuthzServer.image.repository }}:{{ .Values.alertmanagerAuthzServer.image.tag }}'
           ports:
             - containerPort: 50051
+          command:
+            - /alertmanager-authorization-server
+          args:
+            - -log-debug=true
           resources:
 {{ toYaml .Values.alertmanagerAuthzServer.resources | indent 12 }}
       nodeSelector:

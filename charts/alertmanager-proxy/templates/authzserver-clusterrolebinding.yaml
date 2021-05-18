@@ -13,17 +13,14 @@
 # limitations under the License.
 
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: ClusterRoleBinding
 metadata:
   name: alertmanager-authz-server
-rules:
-  - apiGroups:
-      - kubermatic.k8s.io
-    resources:
-      - clusters
-      - users
-      - userprojectbindings
-    verbs:
-      - get
-      - list
-      - watch
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: alertmanager-authz-server
+subjects:
+  - kind: ServiceAccount
+    name: alertmanager-authz-server
+    namespace: {{ .Release.Namespace }}
