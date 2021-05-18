@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: envoy
-          image: envoyproxy/envoy:v1.17.1
+          image: '{{ .Values.alertmanagerProxy.image.repository }}:{{ .Values.alertmanagerProxy.image.tag }}'
           ports:
             - containerPort: 8080
               name: proxy
