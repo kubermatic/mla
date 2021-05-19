@@ -87,6 +87,9 @@ data:
                   grpc_service:
                     envoy_grpc:
                       cluster_name: ext-authz
+                    timeout: 2s
+                  status_on_error:
+                    code: ServiceUnavailable
               - name: envoy.filters.http.router
 
       ### limited access to envoy stats and health ###
@@ -137,7 +140,7 @@ data:
 
       - name: ext-authz
         type: STRICT_DNS
-        connect_timeout: 0.5s
+        connect_timeout: 2s
         http2_protocol_options: {}
         load_assignment:
           cluster_name: ext-authz

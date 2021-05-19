@@ -15,6 +15,9 @@
 alertmanagerProxy:
   backendAddress: cortex-alertmanager.mla.svc.cluster.local
   backendPort: 8080
+  image:
+    repository: "envoyproxy/envoy"
+    tag: "v1.18.3"
   replicas: 1
   resources:
     requests:
@@ -54,7 +57,7 @@ alertmanagerAuthzServer:
         - podAffinityTerm:
             labelSelector:
               matchLabels:
-                app.kubernetes.io/name: alertmanager-proxy
+                app.kubernetes.io/name: alertmanager-authz-server
             topologyKey: kubernetes.io/hostname
           weight: 100
   tolerations: []

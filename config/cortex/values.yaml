@@ -2,10 +2,10 @@ ingress:
   enabled: false
 
 distributor:
-  replicas: 1
+  replicas: 2
 
 ruler:
-  replicas: 0
+  replicas: 1
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -48,7 +48,9 @@ store_gateway:
           key: secretkey
 
 ingester:
-  replicas: 2
+  replicas: 3
+  statefulSet:
+    enabled: true
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -91,6 +93,9 @@ nginx:
   enabled: false
 
 alertmanager:
+  replicas: 2
+  statefulSet:
+    enabled: true
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -108,6 +113,18 @@ alertmanager:
   extraVolumeMounts:
     - mountPath: /tmp
       name: storage
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - alertmanager
+            topologyKey: 'kubernetes.io/hostname'
 
 config:
   auth_enabled: true
