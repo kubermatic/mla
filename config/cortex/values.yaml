@@ -20,6 +20,9 @@ ruler:
         secretKeyRef:
           name: minio
           key: secretkey
+  extraVolumeMounts:
+    - mountPath: /rules
+      name: storage
 
 compactor:
   replicas: 1
