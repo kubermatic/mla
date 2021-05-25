@@ -72,18 +72,21 @@ loki:
       log_queries_longer_than: 5s
       compress_responses: true
     compactor:
-      shared_store: filesystem
+      shared_store: aws
     ruler:
       storage:
-        type: local
-        local:
-          directory: /etc/loki/rules
+        type: s3
+        s3:
+          bucketnames: "loki-ruler"
+          endpoint: "minio:9000"
+          s3forcepathstyle: true
+          insecure: true
       ring:
         kvstore:
           store: memberlist
       rule_path: /tmp/loki/scratch
-      alertmanager_url: https://alertmanager.xx
-      external_url: https://alertmanager.xx
+      alertmanager_url: http://cortex-alertmanager
+      external_url: http://cortex-alertmanager
 
 tableManager:
   enabled: true
@@ -120,65 +123,26 @@ querier:
   extraEnvFrom:
     - secretRef:
         name: minio
+
 gateway:
-  basicAuth:
-    enabled: true
-    username: loki
-    password: password
-  nginxConfig: |
-    worker_processes  5;  ## Default: 1
-    error_log  /dev/stderr;
-    pid        /tmp/nginx.pid;
-    worker_rlimit_nofile 8192;
-    events {
-      worker_connections  4096;  ## Default: 1024
-    }
-    http {
-      client_body_temp_path /tmp/client_temp;
-      proxy_temp_path       /tmp/proxy_temp_path;
-      fastcgi_temp_path     /tmp/fastcgi_temp;
-      uwsgi_temp_path       /tmp/uwsgi_temp;
-      scgi_temp_path        /tmp/scgi_temp;
-      default_type application/octet-stream;
-      log_format   main '$remote_addr - $remote_user [$time_local]  $status '
-        '"$request" $body_bytes_sent "$http_referer" '
-        '"$http_user_agent" "$http_x_forwarded_for"';
-      access_log   /dev/stderr  main;
-      sendfile     on;
-      tcp_nopush   on;
-      resolver {{ .Values.global.dnsService }}.kube-system.svc.{{ .Values.global.clusterDomain }};
-      server {
-        proxy_set_header     X-Scope-OrgID 1;
-        listen             8080;
-        {{- if .Values.gateway.basicAuth.enabled }}
-        auth_basic           {{ .Values.gateway.basicAuth.username }};
-        auth_basic_user_file /etc/nginx/secrets/.htpasswd;
-        {{- end }}
-        location = / {
-          return 200 'OK';
-          auth_basic off;
-        }
-        location = /api/prom/push {
-          proxy_pass       http://{{ include "loki.distributorFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-        }
-        location = /api/prom/tail {
-          proxy_pass       http://{{ include "loki.querierFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection "upgrade";
-        }
-        location ~ /api/prom/.* {
-          proxy_pass       http://{{ include "loki.queryFrontendFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-        }
-        location = /loki/api/v1/push {
-          proxy_pass       http://{{ include "loki.distributorFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-        }
-        location = /loki/api/v1/tail {
-          proxy_pass       http://{{ include "loki.querierFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection "upgrade";
-        }
-        location ~ /loki/api/.* {
-          proxy_pass       http://{{ include "loki.queryFrontendFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
-        }
-      }
-    }
+  # no need for gateway, one gateway per tenant deployed by KKP
+  replicas: 0
+
+ruler:
+  enabled: true
+  replicas: 1
+  extraArgs:
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
+  extraEnvFrom:
+    - secretRef:
+        name: minio
+
+compactor:
+  enabled: true
+  extraArgs:
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
+  extraEnvFrom:
+    - secretRef:
+        name: minio

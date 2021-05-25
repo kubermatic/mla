@@ -164,7 +164,7 @@ config:
     storage:
       type: s3
       s3:
-        bucketnames: "cortex"
+        bucketnames: "cortex-ruler"
         endpoint: "minio:9000"
         s3forcepathstyle: true
         insecure: true
@@ -174,7 +174,7 @@ config:
     storage:
       type: s3
       s3:
-        bucketnames: "cortex"
+        bucketnames: "alertmanager"
         endpoint: "minio:9000"
         s3forcepathstyle: true
         insecure: true

@@ -4,7 +4,13 @@ persistence:
   storageClass: "kubermatic-fast"
   size: 50Gi
 buckets:
+  - name: alertmanager
+    policy: public
   - name: cortex
     policy: public
+  - name: cortex-ruler
+    policy: public
   - name: loki
+    policy: public
+  - name: loki-ruler
     policy: public
