@@ -18,7 +18,6 @@ Apart from that, it will by default claim the following storage from the `kuberm
 ## Limitations & Known Issues
 As the MLA stack is still work in progress, there are some known limitations and issues:
 - KKP Admin users can not access all Grafana organizations (KKP Projects) in Grafana UI (issue [#7045](https://github.com/kubermatic/kubermatic/issues/7045)).
-- Alertmanager UI is not yet fully exposed, as it requires the Alertmanager authorization proxy implementation to be finished (issue [#6803](https://github.com/kubermatic/kubermatic/issues/6803)).
 - Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever (issue [#7021](https://github.com/kubermatic/kubermatic/issues/7021)).
 - Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level (issue [7019](https://github.com/kubermatic/kubermatic/issues/7019)).
 
