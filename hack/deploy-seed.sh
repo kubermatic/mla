@@ -23,3 +23,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-di
 echo ""
 echo "Installing Alertmanager Proxy"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install alertmanager-proxy charts/alertmanager-proxy
+
+echo ""
+echo "Installing Minio Bucket Lifecycle Manager"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr
