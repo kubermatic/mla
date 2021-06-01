@@ -17,7 +17,7 @@ kind: ConfigMap
 metadata:
   name:  minio-lifecycle-mgr-scripts
 data:
-  lifecycle.sh: |
+  ensure-lifecycle.sh: |
     mc alias set minio {{ .Values.lifecycleMgr.minio.endpoint }} $accesskey $secretkey
     {{- range .Values.lifecycleMgr.buckets }}
     mc ilm import minio/{{ .name }} <<EOF

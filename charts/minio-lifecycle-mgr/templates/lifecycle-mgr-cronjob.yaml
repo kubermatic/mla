@@ -31,7 +31,7 @@ spec:
               command:
                 - /bin/sh
                 - -ec
-                - /scripts/lifecycle.sh
+                - /scripts/ensure-lifecycle.sh
               envFrom:
                 - secretRef:
                     name: {{ .Values.lifecycleMgr.minio.secretName }}
