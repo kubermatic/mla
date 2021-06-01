@@ -13,11 +13,8 @@
 # limitations under the License.
 
 lifecycleMgr:
-  minio:
-    endpoint: http://minio:9000
-    secretName: minio
   buckets:
-#    - name: cortex
-#      expirationDays: 15
-#    - name: loki
-#      expirationDays: 15
+    - name: cortex
+      expirationDays: 15
+    - name: loki
+      expirationDays: 15

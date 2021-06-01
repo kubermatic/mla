@@ -26,4 +26,4 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install alertma
 
 echo ""
 echo "Installing Minio Bucket Lifecycle Manager"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr --values config/minio-lifecycle-mgr/values.yaml

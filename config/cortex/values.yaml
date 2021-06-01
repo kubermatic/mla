@@ -192,3 +192,5 @@ config:
       dir: /data
       retention_period: 12h
       wal_compression_enabled: true
+  chunk_store:
+    max_look_back_period: 336h
