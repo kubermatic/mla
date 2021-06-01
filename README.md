@@ -130,16 +130,16 @@ By default, the MLA stack is configured to hold the logs and metrics in object s
 overriden for logs and metrics separately:
 
 For metrics:
- - in the `cortex` Helm chart values, set `config.chunk_store.max_look_back_period` to the desired value
-   (default: `336h` = 14 days),
- - in the `minio-lifecycle-mgr` Helm chart values, set `lifecycleMgr.buckets[name=cortex].expirationDays`
-   to the value used in the cortex helm chart + 1 day (default: `15d`).
+ - in the `cortex` Helm chart [values.yaml](config/cortex/values.yaml), set `config.chunk_store.max_look_back_period`
+   to the desired value (default: `336h` = 14 days),
+ - in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+   `lifecycleMgr.buckets[name=cortex].expirationDays` to the value used in the Cortex helm chart + 1 day (default: `15d`).
 
 For logs:
- - in the `loki` Helm chart values, set  `loki.config.chunk_store_config.max_look_back_period` to the desired value
-   (default: `336h` = 14 days),
-- in the `minio-lifecycle-mgr` Helm chart values, set `lifecycleMgr.buckets[name=loki].expirationDays`
-  to the value used in the cortex helm chart + 1 day (default: `15d`).
+ - in the `loki` Helm chart [values.yaml](config/loki/values.yaml), set `loki.config.chunk_store_config.max_look_back_period`
+   to the desired value (default: `336h` = 14 days),
+- in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+  `lifecycleMgr.buckets[name=loki].expirationDays` to the value used in the Loki helm chart + 1 day (default: `15d`).
 
 ## Accessing the Logs & Metrics
 The Grafana UI is avaialable via the ingress configured in the "Expose Grafana" installation step. Once you are
