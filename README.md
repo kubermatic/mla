@@ -18,8 +18,6 @@ Apart from that, it will by default claim the following storage from the `kuberm
 ## Limitations & Known Issues
 As the MLA stack is still work in progress, there are some known limitations and issues:
 - KKP Admin users can not access all Grafana organizations (KKP Projects) in Grafana UI (issue [#7045](https://github.com/kubermatic/kubermatic/issues/7045)).
-- Data retention and cleanup is not yet implemented - all MLA data will be left in the Minio object store forever (issue [#7021](https://github.com/kubermatic/kubermatic/issues/7021)).
-- Some MLA resources will be left running and not cleaned up after MLA is disabled on the Seed level (issue [7019](https://github.com/kubermatic/kubermatic/issues/7019)).
 
 ## Installation
 The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
@@ -126,6 +124,22 @@ spec:
     monitoringEnabled: true
     loggingEnabled: true
 ```
+
+## Data Retention Settings
+By default, the MLA stack is configured to hold the logs and metrics in object store for 14 days. This can be
+overriden for logs and metrics separately:
+
+For metrics:
+ - in the `cortex` Helm chart [values.yaml](config/cortex/values.yaml), set `config.chunk_store.max_look_back_period`
+   to the desired value (default: `336h` = 14 days),
+ - in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+   `lifecycleMgr.buckets[name=cortex].expirationDays` to the value used in the Cortex helm chart + 1 day (default: `15d`).
+
+For logs:
+ - in the `loki` Helm chart [values.yaml](config/loki/values.yaml), set `loki.config.chunk_store_config.max_look_back_period`
+   to the desired value (default: `336h` = 14 days),
+- in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+  `lifecycleMgr.buckets[name=loki].expirationDays` to the value used in the Loki helm chart + 1 day (default: `15d`).
 
 ## Accessing the Logs & Metrics
 The Grafana UI is avaialable via the ingress configured in the "Expose Grafana" installation step. Once you are
