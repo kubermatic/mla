@@ -74,6 +74,7 @@ loki:
     compactor:
       shared_store: aws
     ruler:
+      enable_api: true
       storage:
         type: s3
         s3:
@@ -85,8 +86,7 @@ loki:
         kvstore:
           store: memberlist
       rule_path: /tmp/loki/scratch
-      alertmanager_url: http://cortex-alertmanager
-      external_url: http://cortex-alertmanager
+      alertmanager_url: http://cortex-alertmanager:8080/api/prom/alertmanager
 
 tableManager:
   enabled: true
