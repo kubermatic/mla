@@ -54,6 +54,9 @@ ingester:
   replicas: 3
   statefulSet:
     enabled: true
+  persistentVolume:
+    enabled: true
+    storageClass: "kubermatic-fast"
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -99,6 +102,9 @@ alertmanager:
   replicas: 2
   statefulSet:
     enabled: true
+  persistentVolume:
+    enabled: true
+    storageClass: "kubermatic-fast"
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
@@ -178,19 +184,27 @@ config:
         endpoint: "minio:9000"
         s3forcepathstyle: true
         insecure: true
+  querier:
+    query_store_after: 720m
+    query_ingesters_within: 725m
   storage:
     engine: blocks
   blocks_storage:
     backend: s3
     bucket_store:
+      #bucket_index: # v1.7.0
+      #  enabled: true
       sync_dir: /data
+      ignore_deletion_mark_delay: 1h
     s3:
       bucket_name: "cortex"
       endpoint: "minio:9000"
       insecure: true
     tsdb:
       dir: /data
-      retention_period: 12h
+      retention_period: 725m
+      #close_idle_tsdb_timeout: 725m # v1.9.0
       wal_compression_enabled: true
+      flush_blocks_on_shutdown: true
   chunk_store:
     max_look_back_period: 336h
