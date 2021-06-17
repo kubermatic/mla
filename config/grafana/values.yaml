@@ -1,12 +1,14 @@
 service:
   type: ClusterIP
 
+replicas: 2
+
 admin:
   userKey: admin-user
   passwordKey: admin-password
 
 persistence:
-  type: pvc
+  type: statefulset
   enabled: true
   storageClassName: "kubermatic-fast"
 
@@ -16,3 +18,9 @@ grafana.ini:
     header_name: "X-Forwarded-Email"
     header_property: "username"
     auto_sign_up: "true"
+
+  ## Enable alerting features
+  plugins:
+    enable_alpha: true
+  feature_toggles:
+    enable: ngalert
