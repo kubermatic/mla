@@ -1,7 +1,7 @@
 service:
   type: ClusterIP
 
-replicas: 2
+replicas: 1
 
 admin:
   userKey: admin-user
