@@ -19,8 +19,8 @@ grafana.ini:
     header_property: "username"
     auto_sign_up: "true"
 
-  ## Enable alerting features
-  plugins:
-    enable_alpha: true
-  feature_toggles:
-    enable: ngalert
+# Uncomment the following lines to enable alerting feature (alpha)
+#  plugins:
+#    enable_alpha: true
+#  feature_toggles:
+#    enable: ngalert
