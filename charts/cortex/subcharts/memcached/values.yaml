@@ -1,111 +1,293 @@
-## Memcached image and tag
-## ref: https://hub.docker.com/r/library/memcached/tags/
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry and imagePullSecrets
 ##
-image: memcached:1.5.20
+# global:
+#   imageRegistry: myRegistryName
+#   imagePullSecrets:
+#     - myRegistryKeySecretName
+#   storageClass: myStorageClass
 
-## Specify a imagePullPolicy
-## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
-## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+## Bitnami Memcached image version
+## ref: https://hub.docker.com/r/bitnami/memcached/tags/
 ##
-# imagePullPolicy:
-#
-
-## Replica count
-replicaCount: 3
-
-## Pod disruption budget minAvailable count
-## Ensure this value is lower than replicaCount in order to allow a worker
-## node to drain successfully
-pdbMinAvailable: 2
-
-## Select AntiAffinity as either hard or soft, default is hard
-AntiAffinity: "hard"
-
-memcached:
-  ## Various values that get set as command-line flags.
-  ## ref: https://github.com/memcached/memcached/wiki/ConfiguringServer#commandline-arguments
+image:
+  registry: docker.io
+  repository: bitnami/memcached
+  tag: 1.6.9-debian-10-r55
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
-  maxItemMemory: 64
-  verbosity: v
-  extendedOptions: modern
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
 
-  ## Additional command line arguments to pass to memcached
-  ## E.g. to specify a maximum value size
-  ## extraArgs:
-  ##   - -I 2m
-  extraArgs: []
+  ## Set to true if you would like to see extra information on logs
+  ##
+  debug: false
 
-## Define various attributes of the service
-serviceAnnotations: {}
-#  prometheus.io/scrape: "true"
+## Extra environment vars to pass.
+## ref: https://github.com/bitnami/bitnami-docker-memcached#configuration
+##
+extraEnv: []
 
-## StatefulSet or Deployment
-kind: StatefulSet
+## String to partially override common.names.fullname template (will maintain the release name)
+##
+# nameOverride:
 
-## Update Strategy for the StatefulSet or Deployment
-## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
-## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
-updateStrategy:
-  type: RollingUpdate
+## Number of containers to run
+##
+replicaCount: 1
 
-## Configure resource requests and limits
+## String to fully override common.names.fullname template
+##
+# fullnameOverride:
+
+# Cluster domain
+clusterDomain: cluster.local
+
+## Memcached architecture. Allowed values: standalone or high-availability
+##
+architecture: standalone
+
+## Deployment pod host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: []
+
+## Memcached admin user
+## ref: https://github.com/bitnami/bitnami-docker-memcached#creating-the-memcached-admin-user
+##
+# memcachedUsername:
+
+## Memcached admin password
+## ref: https://github.com/bitnami/bitnami-docker-memcached#creating-the-memcached-admin-user
+##
+# memcachedPassword:
+
+## Service parameters
+##
+##
+service:
+  ## Service type
+  ##
+  type: ClusterIP
+  ## Memcached port
+  ##
+  port: 11211
+  ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ##
+  nodePort: ""
+  ## Set the LoadBalancer service type to internal only.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  ##
+  # loadBalancerIP:
+  ## Annotations for the Memcached service
+  ##
+  annotations: {}
+
+## Memcached containers' resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
 resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits: {}
+  #   cpu: 100m
+  #   memory: 128Mi
   requests:
-    memory: 64Mi
-    cpu: 50m
+    memory: 256Mi
+    cpu: 250m
 
-## Key:value pair for assigning pod to specific sets of nodes
-## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-nodeSelector: {}
+## If you want to override the port name (can be usefull when using a service mesh)
+## ref for istio: https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/
+##
+portName: memcache
 
-## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
-
-## Advanced scheduling controls
-## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-affinity: {}
-
-## Memcached pod Security Context
+## Pod Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
 securityContext:
   enabled: true
   fsGroup: 1001
   runAsUser: 1001
+  readOnlyRootFilesystem: false
 
-metrics:
-  ## Expose memcached metrics in Prometheus format
-  enabled: false
-  serviceMonitor:
-    enabled: false
-    interval: 15s
-
-  ## Memcached exporter image and tag
-  image: quay.io/prometheus/memcached-exporter:v0.6.0
-
-  ## Specify a imagePullPolicy
-  ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
-  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-  ##
-  # imagePullPolicy: IfNotPresent
-
-  ## Configure resource requests and limits
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  ##
-  resources: {}
-
-extraContainers: |
-
-extraVolumes: |
-
-## Custom metadata labels to be applied to statefulset and pods
-# podLabels:
-#   foo: "bar"
-#   bar: "foo"
-
-# To be added to the server pod(s)
+## Pod annotations
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
 podAnnotations: {}
 
-## Set pod priority class
+## Pod affinity preset
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAffinityPreset: ""
+
+## Pod anti-affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAntiAffinityPreset: soft
+
+## Node affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+## Allowed values: soft, hard
+##
+nodeAffinityPreset:
+  ## Node affinity type
+  ## Allowed values: soft, hard
+  ##
+  type: ""
+  ## Node label key to match
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## Node label values to match
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+
+## Affinity for pod assignment. Evaluated as a template.
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+## Note: podAffinityPreset, podAntiAffinityPreset, and nodeAffinityPreset will be ignored when it's set
+##
+affinity: {}
+
+## Node labels for pod assignment. Evaluated as a template.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for pod assignment. Evaluated as a template.
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Pod priority
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+##
 # priorityClassName: ""
+
+## Persistence - used for dumping and restoring states between recreations
+## Ref: https://github.com/memcached/memcached/wiki/WarmRestart
+##
+persistence:
+  enabled: false
+  ## Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##  set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##  GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  ## Persistent Volume Claim annotations
+  ##
+  annotations: {}
+  ## Persistent Volume Access Mode
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## Persistent Volume size
+  ##
+  size: 8Gi
+
+## Args for running memcached
+## Ref: https://github.com/memcached/memcached/wiki/ConfiguringServer
+##
+arguments:
+  - /run.sh
+  # - -m <maxMemoryLimit>
+  # - -I <maxItemSize>
+  # - -vv
+
+## Prometheus Exporter / Metrics
+##
+metrics:
+  enabled: false
+  ## Bitnami Memcached Prometheus Exporter image
+  ## ref: https://hub.docker.com/r/bitnami/memcached-exporter/tags/
+  ##
+  image:
+    registry: docker.io
+    repository: bitnami/memcached-exporter
+    tag: 0.8.0-debian-10-r46
+    pullPolicy: IfNotPresent
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ##
+    # pullSecrets:
+    #   - myRegistryKeySecretName
+  ## Metrics exporter pod Annotation and Labels
+  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+  ##
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9150"
+  ## If you want to override the port name (can be usefull when using a service mesh)
+  ## ref for istio: https://istio.io/latest/docs/ops/configuration/traffic-management/protocol-selection/
+  ##
+  portName: metrics
+  ## Memcached Prometheus exporter resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits: {}
+    #   cpu: 100m
+    #   memory: 128Mi
+    requests: {}
+    #   cpu: 100m
+    #   memory: 128Mi
+  service:
+    ## Service type
+    ##
+    type: ClusterIP
+    ## Memcached Prometheus exporter port
+    ##
+    port: 9150
+    ## Annotations for the Prometheus metrics service
+    ##
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "{{ .Values.metrics.service.port }}"
+  ## Prometheus Operator ServiceMonitor configuration
+  ##
+  serviceMonitor:
+    enabled: false
+    ## Namespace in which Prometheus is running
+    ##
+    # namespace: monitoring
+
+    ## Interval at which metrics should be scraped.
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    ##
+    # interval: 10s
+
+    ## Timeout after which the scrape is ended
+    ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    ##
+    # scrapeTimeout: 10s
+
+    ## ServiceMonitor selector labels
+    ## ref: https://github.com/bitnami/charts/tree/master/bitnami/prometheus-operator#prometheus-configuration
+    ##
+    # selector:
+    #   prometheus: my-prometheus

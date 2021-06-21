@@ -1,4 +1,8 @@
 .git
+.github
 cortex
 docs
 tools
+ct.yaml
+ci
+README.md.gotmpl

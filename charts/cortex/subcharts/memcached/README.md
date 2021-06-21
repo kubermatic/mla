@@ -2,27 +2,34 @@
 
 > [Memcached](https://memcached.org/) is an in-memory key-value store for small chunks of arbitrary data (strings, objects) from results of database calls, API calls, or page rendering.
 
-Based on the [memcached](https://github.com/bitnami/charts/tree/master/incubator/memcached) chart from the [Bitnami Charts](https://github.com/bitnami/charts) repository.
+## TL;DR
 
-## TL;DR;
-
-```bash
-$ helm install stable/memcached
+```console
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm install my-release bitnami/memcached
 ```
 
 ## Introduction
 
-This chart bootstraps a [Memcached](https://hub.docker.com/_/memcached/) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [Memcached](https://github.com/bitnami/bitnami-docker-memcached) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+
+Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This Helm chart has been tested on top of [Bitnami Kubernetes Production Runtime](https://kubeprod.io/) (BKPR). Deploy BKPR to get automated TLS certificates, logging and monitoring for your applications.
+
+## Prerequisites
+
+- Kubernetes 1.12+
+- Helm 3.1.0
 
 ## Installing the Chart
 
 To install the chart with the release name `my-release`:
 
-```bash
-$ helm install --name my-release stable/memcached
+```console
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm install my-release bitnami/memcached
 ```
 
-The command deploys Memcached on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+These commands deploy Memcached on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -30,118 +37,166 @@ The command deploys Memcached on the Kubernetes cluster in the default configura
 
 To uninstall/delete the `my-release` deployment:
 
-```bash
+```console
 $ helm delete my-release
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
-## Configuration
+## Parameters
 
-The following table lists the configurable parameters of the Memcached chart and their default values.
+The following tables lists the configurable parameters of the Memcached chart and their default values.
 
-|      Parameter             |          Description            |                         Default                         |
-|----------------------------|---------------------------------|---------------------------------------------------------|
-| `image`                    | The image to pull and run       | A recent official memcached tag                         |
-| `imagePullPolicy`          | Image pull policy               | `Always` if `imageTag` is `latest`, else `IfNotPresent` |
-| `memcached.verbosity`      | Verbosity level (v, vv, or vvv) | Un-set.                                                 |
-| `memcached.maxItemMemory`  | Max memory for items (in MB)    | `64`                                                    |
-| `memcached.extraArgs`      | Additional memcached arguments  | `[]`                                                    |
-| `metrics.enabled`          | Expose metrics in prometheus format | false                                               |
-| `metrics.serviceMonitor.enabled`          | Expose serviceMonitor to be scraped in prometheus-operator target | false                                               |
-| `metrics.serviceMonitor.interval`          | Default frequency to scrap metrics | 15s                                               |
-| `metrics.image`            | The image to pull and run for the metrics exporter | A recent official memcached tag      |
-| `metrics.imagePullPolicy`  | Image pull policy               | `Always` if `imageTag` is `latest`, else `IfNotPresent` |
-| `metrics.resources`        | CPU/Memory resource requests/limits for the metrics exporter | `{}`                       |
-| `extraContainers`          | Container sidecar definition(s) as string | Un-set                                        |
-| `extraVolumes`             | Volume definitions to add as string | Un-set                                              |
-| `kind`                     | Install as StatefulSet or Deployment | StatefulSet                                        |
-| `podAnnotations`           | Map of annotations to add to the pod(s) | `{}`                                            |
-| `podLabels`                | Custom Labels to be applied to statefulset | Un-set                                       |
-| `nodeSelector`             | Simple pod scheduling control | `{}`                                                      |
-| `tolerations`              | Allow or deny specific node taints | `{}`                                                 |
-| `affinity`                 | Advanced pod scheduling control | `{}`                                                    |
-| `securityContext.enabled`  | Enable security context    | `true`                                                       |
-| `securityContext.fsGroup`  | Group ID for the container | `1001`                                                       |
-| `securityContext.runAsUser`| User ID for the container  | `1001`                                                       |
-| `updateStrategy.type`      | Update strategy for the StatefulSet/Deployment | `RollingUpdate`                          |
-| `priorityClassName  `      | Specifies the pod's priority class name        | Un-set                                   |
+| Parameter                                | Description                                                                               | Default                                                      |
+|------------------------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| `global.imageRegistry`                   | Global Docker image registry                                                              | `nil`                                                        |
+| `global.imagePullSecrets`                | Global Docker registry secret names as an array                                           | `[]` (does not add image pull secrets to deployed pods)      |
+| `image.registry`                         | Memcached image registry                                                                  | `docker.io`                                                  |
+| `image.repository`                       | Memcached Image name                                                                      | `bitnami/memcached`                                          |
+| `image.tag`                              | Memcached Image tag                                                                       | `{TAG_NAME}`                                                 |
+| `image.pullPolicy`                       | Memcached image pull policy                                                               | `IfNotPresent`                                               |
+| `image.pullSecrets`                      | Specify docker-registry secret names as an array                                          | `[]` (does not add image pull secrets to deployed pods)      |
+| `nameOverride`                           | String to partially override common.names.fullname template with a string                 | `nil`                                                        |
+| `fullnameOverride`                       | String to fully override common.names.fullname template with a string                     | `nil`                                                        |
+| `clusterDomain`                          | Kubernetes cluster domain                                                                 | `cluster.local`                                              |
+| `architecture`                           | Memcached architecture. Allowed values: standalone or high-availability                   | `standalone`                                                 |
+| `replicaCount`                           | Number of containers                                                                      | `1`                                                          |
+| `extraEnv`                               | Additional env vars to pass                                                               | `{}`                                                         |
+| `arguments`                              | Arguments to pass                                                                         | `["/run.sh"]`                                                |
+| `hostAliases`                            | Add deployment host aliases                                                               | `[]`                                                         |
+| `memcachedUsername`                      | Memcached admin user                                                                      | `nil`                                                        |
+| `memcachedPassword`                      | Memcached admin password                                                                  | `nil`                                                        |
+| `service.type`                           | Kubernetes service type for Memcached                                                     | `ClusterIP`                                                  |
+| `service.port`                           | Memcached service port                                                                    | `11211`                                                      |
+| `service.clusterIP`                      | Specific cluster IP when service type is cluster IP. Use `None` for headless service      | `nil`                                                        |
+| `service.nodePort`                       | Kubernetes Service nodePort                                                               | `nil`                                                        |
+| `service.loadBalancerIP`                 | `loadBalancerIP` if service type is `LoadBalancer`                                        | `nil`                                                        |
+| `service.annotations`                    | Additional annotations for Memcached service                                              | `{}`                                                         |
+| `resources.requests`                     | CPU/Memory resource requests                                                              | `{memory: "256Mi", cpu: "250m"}`                             |
+| `resources.limits`                       | CPU/Memory resource limits                                                                | `{}`                                                         |
+| `portName`                               | Name of the main port exposed by memcached                                                | `memcache`                                                   |
+| `persistence.enabled`                    | Enable persistence using PVC (Requires architecture: "high-availability")                 | `true`                                                       |
+| `persistence.storageClass`               | PVC Storage Class for Memcached volume                                                    | `nil` (uses alpha storage class annotation)                  |
+| `persistence.accessMode`                 | PVC Access Mode for Memcached volume                                                      | `ReadWriteOnce`                                              |
+| `persistence.size`                       | PVC Storage Request for Memcached volume                                                  | `8Gi`                                                        |
+| `securityContext.enabled`                | Enable security context                                                                   | `true`                                                       |
+| `securityContext.fsGroup`                | Group ID for the container                                                                | `1001`                                                       |
+| `securityContext.runAsUser`              | User ID for the container                                                                 | `1001`                                                       |
+| `securityContext.readOnlyRootFilesystem` | Enable read-only filesystem                                                               | `false`                                                      |
+| `podAnnotations`                         | Pod annotations                                                                           | `{}`                                                         |
+| `podAffinityPreset`                      | Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`       | `""`                                                         |
+| `podAntiAffinityPreset`                  | Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`  | `soft`                                                       |
+| `nodeAffinityPreset.type`                | Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard` | `""`                                                         |
+| `nodeAffinityPreset.key`                 | Node label key to match. Ignored if `affinity` is set.                                    | `""`                                                         |
+| `nodeAffinityPreset.values`              | Node label values to match. Ignored if `affinity` is set.                                 | `[]`                                                         |
+| `affinity`                               | Affinity for pod assignment                                                               | `{}` (evaluated as a template)                               |
+| `nodeSelector`                           | Node labels for pod assignment                                                            | `{}` (evaluated as a template)                               |
+| `tolerations`                            | Tolerations for pod assignment                                                            | `[]` (evaluated as a template)                               |
+| `priorityClassName`                      | Controller priorityClassName                                                              | `nil`                                                        |
+| `metrics.enabled`                        | Start a side-car prometheus exporter                                                      | `false`                                                      |
+| `metrics.image.registry`                 | Memcached exporter image registry                                                         | `docker.io`                                                  |
+| `metrics.image.repository`               | Memcached exporter image name                                                             | `bitnami/memcached-exporter`                                 |
+| `metrics.image.tag`                      | Memcached exporter image tag                                                              | `{TAG_NAME}`                                                 |
+| `metrics.image.pullPolicy`               | Image pull policy                                                                         | `IfNotPresent`                                               |
+| `metrics.image.pullSecrets`              | Specify docker-registry secret names as an array                                          | `[]` (does not add image pull secrets to deployed pods)      |
+| `metrics.podAnnotations`                 | Additional annotations for Metrics exporter                                               | `{prometheus.io/scrape: "true", prometheus.io/port: "9150"}` |
+| `metrics.resources`                      | Exporter resource requests/limit                                                          | `{}`                                                         |
+| `metrics.portName`                       | Memcached exporter port name                                                              | `metrics`                                                    |
+| `metrics.service.type`                   | Kubernetes service type for Prometheus metrics                                            | `ClusterIP`                                                  |
+| `metrics.service.port`                   | Prometheus metrics service port                                                           | `9150`                                                       |
+| `metrics.service.annotations`            | Prometheus exporter svc annotations                                                       | `{prometheus.io/scrape: "true", prometheus.io/port: "9150"}` |
 
-The above parameters map to `memcached` params. For more information please refer to the [Memcached documentation](https://github.com/memcached/memcached/wiki/ConfiguringServer).
+The above parameters map to the env variables defined in [bitnami/memcached](http://github.com/bitnami/bitnami-docker-memcached). For more information please refer to the [bitnami/memcached](http://github.com/bitnami/bitnami-docker-memcached) image documentation.
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
-```bash
-$ helm install --name my-release \
-  --set memcached.verbosity=v \
-    stable/memcached
+```console
+$ helm install my-release --set memcachedUsername=user,memcachedPassword=password bitnami/memcached
 ```
 
-The above command sets the Memcached verbosity to `v`.
+The above command sets the Memcached admin account username and password to `user` and `password` respectively.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
-```bash
-$ helm install --name my-release -f values.yaml stable/memcached
+```console
+$ helm install my-release -f values.yaml bitnami/memcached
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
-## Upgrading to 3.x from a previous major version
-Version 3.0.0 of this chart makes an incompatible change to the way StatefulSet/Deployment selectors are configured. If you try to upgrade from a previous major version, you will see an error like this:
+## Configuration and installation details
 
-```
-Error: UPGRADE FAILED: Deployment.apps "mc-test-memcached" is invalid: spec.template.metadata.labels: Invalid value: map[string]string{"app":"mc-test-memcached", "chart":"memcached-3.0.0", "custom":"value", "heritage":"Tiller", "release":"mc-test"}: `selector` does not match template `labels`
-```
+### [Rolling VS Immutable tags](https://docs.bitnami.com/containers/how-to/understand-rolling-tags-containers/)
 
-To upgrade from a previous major version, you'll either need to perform a small manual fix or delete and reinstall the chart.
+It is strongly recommended to use immutable tags in a production environment. This ensures your deployment does not change automatically if the same tag is updated with a different image.
 
-### Upgrading with `kind: StatefulSet`
-If you're using a StatefulSet, you'll have to manually delete it and allow Helm to re-create it. Run `kubectl delete --cascade=false sts name-goes-here` to delete the StatefulSet without deleting the pods. Once you've done this, upgrade the chart as normal, and the newly-created StatefulSet will adopt the old pods.
+Bitnami will release a new chart updating its containers if a new version of the main container, significant changes, or critical vulnerabilities exist.
 
-### Upgrading with `kind: Deployment`
-If you're using a Deployment, the manual fix is to remove all selectors from the spec except `app` and `release`.  Run `kubectl edit deploy name-goes-here`, and you should see a part like this in your editor about 20 lines down:
+## Persistence
 
-```yaml
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 2
-  selector:
-    matchLabels:
-      app: mc-test-memcached
-      chart: memcached-2.10.2
-      heritage: Tiller
-      release: mc-test
-```
+When using `architecture: "high-availability"` the [Bitnami Memcached](https://github.com/bitnami/bitnami-docker-memcached) image stores the cache-state at the `/cache-state` path of the container if enabled.
 
-Remove the lines under `matchLabels` except `app: ...` and `release: ...`, and don't change any other lines. The part from above should look like this when you're done:
+Persistent Volume Claims are used to keep the data across deployments. This is known to work in GCE, AWS, and minikube.
+See the [Parameters](#parameters) section to configure the PVC or to disable persistence.
 
-```yaml
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 2
-  selector:
-    matchLabels:
-      app: mc-test-memcached
-      release: mc-test
+### Setting Pod's affinity
+
+This chart allows you to set your custom affinity using the `affinity` parameter. Find more information about Pod's affinity in the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity).
+
+As an alternative, you can use of the preset configurations for pod affinity, pod anti-affinity, and node affinity available at the [bitnami/common](https://github.com/bitnami/charts/tree/master/bitnami/common#affinities) chart. To do so, set the `podAffinityPreset`, `podAntiAffinityPreset`, or `nodeAffinityPreset` parameters.
+
+## Troubleshooting
+
+Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+
+## Notable changes
+
+### 4.0.0
+
+Backwards compatibility is not guaranteed unless you modify the labels used on the chart's deployments.
+Use the workaround below to upgrade from versions previous to 4.0.0. The following example assumes that the release name is memcached:
+
+```console
+$ kubectl delete deployment  memcached --cascade=false
+$ helm upgrade memcached bitnami/memcached
 ```
 
-Once you've done this, you can upgrade to 3.x with Helm as normal.
+### 3.0.0
 
-If you want prometheus-operator scrap all serviceMonitors in your cluster you need to set:
-```yaml
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
+This release uses the new bash based `bitnami/memcached` container which uses bash scripts for the start up logic of the container and is smaller in size.
+
+## Upgrading
+
+### To 5.3.0
+
+This version introduces `bitnami/common`, a [library chart](https://helm.sh/docs/topics/library_charts/#helm) as a dependency. More documentation about this new utility could be found [here](https://github.com/bitnami/charts/tree/master/bitnami/common#bitnami-common-library-chart). Please, make sure that you have updated the chart dependencies before executing any upgrade.
+
+### To 5.0.0
+
+[On November 13, 2020, Helm v2 support was formally finished](https://github.com/helm/charts#status-of-the-project), this major version is the result of the required changes applied to the Helm Chart to be able to incorporate the different features added in Helm v3 and to be consistent with the Helm project itself regarding the Helm v2 EOL.
+
+**What changes were introduced in this major version?**
+
+- Previous versions of this Helm Chart use `apiVersion: v1` (installable by both Helm 2 and 3), this Helm Chart was updated to `apiVersion: v2` (installable by Helm 3 only). [Here](https://helm.sh/docs/topics/charts/#the-apiversion-field) you can find more information about the `apiVersion` field.
+- The different fields present in the *Chart.yaml* file has been ordered alphabetically in a homogeneous way for all the Bitnami Helm Charts
+
+**Considerations when upgrading to this version**
+
+- If you want to upgrade to this version from a previous one installed with Helm v3, you shouldn't face any issues
+- If you want to upgrade to this version using Helm v2, this scenario is not supported as this version doesn't support Helm v2 anymore
+- If you installed the previous version with Helm v2 and wants to upgrade to this version with Helm v3, please refer to the [official Helm documentation](https://helm.sh/docs/topics/v2_v3_migration/#migration-use-cases) about migrating from Helm v2 to v3
+
+**Useful links**
+
+- https://docs.bitnami.com/tutorials/resolve-helm2-helm3-post-migration-issues/
+- https://helm.sh/docs/topics/v2_v3_migration/
+- https://helm.sh/blog/migrate-from-helm-v2-to-helm-v3/
+
+### To 1.0.0
+
+Backwards compatibility is not guaranteed unless you modify the labels used on the chart's deployments.
+Use the workaround below to upgrade from versions previous to 1.0.0. The following example assumes that the release name is memcached:
+
+```console
+$ kubectl patch deployment memcached --type=json -p='[{"op": "remove", "path": "/spec/selector/matchLabels/chart"}]'
 ```
-If you want to be specific:
-```yaml
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelector:
-      matchLabels:
-        app: memcached
-```
-You can have more intel in prometheus-operator values and here [github](https://github.com/helm/charts/issues/11310#issuecomment-463486706)

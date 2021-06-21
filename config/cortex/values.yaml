@@ -20,9 +20,9 @@ ruler:
         secretKeyRef:
           name: minio
           key: secretkey
-  extraVolumeMounts:
-    - mountPath: /rules
-      name: storage
+#  extraVolumeMounts:
+#    - mountPath: /rules
+#      name: storage
 
 compactor:
   replicas: 1
@@ -206,5 +206,5 @@ config:
       #close_idle_tsdb_timeout: 725m # v1.9.0
       wal_compression_enabled: true
       flush_blocks_on_shutdown: true
-  chunk_store:
-    max_look_back_period: 336h
+  limits:
+    max_query_lookback: 336h
