@@ -42,16 +42,7 @@ dashboards:
     kubernetes-dashboard:
       json: |
         {
-          "__inputs": [
-            {
-              "name": "DS_PROMETHEUS",
-              "label": "Prometheus",
-              "description": "",
-              "type": "datasource",
-              "pluginId": "prometheus",
-              "pluginName": "Prometheus"
-            }
-          ],
+          "__inputs": [ ],
           "__requires": [
             {
               "type": "panel",
@@ -98,7 +89,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -209,7 +200,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "editable": true,
                   "error": false,
                   "format": "percent",
@@ -289,7 +280,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -369,7 +360,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -451,7 +442,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -531,7 +522,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -611,7 +602,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -691,7 +682,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -771,7 +762,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -851,7 +842,7 @@ dashboards:
                     "rgba(237, 129, 40, 0.89)",
                     "rgba(245, 54, 54, 0.9)"
                   ],
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -934,7 +925,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 3,
                   "editable": true,
                   "error": false,
@@ -1029,7 +1020,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 3,
                   "editable": true,
                   "error": false,
@@ -1123,7 +1114,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 3,
                   "editable": true,
                   "error": false,
@@ -1239,7 +1230,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 3,
                   "editable": true,
                   "error": false,
@@ -1334,7 +1325,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1427,7 +1418,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1520,7 +1511,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1631,7 +1622,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1724,7 +1715,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1826,7 +1817,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -1970,7 +1961,7 @@ dashboards:
                 {
                   "aliasColors": {},
                   "bars": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": "$datasource",
                   "decimals": 2,
                   "editable": true,
                   "error": false,
@@ -2097,9 +2088,23 @@ dashboards:
           "templating": {
             "list": [
               {
+                "current": {
+                  "text": "Prometheus",
+                  "value": "Prometheus"
+                },
+                "hide": 0,
+                "label": null,
+                "name": "datasource",
+                "options": [],
+                "query": "prometheus",
+                "refresh": 1,
+                "regex": "",
+                "type": "datasource"
+              },
+              {
                 "allValue": ".*",
                 "current": {},
-                "datasource": "${DS_PROMETHEUS}",
+                "datasource": "$datasource",
                 "hide": 0,
                 "includeAll": true,
                 "multi": false,
@@ -2120,4 +2125,3 @@ dashboards:
           "links": [],
           "gnetId": 315
         }
-
