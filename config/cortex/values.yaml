@@ -7,8 +7,8 @@ distributor:
 ruler:
   replicas: 1
   extraArgs:
-    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
-    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+    ruler.storage.s3.access-key-id: $(ACCESS_KEY)
+    ruler.storage.s3.secret-access-key: $(SECRET_KEY)
   env:
     - name: ACCESS_KEY
       valueFrom:
@@ -20,9 +20,6 @@ ruler:
         secretKeyRef:
           name: minio
           key: secretkey
-  extraVolumeMounts:
-    - mountPath: /rules
-      name: storage
 
 compactor:
   replicas: 1
@@ -106,8 +103,8 @@ alertmanager:
     enabled: true
     storageClass: "kubermatic-fast"
   extraArgs:
-    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
-    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+    alertmanager.storage.s3.access-key-id: $(ACCESS_KEY)
+    alertmanager.storage.s3.secret-access-key: $(SECRET_KEY)
   env:
     - name: ACCESS_KEY
       valueFrom:
@@ -206,5 +203,5 @@ config:
       #close_idle_tsdb_timeout: 725m # v1.9.0
       wal_compression_enabled: true
       flush_blocks_on_shutdown: true
-  chunk_store:
-    max_look_back_period: 336h
+  limits:
+    max_query_lookback: 336h

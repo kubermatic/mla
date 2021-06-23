@@ -1,11 +1,10 @@
 apiVersion: v2
-version: 0.3.0
-appVersion: v1.6.0
-description: 'Cortex'
-engine: gotpl
+version: 0.5.0
+appVersion: v1.9.0
+description: 'Horizontally scalable, highly available, multi-tenant, long term Prometheus.'
 home: https://cortexmetrics.io/
 icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
-kubeVersion: ^1.10.0-0
+kubeVersion: ^1.19.0-0
 maintainers:
   - email: cortex-team@googlegroups.com
     name: Cortex Maintainers
@@ -15,39 +14,39 @@ sources:
 dependencies:
   - name: memcached
     alias: memcached
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     condition: memcached.enabled
   - name: memcached
     alias: memcached-index-read
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     condition: memcached-index-read.enabled
   - name: memcached
     alias: memcached-index-write
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     condition: memcached-index-write.enabled
   - name: memcached
     alias: memcached-frontend
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     condition: memcached-frontend.enabled
   - name: memcached
     alias: memcached-blocks-index
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     tags:
       - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     tags:
       - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks-metadata
-    version: 3.2.3
+    version: 5.5.1
     repository: file://subcharts/memcached
     tags:
       - blocks-storage-memcached

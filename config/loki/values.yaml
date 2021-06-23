@@ -90,6 +90,12 @@ loki:
 
 tableManager:
   enabled: true
+  extraArgs:
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
+  extraEnvFrom:
+    - secretRef:
+        name: minio
 
 memcachedExporter:
   enabled: true
@@ -125,15 +131,14 @@ querier:
         name: minio
 
 gateway:
-  # no need for gateway, one gateway per tenant deployed by KKP
-  replicas: 0
+  enabled: false
 
 ruler:
   enabled: true
   replicas: 1
   extraArgs:
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
+    - -ruler.storage.s3.access-key-id=$(accesskey)
+    - -ruler.storage.s3.secret-access-key=$(secretkey)
   extraEnvFrom:
     - secretRef:
         name: minio
