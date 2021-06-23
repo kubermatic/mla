@@ -28,7 +28,7 @@ Seed configuration and in each User Cluster.
 The MLA stack can be deployed into a KKP Seed Cluster using the following helper script which installs
 all necessary Helm charts:
 ```bash
-MLA_NS=mla ./hack/deploy-seed.sh
+./hack/deploy-seed.sh
 ```
 If any customization is needed, the steps in the script can be manually reproduced with tweaked Helm values.
 

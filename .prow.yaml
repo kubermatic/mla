@@ -1,5 +1,6 @@
-presubmits:
-  - name: pre-mla-deploy-dev
+postsubmits:
+  - name: post-mla-deploy-dev
+    run_if_changed: "^(charts|config|hack)/"
     max_concurrency: 1
     decorate: true
     clone_uri: "ssh://git@github.com/kubermatic/mla.git"
@@ -28,4 +29,4 @@ presubmits:
               memory: 1Gi
             limits:
               cpu: 2
-              memory: 3Gi
+              memory: 2Gi

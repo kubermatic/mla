@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## The following helper functions are copied from lib.sh in kubermatic repo.
+
 retry() {
   # Works only with bash but doesn't fail on other shells
   start_time=$(date +%s)
