@@ -1,0 +1,32 @@
+postsubmits:
+  - name: post-mla-deploy-dev
+    run_if_changed: "^(charts|config|hack)/"
+    max_concurrency: 1
+    decorate: true
+    clone_uri: "ssh://git@github.com/kubermatic/mla.git"
+    branches:
+      - ^main$
+    reporter_config:
+      slack:
+        channel: dev-mla
+    labels:
+      preset-vault: "true"
+      preset-goproxy: "true"
+    spec:
+      containers:
+        - image: quay.io/kubermatic/build:go-1.16-node-14-kind-0.8-2
+          command:
+            - ./hack/ci/deploy-dev.sh
+          env:
+            - name: MLA_NS
+              value: mla
+          # docker-in-docker needs privileged mode
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 2
+              memory: 2Gi
