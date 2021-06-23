@@ -20,6 +20,7 @@
 set -euo pipefail
 
 cd $(dirname $0)/../..
+source ./hack/lib.sh
 
 echodate "Getting secrets from Vault"
 export VAULT_ADDR=https://vault.loodse.com/

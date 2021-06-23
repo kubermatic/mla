@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ./hack/lib.sh
+
 echodate ""
 echodate "Installing Minio"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
