@@ -1,3 +1,5 @@
+DeploymentUpdate:
+  type: Recreate
 replicas: 1
 persistence:
   enabled: true
