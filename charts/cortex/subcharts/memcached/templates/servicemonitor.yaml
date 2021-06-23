@@ -2,16 +2,28 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "memcached.fullname" . }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-{{ include "memcached.labels" . | indent 4 }}
+  name: {{ template "common.names.fullname" . }}
+  {{- if .Values.metrics.serviceMonitor.namespace }}
+  namespace: {{ .Values.metrics.serviceMonitor.namespace }}
+  {{- end }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- range $key, $value := .Values.metrics.serviceMonitor.selector }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "memcached.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+    matchLabels: {{ include "common.labels.matchLabels" . | nindent 6 }}
+      app.kubernetes.io/component: metrics
   endpoints:
-  - port: metrics
-    interval: {{ .Values.metrics.serviceMonitor.interval }}
+    - port: metrics
+      path: /metrics
+      {{- if .Values.metrics.serviceMonitor.interval }}
+      interval: {{ .Values.metrics.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .Values.metrics.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.metrics.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
 {{- end }}
