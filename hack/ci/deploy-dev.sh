@@ -32,7 +32,6 @@ export KUBECONFIG=/tmp/kubeconfig
 
 # deploy to dev
 vault kv get -field=kubeconfig dev/seed-clusters/dev.kubermatic.io > ${KUBECONFIG}
-kubectl config use-context asia-south1-c
 echodate "Successfully got secrets for dev from Vault"
 
 ## We have to use helm3 since `--create-namespace` is not available in helm2
