@@ -1,5 +1,5 @@
 presubmits:
-  - name: post-kubermatic-deploy-dev
+  - name: pre-mla-deploy-dev
     max_concurrency: 1
     decorate: true
     clone_uri: "ssh://git@github.com/kubermatic/mla.git"
