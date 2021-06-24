@@ -46,7 +46,7 @@ helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafan
 echodate ""
 echodate "Installing Cortex"
 helm3 dependency update charts/cortex  # need that to store memcached in charts directory
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml
+helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 600s
 
 echodate ""
 echodate "Installing Loki"
