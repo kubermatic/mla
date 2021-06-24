@@ -1,6 +1,7 @@
 DeploymentUpdate:
   type: Recreate
 replicas: 1
+existingSecret: minio
 persistence:
   enabled: true
   storageClass: "kubermatic-fast"
