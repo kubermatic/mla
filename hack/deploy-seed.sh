@@ -4,6 +4,10 @@
 MLA_NS=mla
 
 echo ""
+echo "Installing MLA Secrets"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install mla-secrets charts/mla-secrets --values config/mla-secrets/values.yaml
+
+echo ""
 echo "Installing Minio"
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
 
