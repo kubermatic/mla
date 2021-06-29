@@ -120,6 +120,9 @@ ingester:
   extraEnvFrom:
     - secretRef:
         name: minio
+  persistence:
+    enabled: true
+    storageClass: "kubermatic-fast"
 
 querier:
   replicas: 1
@@ -129,6 +132,9 @@ querier:
   extraEnvFrom:
     - secretRef:
         name: minio
+  persistence:
+    enabled: true
+    storageClass: "kubermatic-fast"
 
 gateway:
   enabled: false
