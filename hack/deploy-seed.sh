@@ -18,7 +18,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana
 echo ""
 echo "Installing Cortex"
 helm dependency update charts/cortex  # need that to store memcached in charts directory
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 600s
 
 echo ""
 echo "Installing Loki"
