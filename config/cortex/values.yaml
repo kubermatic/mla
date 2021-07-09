@@ -96,7 +96,7 @@ nginx:
   enabled: false
 
 alertmanager:
-  replicas: 2
+  replicas: 1
   statefulSet:
     enabled: true
   persistentVolume:
