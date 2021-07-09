@@ -145,6 +145,8 @@ ruler:
   extraArgs:
     - -ruler.storage.s3.access-key-id=$(accesskey)
     - -ruler.storage.s3.secret-access-key=$(secretkey)
+    - -s3.access-key-id=$(accesskey)
+    - -s3.secret-access-key=$(secretkey)
   extraEnvFrom:
     - secretRef:
         name: minio
