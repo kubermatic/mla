@@ -86,7 +86,7 @@ loki:
         kvstore:
           store: memberlist
       rule_path: /tmp/loki/scratch
-      alertmanager_url: http://cortex-alertmanager:8080/api/prom/alertmanager
+      alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless/api/prom/alertmanager/
 
 tableManager:
   enabled: true
@@ -147,6 +147,7 @@ ruler:
     - -ruler.storage.s3.secret-access-key=$(secretkey)
     - -s3.access-key-id=$(accesskey)
     - -s3.secret-access-key=$(secretkey)
+    - -ruler.alertmanager-discovery
   extraEnvFrom:
     - secretRef:
         name: minio
