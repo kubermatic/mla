@@ -15,10 +15,6 @@ Apart from that, it will by default claim the following storage from the `kuberm
 - 10 Gi for Grafana
 - 4 x 2 Gi for internal processing services (ingesters, compactor, store gateway)
 
-## Limitations & Known Issues
-As the MLA stack is still work in progress, there are some known limitations and issues:
-- KKP Admin users can not access all Grafana organizations (KKP Projects) in Grafana UI (issue [#7045](https://github.com/kubermatic/kubermatic/issues/7045)).
-
 ## Installation
 The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
 feature should be available. Once installed, it has to be explicitly enabled in the global KKP Configuration,
@@ -130,18 +126,18 @@ By default, the MLA stack is configured to hold the logs and metrics in object s
 overriden for logs and metrics separately:
 
 For metrics:
- - in the `cortex` Helm chart [values.yaml](config/cortex/values.yaml), set `config.chunk_store.max_look_back_period`
+ - in the `cortex` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/cortex/values.yaml#L208), set `config.limits.max_query_lookback`
    to the desired value (default: `336h` = 14 days),
- - in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+ - in the `minio-lifecycle-mgr` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/minio-lifecycle-mgr/values.yaml#L18), set
    `lifecycleMgr.buckets[name=cortex].expirationDays` to the value used in the Cortex helm chart + 1 day (default: `15d`).
 
 For logs:
- - in the `loki` Helm chart [values.yaml](config/loki/values.yaml), set `loki.config.chunk_store_config.max_look_back_period`
+ - in the `loki` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/loki/values.yaml#L52), set `loki.config.chunk_store_config.max_look_back_period`
    to the desired value (default: `336h` = 14 days),
-- in the `minio-lifecycle-mgr` Helm chart [values.yaml](config/minio-lifecycle-mgr/values.yaml), set
+- in the `minio-lifecycle-mgr` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/minio-lifecycle-mgr/values.yaml#L20), set
   `lifecycleMgr.buckets[name=loki].expirationDays` to the value used in the Loki helm chart + 1 day (default: `15d`).
 
 ## Accessing the Logs & Metrics
-The Grafana UI is avaialable via the ingress configured in the "Expose Grafana" installation step. Once you are
+The Grafana UI is available via the ingress configured in the "Expose Grafana" installation step. Once you are
 logged in the Grafana UI, you can switch between individual Organizations (KKP Projects) that you have access to
 using the user avatar icon in the bottom left corner of the UI: "Current Org:" > "Switch".
