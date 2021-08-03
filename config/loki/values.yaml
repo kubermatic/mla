@@ -14,7 +14,7 @@ loki:
         ring:
           kvstore:
             store: memberlist
-          replication_factor: 2
+          replication_factor: 3
       chunk_idle_period: 30m
       chunk_block_size: 262144
       chunk_encoding: snappy
@@ -112,8 +112,11 @@ memcachedIndexQueries:
 memcachedIndexWrites:
   enabled: true
 
-ingester:
+distributor:
   replicas: 2
+
+ingester:
+  replicas: 3
   extraArgs:
     - -s3.access-key-id=$(accesskey)
     - -s3.secret-access-key=$(secretkey)
