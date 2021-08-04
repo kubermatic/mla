@@ -32,6 +32,7 @@ store_gateway:
   persistentVolume:
     enabled: true
     storageClass: "kubermatic-fast"
+    size: 10Gi
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
