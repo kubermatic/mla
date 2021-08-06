@@ -9,6 +9,10 @@ echo "Installing Minio"
 helm --namespace mla upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
 
 echo ""
+echo "Installing Consul"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul  --values config/consul/values.yaml
+
+echo ""
 echo "Installing Grafana"
 helm --namespace mla upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
 

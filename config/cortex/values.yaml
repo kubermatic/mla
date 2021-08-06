@@ -141,6 +141,13 @@ config:
         kvstore:
           store: memberlist
   distributor:
+    ha_tracker:
+      enable_ha_tracker: true
+      kvstore:
+        store: consul
+        prefix: 'collectors/'
+        consul:
+          host: 'consul-consul-server:8500'
     ring:
       kvstore:
         store: memberlist
@@ -207,3 +214,6 @@ config:
       flush_blocks_on_shutdown: true
   limits:
     max_query_lookback: 336h
+    accept_ha_samples: true
+    ha_cluster_label: seed_cluster
+    ha_replica_label: replica
