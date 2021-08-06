@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
 echo ""
-echo "Installing MLA Secrets"
-helm --namespace mla upgrade --atomic --create-namespace --install mla-secrets charts/mla-secrets --values config/mla-secrets/values.yaml
-
-echo ""
 echo "Installing Minio"
 helm --namespace mla upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
 
