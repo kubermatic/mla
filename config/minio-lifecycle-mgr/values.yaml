@@ -15,6 +15,6 @@
 lifecycleMgr:
   buckets:
     - name: cortex
-      expirationDays: 15
+      expirationDays: 8
     - name: loki
-      expirationDays: 15
+      expirationDays: 8

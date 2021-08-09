@@ -3,6 +3,8 @@ ingress:
 
 distributor:
   replicas: 2
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 ruler:
   replicas: 1
@@ -20,12 +22,16 @@ ruler:
         secretKeyRef:
           name: minio
           key: secretkey
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 compactor:
   replicas: 1
   persistentVolume:
     enabled: true
     storageClass: "kubermatic-fast"
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 store_gateway:
   replicas: 1
@@ -46,6 +52,8 @@ store_gateway:
         secretKeyRef:
           name: minio
           key: secretkey
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 ingester:
   replicas: 3
@@ -69,6 +77,8 @@ ingester:
         secretKeyRef:
           name: minio
           key: secretkey
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 querier:
   replicas: 1
@@ -86,9 +96,13 @@ querier:
         secretKeyRef:
           name: minio
           key: secretkey
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 query_frontend:
   replicas: 1
+  podAnnotations:
+    prometheus.io/port: '8080'
 
 tags:
   blocks-storage-memcached: true
@@ -117,6 +131,8 @@ alertmanager:
         secretKeyRef:
           name: minio
           key: secretkey
+  podAnnotations:
+    prometheus.io/port: '8080'
   extraVolumeMounts:
     - mountPath: /tmp
       name: storage
@@ -184,15 +200,15 @@ config:
         s3forcepathstyle: true
         insecure: true
   querier:
-    query_store_after: 720m
-    query_ingesters_within: 725m
+    query_store_after: 360m
+    query_ingesters_within: 365m
   storage:
     engine: blocks
   blocks_storage:
     backend: s3
     bucket_store:
-      #bucket_index: # v1.7.0
-      #  enabled: true
+      bucket_index:
+        enabled: true
       sync_dir: /data
       ignore_deletion_mark_delay: 1h
     s3:
@@ -201,9 +217,9 @@ config:
       insecure: true
     tsdb:
       dir: /data
-      retention_period: 725m
-      #close_idle_tsdb_timeout: 725m # v1.9.0
+      retention_period: 365m
+      close_idle_tsdb_timeout: 365m
       wal_compression_enabled: true
       flush_blocks_on_shutdown: true
   limits:
-    max_query_lookback: 336h
+    max_query_lookback: 168h
