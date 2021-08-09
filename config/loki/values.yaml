@@ -49,7 +49,7 @@ loki:
         s3forcepathstyle: true
         insecure: true
     chunk_store_config:
-      max_look_back_period: 336h
+      max_look_back_period: 168h
     table_manager:
       creation_grace_period: 3h
       poll_interval: 10m
