@@ -9,6 +9,10 @@ echo "Installing Grafana"
 helm --namespace mla upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
 
 echo ""
+echo "Installing Grafana Dashboards"
+kubectl apply -f dashboards/
+
+echo ""
 echo "Installing Cortex"
 helm dependency update charts/cortex  # need that to store memcached in charts directory
 helm --namespace mla upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
