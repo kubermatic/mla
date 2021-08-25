@@ -43,6 +43,10 @@ echodate ""
 echodate "Installing Grafana"
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
 
+echo ""
+echo "Installing Grafana Dashboards"
+kubectl apply -f dashboards/
+
 echodate ""
 echodate "Installing Cortex"
 helm3 dependency update charts/cortex  # need that to store memcached in charts directory
