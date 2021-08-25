@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-KKP_REPO_DIR="${KKP_REPO_DIR:-${HOME}/go/src/k8c.io/kubermatic}"
+KKP_REPO_DIR="${KKP_REPO_DIR:-}"
+KKP_REPO_URL="${KKP_REPO_URL:-https://github.com/kubermatic/kubermatic.git}"
+KKP_REPO_TAG="${KKP_REPO_TAG:-weekly-2021-33}"
+
+TMP_REPO_DIR="${TMP_REPO_DIR:-/tmp/kubermatic-sources}"
 TMP_DASHBOARD_DIR="${TMP_DASHBOARD_DIR:-/tmp/kkp-dashboards}"
 
-if [ ! -d "${KKP_REPO_DIR}" ]
-then
-    echo "Directory ${KKP_REPO_DIR} DOES NOT exist."
-    echo "Please set the KKP_REPO_DIR env var to point to the KKP repo directory."
-    exit 1
+if [ "${KKP_REPO_DIR}" == "" ] || [ ! -d "${KKP_REPO_DIR}" ]; then
+    git clone --depth 1 --branch "${KKP_REPO_TAG}" "${KKP_REPO_URL}" ${TMP_REPO_DIR}
+    KKP_REPO_DIR=${TMP_REPO_DIR}
 fi
 
 mkdir ${TMP_DASHBOARD_DIR}
@@ -26,4 +28,7 @@ kubectl create configmap grafana-dashboards-kkp-kubernetes -n mla --from-file=${
 sed -i 's/job=\\"cadvisor\\"/job=\\"kubernetes-nodes-cadvisor\\"/g' dashboards/kkp-kubernetes.yaml
 sed -i 's/app=\\"node-exporter\\"/job=\\"node-exporter\\"/g' dashboards/kkp-kubernetes.yaml
 
+if [ "${KKP_REPO_DIR}" == "${TMP_REPO_DIR}" ]; then
+  rm -rf "${TMP_REPO_DIR}"
+fi
 rm -r ${TMP_DASHBOARD_DIR}
