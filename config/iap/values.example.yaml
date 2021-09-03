@@ -23,7 +23,7 @@ iap:
       upstream_service: grafana.mla.svc.cluster.local
       upstream_port: 80
       ingress:
-        host: "grafana.mla.kkp.example.com"
+        host: "grafana.seed-cluster-x.kkp.example.com"
 
     alertmanager:
       name: alertmanager
@@ -46,4 +46,4 @@ iap:
       upstream_service: alertmanager-proxy.mla.svc.cluster.local
       upstream_port: 8080
       ingress:
-        host: "alertmanager.mla.kkp.example.com"
+        host: "alertmanager.seed-cluster-x.kkp.example.com"
