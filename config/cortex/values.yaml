@@ -5,6 +5,13 @@ distributor:
   replicas: 2
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 ruler:
   replicas: 1
@@ -24,6 +31,13 @@ ruler:
           key: secretkey
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 compactor:
   replicas: 1
@@ -32,6 +46,13 @@ compactor:
     storageClass: "kubermatic-fast"
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 store_gateway:
   replicas: 1
@@ -54,6 +75,13 @@ store_gateway:
           key: secretkey
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 ingester:
   replicas: 3
@@ -66,6 +94,13 @@ ingester:
   extraArgs:
     blocks-storage.s3.access-key-id: $(ACCESS_KEY)
     blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
   env:
     - name: ACCESS_KEY
       valueFrom:
@@ -98,11 +133,25 @@ querier:
           key: secretkey
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 query_frontend:
   replicas: 1
   podAnnotations:
     prometheus.io/port: '8080'
+  extraVolumeMounts:
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
 
 tags:
   blocks-storage-memcached: true
@@ -136,6 +185,12 @@ alertmanager:
   extraVolumeMounts:
     - mountPath: /tmp
       name: storage
+    - mountPath: "/etc/cortex-runtime-cfg"
+      name: "cortex-runtime-config"
+  extraVolumes:
+    - name: cortex-runtime-config
+      configMap:
+        name: cortex-runtime-config
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -176,6 +231,9 @@ config:
   memberlist:
     join_members:
       - cortex-ingester-headless
+  runtime_config:
+    period: "10s"
+    file: "/etc/cortex-runtime-cfg/runtime-config.yaml"
   ruler:
     enable_alertmanager_discovery: true
     enable_api: true
