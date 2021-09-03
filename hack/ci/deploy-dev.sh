@@ -49,6 +49,7 @@ kubectl apply -f dashboards/
 
 echodate ""
 echodate "Installing Cortex"
+kubectl create -n mla configmap cortex-runtime-config --from-file=config/cortex/runtime-config.yaml || true
 helm3 dependency update charts/cortex  # need that to store memcached in charts directory
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
 
