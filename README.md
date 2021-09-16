@@ -1,143 +1,64 @@
-# User Cluster MLA Stack for KKP
-This repository contains a **work in progress** implementation of User Cluster MLA (Monitoring Logging & Alerting)
-stack for KKP (Kubermatic Kubernetes Platform).
+# User Cluster Monitoring Logging & Alerting Stack for Kubermatic Kubernetes Platform
 
-The architecture and implementation details can be found in the [KKP Proposal Document for User CLuster MLA](https://github.com/kubermatic/kubermatic/blob/master/docs/proposals/user-cluster-mla.md).
+This repository contains Helm Charts of the Seed Cluster components for the [User Cluster Monitoring Logging & Alerting (MLA) stack][20] of the [Kubermatic Kubernetes Platform][10] (KKP).
 
-## Requirements
-The User Cluster MLA Stack has to be manually installed into every Seed Cluster of a KKP installation.
-In each Seed Cluster, it will need about:
- - 2 vCPUs
- - 14 GB of RAM
+## Documentation
 
-Apart from that, it will by default claim the following storage from the `kubermatic-fast` storage class:
-- 50 Gi for minio (storage for logs & metrics)
-- 10 Gi for Grafana
-- 4 x 2 Gi for internal processing services (ingesters, compactor, store gateway)
+Please follow the documentation at [docs.kubermatic.com](https://docs.kubermatic.com/) for more details:
 
-## Installation
-The MLA stack has to be installed manually into every KKP Seed Cluster, which is hosting User Clusters where the
-feature should be available. Once installed, it has to be explicitly enabled in the global KKP Configuration,
-Seed configuration and in each User Cluster.
+- [Architecture][20]
+- [Admin Guide][21]
+- [User Guide][22]
 
-### Deploy Seed Cluster Components
-The MLA stack can be deployed into a KKP Seed Cluster using the following helper script which installs
-all necessary Helm charts:
-```bash
-./hack/deploy-seed.sh
-```
-If any customization is needed, the steps in the script can be manually reproduced with tweaked Helm values.
+Please use the version selector at the top of the site to ensure you are using the appropriate documentation for your version of Kubermatic.
 
-### Expose Grafana & Alertmanager UI
-At this point, the Grafana & Alertmanager UI are exposed only via a ClusterIP service. To expose it to users outside of the cluster
-with proper authentication in place, we will use the [IAP Helm Chart](https://github.com/kubermatic/kubermatic/tree/master/charts/iap)
-from the Kubermatic repository.
+## KKP Compatibility Matrix
 
-Let's start with preparing the values.yaml for the IAP Helm Chart. A starting point can be found in the
-[config/iap/values.example.yaml](config/iap/values.example.yaml) file of the MLA repository:
- - modify the base domain under which your KKP installation is available (`kkp.example.com` in `iap.oidc_issuer_url`
-   and `iap.deployments.grafana.ingress.host`),
- - set `iap.deployments.grafana.client_secret` + `iap.deployments.grafana.encryption_key` and
-   `iap.deployments.alertmanager.client_secret` + `iap.deployments.alertmanager.encryption_key` to newly generated keys
-   (they can be generated e.g. with `cat /dev/urandom | tr -dc A-Za-z0-9 | head -c32`),
- - configure how the users should be authenticated in `iap.deployments.grafana.config` and
-   `iap.deployments.alertmanager.config` (e.g. modify `YOUR_GITHUB_ORG` and `YOUR_GITHUB_TEAM` placeholders)
-    - see the [OAuth Provider Configuration](https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider)
-   for more details.
+Please use the version tag of this repo matching with your Kubermatic Kubernetes Platform version according to this table:
 
-It is also necessary to set up your infrastructure accordingly:
- - configure your DNS with the DNS entry for the domain name that you used in `iap.deployments.grafana.ingress.host`
-   and `iap.deployments.alertmanager.ingress.host` so that it points to the ingress-controller service of KKP,
- - configure the Dex in KKP with the proper configuration for Grafana and Alertmanager IAP, e.g. using the following
-   snippet that can be placed into the KKP `values.yaml`. Make sure to modify the `RedirectURIs` with your domain name used in
-   `iap.deployments.grafana.ingress.host` and `iap.deployments.alertmanager.ingress.host` and secret with your
-   `iap.deployments.grafana.client_secret` and `iap.deployments.alertmanager.client_secret`:
+| MLA Version Tag | Compatible KKP Versions
+|-----------------|-------------
+| v0.1.0          |  v2.18.0
 
-```yaml
-dex:
-  clients:
-  - RedirectURIs:
-    - https://grafana.mla.kkp.example.com/oauth/callback
-    id: mla-grafana
-    name: mla-grafana
-    secret: YOUR_CLIENT_SECRET
-  - RedirectURIs:
-    - https://alertmanager.mla.kkp.example.com/oauth/callback
-    id: mla-alertmanager
-    name: mla-alertmanager
-    secret: YOUR_CLIENT_SECRET
-```
+## Installing MLA Stack in a KKP Seed Cluster
 
-At this point, we can install the IAP Helm chart into the `mla` namespace, e.g. as follows:
-```sh
-git clone --depth 1 https://github.com/kubermatic/kubermatic.git
-helm --namespace mla upgrade --atomic --create-namespace --install iap kubermatic/charts/iap --values config/iap/values.yaml
-```
+Please follow the [Admin Guide][21].
 
-### Enable The MLA Feature in KKP Configuration
-Since the User Cluster MLA feature is still under development, it has to be explicitly enabled via a feature gate
-in the `KubermaticConfiguration`, e.g.:
-```yaml
-apiVersion: operator.kubermatic.io/v1alpha1
-kind: KubermaticConfiguration
-metadata:
-  name: kubermatic
-  namespace: kubermatic
-spec:
-  featureGates:
-    UserClusterMLA:
-      enabled: true
-```
+## Troubleshooting
 
-### Enable The MLA Stack in Seed
-Since the MLA stack has to be manually installed into every KKP Seed Cluster, it is necessary to explicitly enable
-it on the Seed Cluster level after it is installed. This can be done via `mla.user_cluster_mla_enabled` option
-of the `Seed` Custom Resource / API object, e.g.:
+If you encounter issues [file an issue][1] or talk to us on the [#kubermatic channel][12] on the [Kubermatic Slack][15].
 
-**NOTE:** this Seed option was added in [#6967](https://github.com/kubermatic/kubermatic/pull/6967) on 2020-05-04.
-```yaml
-apiVersion: kubermatic.k8s.io/v1
-kind: Seed
-metadata:
-  name: europe-west3-c
-  namespace: kubermatic
-spec:
-  mla:
-    user_cluster_mla_enabled: true
-```
+## Contributing
 
-### Enable MLA for a User Cluster
-If the MLA stack is installed and enabled in the Seed, the monitoring (metrics collection) and logging (logs collection)
-can be enabled in any User Cluster via `mla.monitoringEnabled` and `mla.loggingEnabled` options of the Cluster
-Custom Resource / API object, e.g.:
-```yaml
-apiVersion: kubermatic.k8s.io/v1
-kind: Cluster
-metadata:
-  name: <cluster-name>
-spec:
-  mla:
-    monitoringEnabled: true
-    loggingEnabled: true
-```
+Thanks for taking the time to join our community and start contributing!
 
-## Data Retention Settings
-By default, the MLA stack is configured to hold the logs and metrics in object store for 14 days. This can be
-overriden for logs and metrics separately:
+Feedback and discussion are available on [the mailing list][11].
 
-For metrics:
- - in the `cortex` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/cortex/values.yaml#L208), set `config.limits.max_query_lookback`
-   to the desired value (default: `336h` = 14 days),
- - in the `minio-lifecycle-mgr` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/minio-lifecycle-mgr/values.yaml#L18), set
-   `lifecycleMgr.buckets[name=cortex].expirationDays` to the value used in the Cortex helm chart + 1 day (default: `15d`).
+### Before you start
 
-For logs:
- - in the `loki` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/loki/values.yaml#L52), set `loki.config.chunk_store_config.max_look_back_period`
-   to the desired value (default: `336h` = 14 days),
-- in the `minio-lifecycle-mgr` Helm chart [values.yaml](https://github.com/kubermatic/mla/blob/main/config/minio-lifecycle-mgr/values.yaml#L20), set
-  `lifecycleMgr.buckets[name=loki].expirationDays` to the value used in the Loki helm chart + 1 day (default: `15d`).
+* Please familiarize yourself with the [Code of Conduct][4] before contributing.
+* See [CONTRIBUTING.md][2] for instructions on the developer certificate of origin that we require.
+* Read how [we're using ZenHub][13] for project and roadmap planning
 
-## Accessing the Logs & Metrics
-The Grafana UI is available via the ingress configured in the "Expose Grafana" installation step. Once you are
-logged in the Grafana UI, you can switch between individual Organizations (KKP Projects) that you have access to
-using the user avatar icon in the bottom left corner of the UI: "Current Org:" > "Switch".
+### Pull requests
+
+* We welcome pull requests. Feel free to dig through the [issues][1] and jump in.
+
+## Changelog
+
+See [the list of releases][3] to find out about feature changes.
+
+[1]: https://github.com/kubermatic/mla/issues
+[2]: https://github.com/kubermatic/mla/blob/master/CONTRIBUTING.md
+[3]: https://github.com/kubermatic/mla/releases
+[4]: https://github.com/kubermatic/mla/blob/master/CODE_OF_CONDUCT.md
+
+[10]: https://docs.kubermatic.com/
+[11]: https://groups.google.com/forum/#!forum/kubermatic-dev
+[12]: https://kubermatic.slack.com/messages/kubermatic
+[13]: https://github.com/kubermatic/mla/blob/master/Zenhub.md
+[15]: http://slack.kubermatic.io/
+
+[20]: https://docs.kubermatic.com/kubermatic/master/architecture/monitoring_logging_alerting/user_cluster/
+[21]: https://docs.kubermatic.com/kubermatic/master/guides/monitoring_logging_alerting/user_cluster/admin_guide/
+[22]: https://docs.kubermatic.com/kubermatic/master/guides/monitoring_logging_alerting/user_cluster/user_guide/
