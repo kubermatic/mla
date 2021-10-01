@@ -3,12 +3,23 @@ data:
   nodes-overview.json: |
     {
       "annotations": {
-        "list": []
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
       },
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "hideControls": false,
+      "id": 10,
+      "iteration": 1632998733532,
       "links": [],
       "panels": [
         {
@@ -18,44 +29,53 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 20,
             "x": 0,
             "y": 0
           },
+          "hiddenSeries": false,
           "id": 2,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
             "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
             "show": true,
-            "sort": null,
-            "sortDesc": null,
             "total": false,
             "values": false
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg by (node_name) (sum by (node_name) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
+              "exemplar": true,
+              "expr": "avg by (node_name) (sum by (node_name) (irate(node_cpu_seconds_total{jobLabel=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -75,6 +95,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -83,18 +105,13 @@ data:
           "yaxes": [
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": "0",
+              "min": 0,
               "show": true
             },
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -104,23 +121,36 @@ data:
           }
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "$datasource",
-          "editable": true,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 80
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -129,62 +159,35 @@ data:
             "y": 0
           },
           "id": 17,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
+          "options": {
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "tableColumn": "",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
-              "expr": "avg (sum by (node_name) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
+              "exemplar": true,
+              "expr": "avg (sum by (node_name) (irate(node_cpu_seconds_total{jobLabel=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
+              "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": "80, 90",
-          "timeRegions": [],
           "title": "Total CPU Usage",
           "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
           "aliasColors": {
@@ -198,18 +201,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 20,
             "x": 0,
             "y": 7
           },
+          "hiddenSeries": false,
           "id": 6,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -219,21 +228,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (\n  node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_MemFree_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_Buffers_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_Cached_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n)\n",
+              "exemplar": true,
+              "expr": "max by (node_name) (\n  node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_MemFree_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_Buffers_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n  - node_memory_Cached_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n)\n",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -253,6 +267,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -261,18 +277,13 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": "0",
+              "min": 0,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
@@ -282,23 +293,36 @@ data:
           }
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "$datasource",
-          "editable": true,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 80
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -307,62 +331,35 @@ data:
             "y": 7
           },
           "id": 18,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
+          "options": {
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "tableColumn": "",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
-              "expr": "max(\n  (\n    sum(\n      node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_MemFree_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_Buffers_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_Cached_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n    )\n    /\n    sum(\n      node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=~\"$nodes\"}\n    )\n  ) * 100)",
+              "exemplar": true,
+              "expr": "max(\n  (\n    sum(\n      node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_MemFree_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_Buffers_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n    - node_memory_Cached_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n    )\n    /\n    sum(\n      node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}\n    )\n  ) * 100)",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
+              "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": "80, 90",
-          "timeRegions": [],
           "title": "Total Memory Usage",
           "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
           "aliasColors": {},
@@ -371,18 +368,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 0,
             "y": 14
           },
+          "hiddenSeries": false,
           "id": 10,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -392,21 +395,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (rate(node_network_receive_bytes_total{job=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
+              "exemplar": true,
+              "expr": "max by (node_name) (rate(node_network_receive_bytes_total{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -426,6 +434,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -434,18 +444,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -461,18 +465,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 12,
             "y": 14
           },
+          "hiddenSeries": false,
           "id": 13,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -482,20 +492,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (rate(node_network_transmit_bytes_total{job=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
+              "exemplar": true,
+              "expr": "max by (node_name) (rate(node_network_transmit_bytes_total{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -515,6 +531,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -523,18 +541,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -550,18 +562,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 0,
             "y": 21
           },
+          "hiddenSeries": false,
           "id": 8,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -571,21 +589,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (rate(node_disk_read_bytes_total{job=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
+              "exemplar": true,
+              "expr": "max by (node_name) (rate(node_disk_read_bytes_total{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -605,6 +628,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -613,18 +638,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "ms",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -640,18 +659,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 12,
             "y": 21
           },
+          "hiddenSeries": false,
           "id": 14,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -661,20 +686,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (rate(node_disk_written_bytes_total{job=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
+              "exemplar": true,
+              "expr": "max by (node_name) (rate(node_disk_written_bytes_total{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "A"
@@ -694,6 +725,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -702,18 +735,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "ms",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -729,18 +756,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 0,
             "y": 28
           },
+          "hiddenSeries": false,
           "id": 12,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -750,20 +783,26 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (node_name) (rate(node_disk_io_time_seconds_total{job=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
+              "exemplar": true,
+              "expr": "max by (node_name) (rate(node_disk_io_time_seconds_total{jobLabel=\"node-exporter\", node_name=~\"$nodes\"}[2m]))",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
               "refId": "C"
@@ -783,6 +822,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -791,18 +832,12 @@ data:
           "yaxes": [
             {
               "format": "s",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "s",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -818,18 +853,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 12,
             "x": 12,
             "y": 28
           },
+          "hiddenSeries": false,
           "id": 15,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -839,14 +880,18 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -872,6 +917,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -880,18 +927,12 @@ data:
           "yaxes": [
             {
               "format": "percentunit",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "ms",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -902,49 +943,74 @@ data:
         }
       ],
       "refresh": "30s",
-      "schemaVersion": 16,
+      "schemaVersion": 30,
       "style": "dark",
       "tags": [],
       "templating": {
         "list": [
           {
-            "current": {},
+            "allFormat": "",
+            "allValue": "",
+            "current": {
+              "selected": true,
+              "text": "Prometheus dev-k8s04-bgh",
+              "value": "Prometheus dev-k8s04-bgh"
+            },
+            "datasource": null,
+            "description": null,
+            "error": null,
             "hide": 0,
-            "label": null,
+            "includeAll": false,
+            "label": "",
+            "multi": false,
+            "multiFormat": "",
             "name": "datasource",
             "options": [],
             "query": "prometheus",
+            "queryValue": "",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
+            "sort": 0,
             "type": "datasource"
           },
           {
-            "allValue": null,
-            "current": {},
+            "allFormat": "",
+            "allValue": "",
+            "current": {
+              "selected": true,
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
             "datasource": "$datasource",
-            "definition": "label_values(node_boot_time_seconds{job=\"node-exporter\"}, node_name)",
+            "definition": "",
+            "description": null,
+            "error": null,
             "hide": 0,
             "includeAll": true,
             "label": "Nodes",
             "multi": true,
+            "multiFormat": "",
             "name": "nodes",
             "options": [],
-            "query": "label_values(node_boot_time_seconds{job=\"node-exporter\"}, node_name)",
+            "query": {
+              "query": "label_values(node_boot_time_seconds{job=\"node-exporter\"}, node_name)",
+              "refId": "Prometheus dev-k8s04-bgh-nodes-Variable-Query"
+            },
             "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
-            "tagValuesQuery": "",
-            "tags": [],
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
+            "type": "query"
           }
         ]
       },
       "time": {
-        "from": "now-6h",
+        "from": "now-15m",
         "to": "now"
       },
       "timepicker": {
@@ -975,17 +1041,28 @@ data:
       "timezone": "",
       "title": "Nodes Overview",
       "uid": "13yQpUxiz",
-      "version": 1
+      "version": 102
     }
   nodes.json: |
     {
       "annotations": {
-        "list": []
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
       },
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "hideControls": false,
+      "id": 11,
+      "iteration": 1633000990008,
       "links": [],
       "panels": [
         {
@@ -999,19 +1076,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
             "y": 0
           },
+          "hiddenSeries": false,
           "id": 2,
-          "interval": "",
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1021,34 +1103,39 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(node_load1{job=\"node-exporter\", node_name=\"$node\"})",
+              "exemplar": true,
+              "expr": "max(node_load1{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
               "legendFormat": "load 1m",
               "refId": "A"
             },
             {
-              "expr": "max(node_load5{job=\"node-exporter\", node_name=\"$node\"})",
+              "expr": "max(node_load5{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "load 5m",
               "refId": "B"
             },
             {
-              "expr": "max(node_load15{job=\"node-exporter\", node_name=\"$node\"})",
+              "expr": "max(node_load15{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "load 15m",
@@ -1069,6 +1156,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1077,18 +1166,12 @@ data:
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "percentunit",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -1104,44 +1187,50 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
             "y": 0
           },
+          "hiddenSeries": false,
           "id": 4,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
             "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
             "show": true,
-            "sort": null,
-            "sortDesc": null,
             "total": false,
             "values": false
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum by (cpu) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[5m]) * 100)",
+              "expr": "sum by (cpu) (irate(node_cpu_seconds_total{jobLabel=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[5m]) * 100)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "core {{ cpu }}",
@@ -1162,6 +1251,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1170,7 +1261,6 @@ data:
           "yaxes": [
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
               "max": 100,
               "min": 0,
@@ -1178,7 +1268,6 @@ data:
             },
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
               "max": 100,
               "min": 0,
@@ -1197,43 +1286,50 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 20,
             "x": 0,
             "y": 8
           },
+          "hiddenSeries": false,
           "id": 13,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
             "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
             "show": false,
-            "sort": null,
-            "sortDesc": null,
             "total": false,
             "values": false
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(sum by (cpu) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[2m]) * 100))",
+              "expr": "avg(sum by (cpu) (irate(node_cpu_seconds_total{jobLabel=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[2m]) * 100))",
               "format": "time_series",
               "intervalFactor": 10,
               "legendFormat": "average",
@@ -1254,6 +1350,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1262,7 +1360,6 @@ data:
           "yaxes": [
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
               "max": 100,
               "min": 0,
@@ -1270,7 +1367,6 @@ data:
             },
             {
               "format": "percent",
-              "label": null,
               "logBase": 1,
               "max": 100,
               "min": 0,
@@ -1283,23 +1379,36 @@ data:
           }
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "$datasource",
-          "editable": true,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 80
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -1308,62 +1417,32 @@ data:
             "y": 8
           },
           "id": 15,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
+          "options": {
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "tableColumn": "",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
-              "expr": "avg (sum by (cpu) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[2m]) * 100))",
+              "expr": "avg (sum by (cpu) (irate(node_cpu_seconds_total{jobLabel=\"node-exporter\", mode!=\"idle\", node_name=\"$node\"}[2m]) * 100))",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A"
             }
           ],
-          "thresholds": "80, 90",
-          "timeRegions": [],
           "title": "Current CPU Usage",
           "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
           "aliasColors": {
@@ -1377,18 +1456,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 20,
             "x": 0,
             "y": 15
           },
+          "hiddenSeries": false,
           "id": 6,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1398,41 +1483,44 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(\n  node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_MemFree_bytes{job=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_Buffers_bytes{job=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_Cached_bytes{job=\"node-exporter\", node_name=\"$node\"}\n)\n",
+              "expr": "max(\n  node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_MemFree_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_Buffers_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  - node_memory_Cached_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n)\n",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "memory used",
               "refId": "A"
             },
             {
-              "expr": "max(node_memory_Buffers_bytes{job=\"node-exporter\", node_name=\"$node\"})",
+              "expr": "max(node_memory_Buffers_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "memory buffers",
               "refId": "B"
             },
             {
-              "expr": "max(node_memory_Cached_bytes{job=\"node-exporter\", node_name=\"$node\"})",
+              "expr": "max(node_memory_Cached_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "memory cached",
               "refId": "C"
             },
             {
-              "expr": "max(node_memory_MemFree_bytes{job=\"node-exporter\", node_name=\"$node\"})",
+              "expr": "max(node_memory_MemFree_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "memory free",
@@ -1453,6 +1541,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1461,18 +1551,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             }
           ],
@@ -1482,23 +1566,36 @@ data:
           }
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "$datasource",
-          "editable": true,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 80
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -1507,62 +1604,32 @@ data:
             "y": 15
           },
           "id": 16,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
+          "options": {
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "tableColumn": "",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
-              "expr": "max(\n  (\n    (\n      node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_MemFree_bytes{job=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_Buffers_bytes{job=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_Cached_bytes{job=\"node-exporter\", node_name=\"$node\"}\n    )\n    / node_memory_MemTotal_bytes{job=\"node-exporter\", node_name=\"$node\"}\n  ) * 100)",
+              "expr": "max(\n  (\n    (\n      node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_MemFree_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_Buffers_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    - node_memory_Cached_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    )\n    / node_memory_MemTotal_bytes{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  ) * 100)",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A"
             }
           ],
-          "thresholds": "80, 90",
-          "timeRegions": [],
           "title": "Current Memory Usage",
           "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
           "aliasColors": {
@@ -1577,18 +1644,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 7,
             "w": 20,
             "x": 0,
             "y": 22
           },
+          "hiddenSeries": false,
           "id": 17,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1598,19 +1671,23 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(\n  node_filesystem_files{job=\"node-exporter\", node_name=\"$node\"}\n  - node_filesystem_files_free{job=\"node-exporter\", node_name=\"$node\"}\n)",
+              "expr": "max(\n  node_filesystem_files{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  - node_filesystem_files_free{jobLabel=\"node-exporter\", node_name=\"$node\"}\n)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "used",
@@ -1631,6 +1708,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1639,18 +1718,12 @@ data:
           "yaxes": [
             {
               "format": "short",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -1660,23 +1733,36 @@ data:
           }
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
           "datasource": "$datasource",
-          "editable": true,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46",
+                    "value": null
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 80
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -1685,62 +1771,32 @@ data:
             "y": 22
           },
           "id": 18,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
           "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
+          "options": {
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
           },
-          "tableColumn": "",
+          "pluginVersion": "8.0.1",
           "targets": [
             {
-              "expr": "max(\n  (\n    (\n      node_filesystem_files{job=\"node-exporter\", node_name=\"$node\"}\n    - node_filesystem_files_free{job=\"node-exporter\", node_name=\"$node\"}\n    )\n    / node_filesystem_files{job=\"node-exporter\", node_name=\"$node\"}\n  ) * 100)",
+              "expr": "max(\n  (\n    (\n      node_filesystem_files{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    - node_filesystem_files_free{jobLabel=\"node-exporter\", node_name=\"$node\"}\n    )\n    / node_filesystem_files{jobLabel=\"node-exporter\", node_name=\"$node\"}\n  ) * 100)",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A"
             }
           ],
-          "thresholds": "80, 90",
-          "timeRegions": [],
           "title": "Current Inode Usage",
           "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "type": "gauge"
         },
         {
           "aliasColors": {},
@@ -1749,18 +1805,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
             "y": 29
           },
+          "hiddenSeries": false,
           "id": 8,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1770,13 +1832,15 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [
             {
               "alias": "read",
@@ -1788,18 +1852,19 @@ data:
             }
           ],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(rate(node_disk_read_bytes_total{job=\"node-exporter\", node_name=\"$node\"}[2m]))",
+              "expr": "max(rate(node_disk_read_bytes_total{jobLabel=\"node-exporter\", node_name=\"$node\"}[2m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "read",
               "refId": "A"
             },
             {
-              "expr": "max(rate(node_disk_written_bytes_total{job=\"node-exporter\", node_name=\"$node\"}[2m]))",
+              "expr": "max(rate(node_disk_written_bytes_total{jobLabel=\"node-exporter\", node_name=\"$node\"}[2m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "written",
@@ -1820,6 +1885,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1828,18 +1895,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "ms",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -1855,18 +1916,24 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
             "y": 29
           },
+          "hiddenSeries": false,
           "id": 10,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1876,13 +1943,15 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": null,
           "seriesOverrides": [
             {
               "alias": "sent",
@@ -1890,18 +1959,19 @@ data:
             }
           ],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(rate(node_network_receive_bytes_total{job=\"node-exporter\", node_name=\"$node\", device!~\"lo\"}[2m]))",
+              "expr": "max(rate(node_network_receive_bytes_total{jobLabel=\"node-exporter\", node_name=\"$node\", device!~\"lo\"}[2m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "received",
               "refId": "A"
             },
             {
-              "expr": "max(rate(node_network_transmit_bytes_total{job=\"node-exporter\", node_name=\"$node\", device!~\"lo\"}[2m]))",
+              "expr": "max(rate(node_network_transmit_bytes_total{jobLabel=\"node-exporter\", node_name=\"$node\", device!~\"lo\"}[2m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "sent",
@@ -1922,6 +1992,8 @@ data:
           "type": "graph",
           "xaxis": {
             "buckets": null,
+            "format": "",
+            "logBase": 0,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1930,18 +2002,12 @@ data:
           "yaxes": [
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "bytes",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
           ],
@@ -1957,6 +2023,7 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1965,10 +2032,13 @@ data:
             "y": 37
           },
           "id": 12,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -1978,66 +2048,49 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(rate(node_disk_io_time_seconds_total{job=\"node-exporter\",  node_name=\"$node\"}[2m]))",
+              "expr": "max(rate(node_disk_io_time_seconds_total{jobLabel=\"node-exporter\",  node_name=\"$node\"}[2m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "io time",
               "refId": "C"
             }
           ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
           "title": "Disk I/O Time",
           "tooltip": {
             "shared": true,
-            "sort": 0,
             "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
+            "format": "",
+            "logBase": 0,
+            "show": true
           },
           "yaxes": [
             {
               "format": "s",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "s",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          ]
         },
         {
           "aliasColors": {},
@@ -2046,6 +2099,7 @@ data:
           "dashes": false,
           "datasource": "$datasource",
           "editable": true,
+          "error": false,
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2054,10 +2108,13 @@ data:
             "y": 37
           },
           "id": 19,
+          "isNew": false,
           "legend": {
             "alignAsTable": false,
             "avg": false,
             "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
             "rightSide": false,
@@ -2067,14 +2124,14 @@ data:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
           "percentage": false,
+          "pluginVersion": "8.0.1",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [],
           "spaceLength": 10,
+          "span": 0,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -2086,88 +2143,92 @@ data:
               "refId": "C"
             }
           ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
           "title": "Disk Usage",
           "tooltip": {
             "shared": true,
-            "sort": 0,
             "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
+            "format": "",
+            "logBase": 0,
+            "show": true
           },
           "yaxes": [
             {
               "format": "percentunit",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": true
             },
             {
               "format": "s",
-              "label": null,
               "logBase": 1,
-              "max": null,
-              "min": null,
               "show": false
             }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
+          ]
         }
       ],
       "refresh": "30s",
-      "schemaVersion": 16,
+      "schemaVersion": 30,
       "style": "dark",
       "tags": [],
       "templating": {
         "list": [
           {
-            "current": {},
+            "allFormat": "",
+            "allValue": "",
+            "current": {
+              "selected": false,
+              "text": "Prometheus dev-k8s04-bgh",
+              "value": "Prometheus dev-k8s04-bgh"
+            },
+            "datasource": null,
+            "description": null,
+            "error": null,
             "hide": 0,
-            "label": null,
+            "includeAll": false,
+            "label": "",
+            "multi": false,
+            "multiFormat": "",
             "name": "datasource",
             "options": [],
             "query": "prometheus",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
+            "sort": 0,
             "type": "datasource"
           },
           {
-            "allValue": null,
-            "current": {},
+            "allFormat": "",
+            "allValue": "",
+            "current": {
+              "isNone": true,
+              "selected": false,
+              "text": "None",
+              "value": ""
+            },
             "datasource": "$datasource",
-            "definition": "label_values(node_boot_time_seconds, node_name)",
+            "definition": "",
+            "description": null,
+            "error": null,
             "hide": 0,
             "includeAll": false,
             "label": "Node",
             "multi": false,
+            "multiFormat": "",
             "name": "node",
             "options": [],
-            "query": "label_values(node_boot_time_seconds, node_name)",
+            "query": {
+              "query": "label_values(node_boot_time_seconds, node_name)",
+              "refId": "Prometheus dev-k8s04-bgh-node-Variable-Query"
+            },
             "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 1,
-            "tagValuesQuery": "",
-            "tags": [],
-            "tagsQuery": "",
-            "type": "query",
-            "useTags": false
+            "type": "query"
           }
         ]
       },
@@ -2204,7 +2265,7 @@ data:
       "timezone": "",
       "title": "Nodes",
       "uid": "9799befff62f",
-      "version": 1
+      "version": 101
     }
   pods.json: |
     {
