@@ -55,7 +55,7 @@ helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex
 
 echodate ""
 echodate "Installing Loki"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml --timeout 1200s
+helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml --timeout 600s
 
 echodate ""
 echodate "Installing Alertmanager Proxy"
