@@ -113,10 +113,10 @@ memcachedIndexWrites:
   enabled: true
 
 distributor:
-  replicas: 1
+  replicas: 2
 
 ingester:
-  replicas: 1
+  replicas: 3
   extraArgs:
     - -s3.access-key-id=$(accesskey)
     - -s3.secret-access-key=$(secretkey)
