@@ -48,6 +48,10 @@ echo "Installing Grafana Dashboards"
 kubectl apply -f dashboards/
 
 echodate ""
+echodate "Installing Consul for Cortex"
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
+
+echodate ""
 echodate "Installing Cortex"
 kubectl create -n mla configmap cortex-runtime-config --from-file=config/cortex/runtime-config.yaml || true
 helm3 dependency update charts/cortex  # need that to store memcached in charts directory
