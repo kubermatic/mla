@@ -49,7 +49,7 @@ kubectl apply -f dashboards/
 
 echodate ""
 echodate "Installing Consul for Cortex"
-helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
+helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
 
 echodate ""
 echodate "Installing Cortex"
