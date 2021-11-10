@@ -1,0 +1,18 @@
+client:
+  enabled: false
+server:
+  replicas: 3
+  # we need a more relaxed affinity as the default one, so
+  # the chart can be run on the e2e clusters which have
+  # fewer nodes than consul replicas
+  affinity: |
+    podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: {{ template "consul.name" . }}
+                    release: "{{ .Release.Name }}"
+                    component: server
+                topologyKey: kubernetes.io/hostname
