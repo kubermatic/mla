@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.nginxFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.nginxLabels" . | nindent 4 }}
   annotations:
@@ -31,8 +32,9 @@ spec:
     {{- if .Values.nginx.priorityClassName }}
       priorityClassName: {{ .Values.nginx.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.nginx.securityContext | nindent 8 }}
+      {{- if .Values.nginx.securityContext.enabled }}
+      securityContext: {{- omit .Values.nginx.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.nginx.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -57,6 +59,11 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/nginx
+            {{- if .Values.nginx.config.basicAuthSecretName }}
+            - name: htpasswd
+              mountPath: /etc/apache2
+              readOnly: true
+            {{- end }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.nginx.http_listen_port }}
@@ -69,8 +76,9 @@ spec:
             {{- toYaml .Values.nginx.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: false
+          {{- if .Values.nginx.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.nginx.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.nginx.env }}
               {{- toYaml .Values.nginx.env | nindent 12 }}
@@ -89,6 +97,12 @@ spec:
         - name: config
           configMap:
             name: {{ template "cortex.fullname" . }}-nginx
+        {{- if .Values.nginx.config.basicAuthSecretName }}
+        - name: htpasswd
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.nginx.config.basicAuthSecretName }}
+        {{- end }}
 {{- if .Values.nginx.extraVolumes }}
 {{ toYaml .Values.nginx.extraVolumes | indent 8}}
 {{- end }}

@@ -5,6 +5,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "cortex.alertmanagerFullname" . }}-headless
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
     {{- with .Values.alertmanager.service.labels }}
@@ -17,12 +18,10 @@ spec:
   clusterIP: None
   publishNotReadyAddresses: true
   ports:
-    - port: {{ .Values.config.server.http_listen_port }}
-      protocol: TCP
-      name: http-metrics
     - port: {{ $clusterPort }}
       protocol: TCP
       name: cluster
+      targetPort: cluster
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}

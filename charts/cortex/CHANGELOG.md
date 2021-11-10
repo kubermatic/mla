@@ -2,6 +2,38 @@
 
 ## master / unreleased
 
+## 0.7.0 / 2021-10-05
+
+* [FEATURE] Support runtime configuration #209
+* [FEATURE] Add autoscaler for queriers #190
+* [FEATURE] Add autoscaler for distributors #189
+* [FEATURE] Add autoscaler for ingesters #182
+* [ENHANCEMENT] Support customizing the nginx config with values #213
+* [ENHANCEMENT] Upgrade to Cortex v1.10.0 #204
+* [ENHANCEMENT] Populate config.querier.store_gateway_addresses automatically based on other config #201
+* [ENHANCEMENT] Graceful shutdown of ingesters #195
+* [ENHANCEMENT] Define namespace in templates #184
+* [ENHANCEMENT] Use FQDN for memcached addresses #175
+* [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
+* [ENHANCEMENT] Optionally configure Basic Auth within Nginx #205
+* [ENHANCEMENT] Add extraEndpointSpec to all servicemonitors for specifying things like TLS #216
+* [BUGFIX] Fix whitespace in runtime-config annotations, introduced in #209, fixed in #212
+* [BUGFIX] Correcting nginx config for auth orgs to right proxy_pass #192
+* [DEPENDENCY] Update Helm release memcached to v5.15.4 #228
+
+## 0.6.0 / 2021-06-28
+
+* [CHANGE] Removed dnssrvnoa resolution from block memcached (probably oversight) and moved back to simple dns resolution #164
+* [CHANGE] Removed http-metrics port from every headless service and added ClusterIP service with http-metrics port to every component who before only had an headless service before #169
+* [FEATURE] Support dynamic configuration of Ruler and AlertManager using sidecar #150
+* [ENHANCEMENT] Enable/Disable security & container security context #158
+* [ENHANCEMENT] ServiceMonitors: add options to configure metricRelabelings and relabelings #165
+* [ENHANCEMENT] Support specification of whether service accounts should automount token by adding value for Cortex service account and upgrading memcached dependency to version which includes same change #142
+* [BUGFIX] Fixed the default label used in pod affinity expression #162
+* [BUGFIX] Fix label and annotation overrides for services (thanks @kwangil-ha) #164
+* [BUGFIX] Fix store gateway service name regression introduced in (#144) #166
+* [BUGFIX] Fix querier-frontend memcached arg #170
+
 ## 0.5.0 / 2021-06-08
 
 * [CHANGE] **Labels has been updated to latest best practices**. This means that **you cannot do a rolling update from an older version of this chart**. Either change the labels of your existing deployment by hand to make the transition as seamless as possible or uninstall the old release and install the new release with a short downtime. #144

@@ -3,13 +3,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.ingesterFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
   annotations:
     {{- toYaml .Values.ingester.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.ingester.autoscaling.enabled }}
   replicas: {{ .Values.ingester.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
@@ -37,8 +40,9 @@ spec:
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
-      securityContext:
-        {{- toYaml .Values.ingester.securityContext | nindent 8 }}
+      {{- if .Values.ingester.securityContext.enabled }}
+      securityContext: {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.ingester.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -64,6 +68,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.ingester.persistentVolume.subPath }}
@@ -78,6 +84,9 @@ spec:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
@@ -89,12 +98,17 @@ spec:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.ingester.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.ingester.env }}
             {{ toYaml .Values.ingester.env | nindent 12 }}
             {{- end }}
+          {{- with .Values.ingester.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         {{- with .Values.ingester.extraContainers }}
         {{ toYaml . | nindent 8 }}
         {{- end }}
@@ -113,6 +127,9 @@ spec:
           {{- else }}
             secretName: {{ template "cortex.fullname" . }}
           {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if .Values.ingester.extraVolumes }}
         {{ toYaml .Values.ingester.extraVolumes | nindent 8}}
         {{- end }}

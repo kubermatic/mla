@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.tableManagerLabels" . | nindent 4 }}
   annotations:
@@ -35,8 +36,9 @@ spec:
     {{- if .Values.table_manager.priorityClassName }}
       priorityClassName: {{ .Values.table_manager.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.table_manager.securityContext | nindent 8 }}
+      {{- if .Values.table_manager.securityContext.enabled }}
+      securityContext: {{- omit .Values.table_manager.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.table_manager.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -61,6 +63,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               subPath: {{ .Values.table_manager.persistence.subPath }}
@@ -76,8 +80,9 @@ spec:
             {{- toYaml .Values.table_manager.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.table_manager.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.table_manager.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.table_manager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.table_manager.env }}
               {{- toYaml .Values.table_manager.env | nindent 12 }}
@@ -100,6 +105,9 @@ spec:
 {{- else }}
             secretName: {{ template "cortex.fullname" . }}
 {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
 {{- if .Values.table_manager.extraVolumes }}
 {{ toYaml .Values.table_manager.extraVolumes | indent 8}}
 {{- end }}

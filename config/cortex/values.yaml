@@ -289,3 +289,20 @@ config:
   limits:
     max_query_lookback: 168h
     accept_ha_samples: true
+
+runtimeconfigmap:
+  # -- If true, a configmap for the `runtime_config` will be created.
+  # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
+  create: false
+
+memcached-blocks-metadata:
+  serviceAccount:
+    create: false
+
+memcached-blocks-index:
+  serviceAccount:
+    create: false
+
+memcached-blocks:
+  serviceAccount:
+    create: false

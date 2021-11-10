@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.configsFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.configsLabels" . | nindent 4 }}
   annotations:
@@ -35,8 +36,9 @@ spec:
     {{- if .Values.configs.priorityClassName }}
       priorityClassName: {{ .Values.configs.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.configs.securityContext | nindent 8 }}
+      {{- if .Values.configs.securityContext.enabled }}
+      securityContext: {{- omit .Values.configs.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.configs.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -66,6 +68,8 @@ spec:
             - name: config
               mountPath: /etc/cortex
               subPath: {{ .Values.configs.persistence.subPath }}
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             {{- if .Values.configsdb_postgresql.enabled }}
             - name: postgres-password
               mountPath: /etc/postgresql
@@ -88,8 +92,9 @@ spec:
             {{- toYaml .Values.configs.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.configs.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.configs.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.configs.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.configs.env }}
               {{- toYaml .Values.configs.env | nindent 12 }}
@@ -120,6 +125,9 @@ spec:
               - key: {{ if .Values.configsdb_postgresql.auth.existing_secret.name }}{{ .Values.configsdb_postgresql.auth.existing_secret.key }}{{ else }}postgresql-password{{ end }}
                 path: password
         {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
 {{- if .Values.configs.extraVolumes }}
 {{ toYaml .Values.configs.extraVolumes | indent 8}}
 {{- end }}
