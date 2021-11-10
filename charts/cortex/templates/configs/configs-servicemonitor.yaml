@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "cortex.configsFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.configsLabels" . | nindent 4 }}
     {{- if .Values.configs.serviceMonitor.additionalLabels }}
@@ -26,5 +27,16 @@ spec:
     {{- end }}
     {{- if .Values.configs.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.configs.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.configs.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.configs.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.configs.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.configs.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.configs.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 {{- end }}

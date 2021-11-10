@@ -3,13 +3,16 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "cortex.ingesterFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
   annotations:
     {{- toYaml .Values.ingester.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.ingester.autoscaling.enabled }}
   replicas: {{ .Values.ingester.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
@@ -60,8 +63,10 @@ spec:
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
+      {{- if .Values.ingester.securityContext.enabled }}
       securityContext:
-        {{- toYaml .Values.ingester.securityContext | nindent 8 }}
+        {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.ingester.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -85,6 +90,9 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if not .Values.ingester.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
@@ -112,6 +120,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.ingester.persistentVolume.subPath }}
@@ -127,6 +137,9 @@ spec:
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
             - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+            - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
           startupProbe:
@@ -143,4 +156,8 @@ spec:
             {{- if .Values.ingester.env }}
               {{- toYaml .Values.ingester.env | nindent 12 }}
             {{- end }}
+          {{- with .Values.ingester.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end -}}

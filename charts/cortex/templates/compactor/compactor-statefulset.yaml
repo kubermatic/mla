@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "cortex.compactorFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.compactorLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
@@ -15,7 +16,7 @@ spec:
     matchLabels:
       {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
   updateStrategy:
-    {{- toYaml .Values.compactor.strategy | nindent 4 }}            
+    {{- toYaml .Values.compactor.strategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-compactor
   {{- if .Values.compactor.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -61,8 +62,9 @@ spec:
       {{- if .Values.compactor.priorityClassName }}
       priorityClassName: {{ .Values.compactor.priorityClassName }}
       {{- end }}
-      securityContext:
-        {{- toYaml .Values.compactor.securityContext | nindent 8 }}
+      {{- if .Values.compactor.securityContext.enabled }}
+      securityContext: {{- omit .Values.compactor.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.compactor.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -86,6 +88,9 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if not .Values.compactor.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
@@ -113,10 +118,12 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.compactor.persistentVolume.subPath }}
-              subPath: {{ .Values.compactor.persistentVolume.subPath }}              
+              subPath: {{ .Values.compactor.persistentVolume.subPath }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -133,8 +140,9 @@ spec:
             {{- toYaml .Values.compactor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.compactor.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.compactor.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.compactor.env }}
               {{- toYaml .Values.compactor.env | nindent 12 }}

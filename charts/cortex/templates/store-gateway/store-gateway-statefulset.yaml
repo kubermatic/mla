@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "cortex.storeGatewayFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.storeGatewayLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
@@ -14,7 +15,7 @@ spec:
     matchLabels:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   updateStrategy:
-    {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
+    {{- toYaml .Values.store_gateway.strategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
   {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -60,8 +61,9 @@ spec:
       {{- if .Values.store_gateway.priorityClassName }}
       priorityClassName: {{ .Values.store_gateway.priorityClassName }}
       {{- end }}
-      securityContext:
-        {{- toYaml .Values.store_gateway.securityContext | nindent 8 }}
+      {{- if .Values.store_gateway.securityContext.enabled }}
+      securityContext: {{- omit .Values.store_gateway.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.store_gateway.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -85,6 +87,9 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if not .Values.store_gateway.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
@@ -112,10 +117,12 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.store_gateway.persistentVolume.subPath }}
-              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}             
+              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -135,8 +142,9 @@ spec:
             {{- toYaml .Values.store_gateway.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.store_gateway.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.store_gateway.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.store_gateway.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.store_gateway.env }}
               {{- toYaml .Values.store_gateway.env | nindent 12 }}
