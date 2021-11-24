@@ -1,8 +1,39 @@
 #!/usr/bin/env bash
 
-echo ""
-echo "Installing Minio"
-helm --namespace mla upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
+if [ "$1" = "-h" ]; then
+   cat << EOF
+Usage: deploy-seed.sh [--skip-minio] [--skip-minio-lifecycle-mgr]
+Deploy MLA backend components on a KKP Seed cluster.
+--skip-minio               this can be used if you want to configure MLA backend components to user existing minio in the cluster, if this flag is not specified, it will deploy a minio instance for you.
+--skip-minio-lifecycle-mgr this will skip the installation of minio lifecycle manager.
+EOF
+   exit 0
+fi
+
+skip_minio=false
+skip_minio_lifecycle_mgr=false
+
+for var in $@
+do
+    if [ "$var" = "--skip-minio" ]; then
+        skip_minio=true
+    fi
+    if [ "$var" = "--skip-minio-lifecycle-mgr" ]; then
+        skip_minio_lifecycle_mgr=true
+    fi
+done
+
+if [ "$skip_minio" != true ]; then
+    echo ""
+    echo "Installing Minio"
+    helm --namespace mla upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
+fi
+
+if [ "$skip_minio_lifecycle_mgr" != true ]; then
+    echo ""
+    echo "Installing Minio Bucket Lifecycle Manager"
+    helm --namespace mla upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr --values config/minio-lifecycle-mgr/values.yaml
+fi
 
 echo ""
 echo "Installing Grafana"
@@ -29,7 +60,3 @@ helm --namespace mla upgrade --atomic --create-namespace --install loki-distribu
 echo ""
 echo "Installing Alertmanager Proxy"
 helm --namespace mla upgrade --atomic --create-namespace --install alertmanager-proxy charts/alertmanager-proxy
-
-echo ""
-echo "Installing Minio Bucket Lifecycle Manager"
-helm --namespace mla upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr --values config/minio-lifecycle-mgr/values.yaml

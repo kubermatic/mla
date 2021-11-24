@@ -13,4 +13,10 @@
 # limitations under the License.
 
 grafana:
+  ## Set enabled to false if you want to re-use an existing secret for grafana.
+  enabled: true
   adminuser: admin
+
+minio:
+  ## Set enabled to false if you want to re-use an existing secret for minio.
+  enabled: true
