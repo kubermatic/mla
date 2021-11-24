@@ -14,6 +14,8 @@
 
 
 minio:
+  ## Enable if you want to generate a minio secret.
+  enabled: false
   ## Set default accesskey, secretkey
   ## AccessKey and secretKey is generated when not set
   accessKey: ""
@@ -40,6 +42,8 @@ minio:
     clientCertKey: ""
 
 grafana:
+  ## Enable if you want to generate a grafana secret.
+  enabled: false
   adminUser: admin
 #  adminPassword: strongpassword
 

@@ -13,4 +13,10 @@
 # limitations under the License.
 
 grafana:
+  ## Disable this if you want to use secret from existing grafana installation.
+  enabled: true
   adminuser: admin
+
+minio:
+  ## Disable this if you want to use secret from existing minio installation.
+  enabled: true
