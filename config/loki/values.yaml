@@ -1,4 +1,7 @@
 loki:
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
   config: |
     server:
       http_listen_port: 3100
