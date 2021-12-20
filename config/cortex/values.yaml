@@ -229,6 +229,7 @@ config:
       kvstore:
         store: memberlist
   compactor:
+    block_deletion_marks_migration_enabled: false
     data_dir: /data/cortex/compactor
     compaction_interval: 30m
     sharding_enabled: true
@@ -289,6 +290,7 @@ config:
   limits:
     max_query_lookback: 168h
     accept_ha_samples: true
+    max_label_names_per_series: 40
 
 runtimeconfigmap:
   # -- If true, a configmap for the `runtime_config` will be created.
