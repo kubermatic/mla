@@ -30,21 +30,13 @@ dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
-      - name: "kubernetes"
-        folder: "Kubernetes"
-        org_id: 1
-        type: file
-        disableDeletion: false
-        options:
-          path: /var/lib/grafana/dashboards/kubernetes
-      - name: "kubermatic"
-        folder: "Kubermatic"
-        org_id: 1
-        type: file
-        disableDeletion: false
-        options:
-          path: /var/lib/grafana/dashboards/kubermatic
+    - name: 'default'
+      folder: ''
+      org_id: 1
+      type: file
+      disableDeletion: false
+      options:
+        path: /var/lib/grafana/dashboards/default
 
-dashboardsConfigMaps:
-  kubernetes: grafana-dashboards-kubernetes-overview
-  kubermatic: grafana-dashboards-kkp-kubernetes
+dashboards:
+  default:
