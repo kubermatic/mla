@@ -38,6 +38,9 @@ ruler:
     - name: cortex-runtime-config
       configMap:
         name: cortex-runtime-config
+  resources:
+    requests:
+      cpu: 5m
 
 compactor:
   replicas: 1
@@ -82,6 +85,9 @@ store_gateway:
     - name: cortex-runtime-config
       configMap:
         name: cortex-runtime-config
+  resources:
+    requests:
+      cpu: 5m
 
 ingester:
   replicas: 3
@@ -140,6 +146,9 @@ querier:
     - name: cortex-runtime-config
       configMap:
         name: cortex-runtime-config
+  resources:
+    requests:
+      cpu: 5m
 
 query_frontend:
   replicas: 1
@@ -152,6 +161,9 @@ query_frontend:
     - name: cortex-runtime-config
       configMap:
         name: cortex-runtime-config
+  resources:
+    requests:
+      cpu: 5m
 
 tags:
   blocks-storage-memcached: true
@@ -298,13 +310,22 @@ runtimeconfigmap:
   create: false
 
 memcached-blocks-metadata:
+  resources:
+    requests:
+      cpu: 5m
   serviceAccount:
     create: false
 
 memcached-blocks-index:
+  resources:
+    requests:
+      cpu: 5m
   serviceAccount:
     create: false
 
 memcached-blocks:
+  resources:
+    requests:
+      cpu: 5m
   serviceAccount:
     create: false
