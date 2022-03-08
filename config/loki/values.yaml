@@ -110,25 +110,25 @@ memcachedChunks:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "11211"
+    prometheus.io/port: "9150"
 
 memcachedFrontend:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "11211"
+    prometheus.io/port: "9150"
 
 memcachedIndexQueries:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "11211"
+    prometheus.io/port: "9150"
 
 memcachedIndexWrites:
   enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "11211"
+    prometheus.io/port: "9150"
 
 distributor:
   replicas: 2
