@@ -1,7 +1,4 @@
 loki:
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
   config: |
     server:
       http_listen_port: 3100
@@ -101,24 +98,43 @@ tableManager:
   extraEnvFrom:
     - secretRef:
         name: minio
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
+
 
 memcachedExporter:
   enabled: true
 
 memcachedChunks:
   enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9150"
 
 memcachedFrontend:
   enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9150"
 
 memcachedIndexQueries:
   enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9150"
 
 memcachedIndexWrites:
   enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9150"
 
 distributor:
   replicas: 2
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
 
 ingester:
   replicas: 3
@@ -131,6 +147,9 @@ ingester:
   persistence:
     enabled: true
     storageClass: "kubermatic-fast"
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
 
 querier:
   replicas: 1
@@ -143,6 +162,14 @@ querier:
   persistence:
     enabled: true
     storageClass: "kubermatic-fast"
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
+
+queryFrontend:
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
 
 gateway:
   enabled: false
@@ -159,6 +186,9 @@ ruler:
   extraEnvFrom:
     - secretRef:
         name: minio
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
 
 compactor:
   enabled: true
@@ -168,3 +198,6 @@ compactor:
   extraEnvFrom:
     - secretRef:
         name: minio
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
