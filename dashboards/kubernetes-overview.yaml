@@ -238,7 +238,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum (container_fs_usage_bytes{device=~\"^/dev/[svn][dv][a-z0-9]+$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"}) / sum (container_fs_limit_bytes{device=~\"^/dev/[svn][dv][a-z0-9]+$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"}) * 100",
+              "expr": "sum (container_fs_usage_bytes{device=~\"^/dev/([svn][dv][a-z0-9]+|root)$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"}) / sum (container_fs_limit_bytes{device=~\"^/dev/([svn][dv][a-z0-9]+|root)$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"}) * 100",
               "interval": "10s",
               "intervalFactor": 1,
               "legendFormat": "",
@@ -566,7 +566,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum (container_fs_usage_bytes{device=~\"^/dev/[svn][dv][a-z0-9]+$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"})",
+              "expr": "sum (container_fs_usage_bytes{device=~\"^/dev/([svn][dv][a-z0-9]+|root)$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"})",
               "interval": "10s",
               "intervalFactor": 1,
               "legendFormat": "",
@@ -633,7 +633,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum (container_fs_limit_bytes{device=~\"^/dev/[svn][dv][a-z0-9]+$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"})",
+              "expr": "sum (container_fs_limit_bytes{device=~\"^/dev/([svn][dv][a-z0-9]+|root)$\",id=\"/\",kubernetes_io_hostname=~\"^$Node$\"})",
               "interval": "10s",
               "intervalFactor": 1,
               "legendFormat": "",
