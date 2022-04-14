@@ -29,3 +29,7 @@ annotations:
   artifacthub.io/signKey: |
     fingerprint: C874011F0AB405110D02105534365D9472D7468F
     url: https://keybase.io/hashicorp/pgp_keys.asc
+dependencies:
+  - name: consul
+    repository: https://helm.releases.hashicorp.com
+    version: 0.36.0

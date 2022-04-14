@@ -1,5 +1,5 @@
 ---
-# Source: consul/templates/server-disruptionbudget.yaml
+# Source: consul/charts/consul/templates/server-disruptionbudget.yaml
 # PodDisruptionBudget to prevent degrading the server cluster through
 # voluntary cluster changes.
 apiVersion: policy/v1
@@ -20,7 +20,7 @@ spec:
       release: "RELEASE-NAME"
       component: server
 ---
-# Source: consul/templates/client-serviceaccount.yaml
+# Source: consul/charts/consul/templates/client-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -32,7 +32,7 @@ metadata:
     heritage: Helm
     release: RELEASE-NAME
 ---
-# Source: consul/templates/server-serviceaccount.yaml
+# Source: consul/charts/consul/templates/server-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -44,7 +44,7 @@ metadata:
     heritage: Helm
     release: RELEASE-NAME
 ---
-# Source: consul/templates/client-config-configmap.yaml
+# Source: consul/charts/consul/templates/client-config-configmap.yaml
 # ConfigMap with extra configuration specified directly to the chart
 # for client agents only.
 apiVersion: v1
@@ -66,7 +66,7 @@ data:
       "enable_central_service_config": true
     }
 ---
-# Source: consul/templates/server-config-configmap.yaml
+# Source: consul/charts/consul/templates/server-config-configmap.yaml
 # StatefulSet to run the actual Consul server cluster.
 apiVersion: v1
 kind: ConfigMap
@@ -97,7 +97,7 @@ data:
       "enable_central_service_config": true
     }
 ---
-# Source: consul/templates/client-role.yaml
+# Source: consul/charts/consul/templates/client-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -110,7 +110,7 @@ metadata:
     release: RELEASE-NAME
 rules: []
 ---
-# Source: consul/templates/server-role.yaml
+# Source: consul/charts/consul/templates/server-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -123,7 +123,7 @@ metadata:
     release: RELEASE-NAME
 rules: []
 ---
-# Source: consul/templates/client-rolebinding.yaml
+# Source: consul/charts/consul/templates/client-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -142,7 +142,7 @@ subjects:
   - kind: ServiceAccount
     name: RELEASE-NAME-consul-client
 ---
-# Source: consul/templates/server-rolebinding.yaml
+# Source: consul/charts/consul/templates/server-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -161,7 +161,7 @@ subjects:
   - kind: ServiceAccount
     name: RELEASE-NAME-consul-server
 ---
-# Source: consul/templates/dns-service.yaml
+# Source: consul/charts/consul/templates/dns-service.yaml
 # Service for Consul DNS.
 apiVersion: v1
 kind: Service
@@ -190,7 +190,7 @@ spec:
     release: "RELEASE-NAME"
     hasDNS: "true"
 ---
-# Source: consul/templates/server-service.yaml
+# Source: consul/charts/consul/templates/server-service.yaml
 # Headless service for Consul server DNS entries. This service should only
 # point to Consul servers. For access to an agent, one should assume that
 # the agent is installed locally on the node and the NODE_IP should be used.
@@ -253,7 +253,7 @@ spec:
     release: "RELEASE-NAME"
     component: server
 ---
-# Source: consul/templates/ui-service.yaml
+# Source: consul/charts/consul/templates/ui-service.yaml
 # UI Service for Consul Server
 apiVersion: v1
 kind: Service
@@ -276,7 +276,7 @@ spec:
       port: 80
       targetPort: 8500
 ---
-# Source: consul/templates/client-daemonset.yaml
+# Source: consul/charts/consul/templates/client-daemonset.yaml
 # DaemonSet to run the Consul clients on every node.
 apiVersion: apps/v1
 kind: DaemonSet
@@ -422,7 +422,7 @@ spec:
           securityContext:
             null
 ---
-# Source: consul/templates/server-statefulset.yaml
+# Source: consul/charts/consul/templates/server-statefulset.yaml
 # StatefulSet to run the actual Consul server cluster.
 apiVersion: apps/v1
 kind: StatefulSet
@@ -592,7 +592,7 @@ spec:
           requests:
             storage: 10Gi
 ---
-# Source: consul/templates/tests/test-runner.yaml
+# Source: consul/charts/consul/templates/tests/test-runner.yaml
 apiVersion: v1
 kind: Pod
 metadata:
