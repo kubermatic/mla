@@ -1,5 +1,5 @@
 ---
-# Source: cortex/templates/distributor/distributor-poddisruptionbudget.yaml
+# Source: cortex/charts/cortex/templates/distributor/distributor-poddisruptionbudget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -20,7 +20,7 @@ spec:
       app.kubernetes.io/component: distributor
   maxUnavailable: 1
 ---
-# Source: cortex/templates/ingester/ingester-poddisruptionbudget.yaml
+# Source: cortex/charts/cortex/templates/ingester/ingester-poddisruptionbudget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -41,7 +41,7 @@ spec:
       app.kubernetes.io/component: ingester
   maxUnavailable: 1
 ---
-# Source: cortex/templates/nginx/nginx-poddisruptionbudget.yaml
+# Source: cortex/charts/cortex/templates/nginx/nginx-poddisruptionbudget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -62,7 +62,7 @@ spec:
       app.kubernetes.io/component: nginx
   maxUnavailable: 1
 ---
-# Source: cortex/templates/querier/querier-poddisruptionbudget.yaml
+# Source: cortex/charts/cortex/templates/querier/querier-poddisruptionbudget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -83,7 +83,7 @@ spec:
       app.kubernetes.io/component: querier
   maxUnavailable: 1
 ---
-# Source: cortex/templates/query-frontend/query-poddisruptionbudget.yaml
+# Source: cortex/charts/cortex/templates/query-frontend/query-poddisruptionbudget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -104,7 +104,7 @@ spec:
       app.kubernetes.io/component: query-frontend
   maxUnavailable: 1
 ---
-# Source: cortex/templates/serviceaccount.yaml
+# Source: cortex/charts/cortex/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -120,7 +120,7 @@ metadata:
     {}
 automountServiceAccountToken: true
 ---
-# Source: cortex/templates/secret.yaml
+# Source: cortex/charts/cortex/templates/secret.yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -133,9 +133,9 @@ metadata:
     app.kubernetes.io/version: "v1.10.0"
     app.kubernetes.io/managed-by: Helm
 data:
-  cortex.yaml: YWxlcnRtYW5hZ2VyOgogIGVuYWJsZV9hcGk6IGZhbHNlCiAgZXh0ZXJuYWxfdXJsOiAvYXBpL3Byb20vYWxlcnRtYW5hZ2VyCiAgc3RvcmFnZToge30KYXBpOgogIHByb21ldGhldXNfaHR0cF9wcmVmaXg6IC9wcm9tZXRoZXVzCiAgcmVzcG9uc2VfY29tcHJlc3Npb25fZW5hYmxlZDogdHJ1ZQphdXRoX2VuYWJsZWQ6IGZhbHNlCmNodW5rX3N0b3JlOgogIGNodW5rX2NhY2hlX2NvbmZpZzoKICAgIG1lbWNhY2hlZDoKICAgICAgZXhwaXJhdGlvbjogMWgKICAgIG1lbWNhY2hlZF9jbGllbnQ6CiAgICAgIHRpbWVvdXQ6IDFzCmRpc3RyaWJ1dG9yOgogIHBvb2w6CiAgICBoZWFsdGhfY2hlY2tfaW5nZXN0ZXJzOiB0cnVlCiAgc2hhcmRfYnlfYWxsX2xhYmVsczogdHJ1ZQpmcm9udGVuZDoKICBsb2dfcXVlcmllc19sb25nZXJfdGhhbjogMTBzCmluZ2VzdGVyOgogIGxpZmVjeWNsZXI6CiAgICBmaW5hbF9zbGVlcDogMHMKICAgIGpvaW5fYWZ0ZXI6IDBzCiAgICBudW1fdG9rZW5zOiA1MTIKICAgIHJpbmc6CiAgICAgIGt2c3RvcmU6CiAgICAgICAgY29uc3VsOgogICAgICAgICAgY29uc2lzdGVudF9yZWFkczogdHJ1ZQogICAgICAgICAgaG9zdDogY29uc3VsOjg1MDAKICAgICAgICAgIGh0dHBfY2xpZW50X3RpbWVvdXQ6IDIwcwogICAgICAgIHByZWZpeDogY29sbGVjdG9ycy8KICAgICAgICBzdG9yZTogY29uc3VsCiAgICAgIHJlcGxpY2F0aW9uX2ZhY3RvcjogMwogIG1heF90cmFuc2Zlcl9yZXRyaWVzOiAwCmluZ2VzdGVyX2NsaWVudDoKICBncnBjX2NsaWVudF9jb25maWc6CiAgICBtYXhfcmVjdl9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgICBtYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCmxpbWl0czoKICBlbmZvcmNlX21ldHJpY19uYW1lOiBmYWxzZQogIG1heF9xdWVyeV9sb29rYmFjazogMHMKICByZWplY3Rfb2xkX3NhbXBsZXM6IHRydWUKICByZWplY3Rfb2xkX3NhbXBsZXNfbWF4X2FnZTogMTY4aAptZW1iZXJsaXN0OgogIGJpbmRfcG9ydDogNzk0NgogIGpvaW5fbWVtYmVyczogW10KcXVlcmllcjoKICBhY3RpdmVfcXVlcnlfdHJhY2tlcl9kaXI6IC9kYXRhL2NvcnRleC9xdWVyaWVyCiAgcXVlcnlfaW5nZXN0ZXJzX3dpdGhpbjogMTJoCiAgc3RvcmVfZ2F0ZXdheV9hZGRyZXNzZXM6IHwtCiAgICAKcXVlcnlfcmFuZ2U6CiAgYWxpZ25fcXVlcmllc193aXRoX3N0ZXA6IHRydWUKICBjYWNoZV9yZXN1bHRzOiB0cnVlCiAgcmVzdWx0c19jYWNoZToKICAgIGNhY2hlOgogICAgICBtZW1jYWNoZWQ6CiAgICAgICAgZXhwaXJhdGlvbjogMWgKICAgICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgICB0aW1lb3V0OiAxcwogIHNwbGl0X3F1ZXJpZXNfYnlfaW50ZXJ2YWw6IDI0aApydWxlcjoKICBlbmFibGVfYWxlcnRtYW5hZ2VyX2Rpc2NvdmVyeTogZmFsc2UKICBlbmFibGVfYXBpOiBmYWxzZQogIHN0b3JhZ2U6IHt9CnJ1bnRpbWVfY29uZmlnOgogIGZpbGU6IC9ldGMvY29ydGV4LXJ1bnRpbWUtY29uZmlnL3J1bnRpbWVfY29uZmlnLnlhbWwKc2NoZW1hOgogIGNvbmZpZ3M6CiAgLSBjaHVua3M6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGNodW5rc18KICAgIGZyb206ICIyMDIwLTExLTAxIgogICAgaW5kZXg6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGluZGV4XwogICAgb2JqZWN0X3N0b3JlOiBjYXNzYW5kcmEKICAgIHNjaGVtYTogdjEwCiAgICBzdG9yZTogY2Fzc2FuZHJhCnNlcnZlcjoKICBncnBjX2xpc3Rlbl9wb3J0OiA5MDk1CiAgZ3JwY19zZXJ2ZXJfbWF4X2NvbmN1cnJlbnRfc3RyZWFtczogMTAwMAogIGdycGNfc2VydmVyX21heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICBncnBjX3NlcnZlcl9tYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgaHR0cF9saXN0ZW5fcG9ydDogODA4MApzdG9yYWdlOgogIGF6dXJlOgogICAgYWNjb3VudF9rZXk6IG51bGwKICAgIGFjY291bnRfbmFtZTogbnVsbAogICAgY29udGFpbmVyX25hbWU6IG51bGwKICBjYXNzYW5kcmE6CiAgICBhZGRyZXNzZXM6IG51bGwKICAgIGF1dGg6IHRydWUKICAgIGtleXNwYWNlOiBjb3J0ZXgKICAgIHBhc3N3b3JkOiBudWxsCiAgICB1c2VybmFtZTogbnVsbAogIGVuZ2luZTogY2h1bmtzCiAgaW5kZXhfcXVlcmllc19jYWNoZV9jb25maWc6CiAgICBtZW1jYWNoZWQ6CiAgICAgIGV4cGlyYXRpb246IDFoCiAgICBtZW1jYWNoZWRfY2xpZW50OgogICAgICB0aW1lb3V0OiAxcwpzdG9yZV9nYXRld2F5OiB7fQp0YWJsZV9tYW5hZ2VyOgogIHJldGVudGlvbl9kZWxldGVzX2VuYWJsZWQ6IGZhbHNlCiAgcmV0ZW50aW9uX3BlcmlvZDogMHM=
+  cortex.yaml: YWxlcnRtYW5hZ2VyOgogIGVuYWJsZV9hcGk6IGZhbHNlCiAgZXh0ZXJuYWxfdXJsOiAvYXBpL3Byb20vYWxlcnRtYW5hZ2VyCiAgc3RvcmFnZToge30KYXBpOgogIHByb21ldGhldXNfaHR0cF9wcmVmaXg6IC9wcm9tZXRoZXVzCiAgcmVzcG9uc2VfY29tcHJlc3Npb25fZW5hYmxlZDogdHJ1ZQphdXRoX2VuYWJsZWQ6IGZhbHNlCmNodW5rX3N0b3JlOgogIGNodW5rX2NhY2hlX2NvbmZpZzoKICAgIG1lbWNhY2hlZDoKICAgICAgZXhwaXJhdGlvbjogMWgKICAgIG1lbWNhY2hlZF9jbGllbnQ6CiAgICAgIHRpbWVvdXQ6IDFzCmRpc3RyaWJ1dG9yOgogIHBvb2w6CiAgICBoZWFsdGhfY2hlY2tfaW5nZXN0ZXJzOiB0cnVlCiAgc2hhcmRfYnlfYWxsX2xhYmVsczogdHJ1ZQpmcm9udGVuZDoKICBsb2dfcXVlcmllc19sb25nZXJfdGhhbjogMTBzCmluZ2VzdGVyOgogIGxpZmVjeWNsZXI6CiAgICBmaW5hbF9zbGVlcDogMHMKICAgIGpvaW5fYWZ0ZXI6IDBzCiAgICBudW1fdG9rZW5zOiA1MTIKICAgIHJpbmc6CiAgICAgIGt2c3RvcmU6CiAgICAgICAgY29uc3VsOgogICAgICAgICAgY29uc2lzdGVudF9yZWFkczogdHJ1ZQogICAgICAgICAgaG9zdDogY29uc3VsOjg1MDAKICAgICAgICAgIGh0dHBfY2xpZW50X3RpbWVvdXQ6IDIwcwogICAgICAgIHByZWZpeDogY29sbGVjdG9ycy8KICAgICAgICBzdG9yZTogY29uc3VsCiAgICAgIHJlcGxpY2F0aW9uX2ZhY3RvcjogMwogIG1heF90cmFuc2Zlcl9yZXRyaWVzOiAwCmluZ2VzdGVyX2NsaWVudDoKICBncnBjX2NsaWVudF9jb25maWc6CiAgICBtYXhfcmVjdl9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgICBtYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCmxpbWl0czoKICBlbmZvcmNlX21ldHJpY19uYW1lOiBmYWxzZQogIG1heF9xdWVyeV9sb29rYmFjazogMHMKICByZWplY3Rfb2xkX3NhbXBsZXM6IHRydWUKICByZWplY3Rfb2xkX3NhbXBsZXNfbWF4X2FnZTogMTY4aAptZW1iZXJsaXN0OgogIGJpbmRfcG9ydDogNzk0NgogIGpvaW5fbWVtYmVyczogW10KcXVlcmllcjoKICBhY3RpdmVfcXVlcnlfdHJhY2tlcl9kaXI6IC9kYXRhL2NvcnRleC9xdWVyaWVyCiAgcXVlcnlfaW5nZXN0ZXJzX3dpdGhpbjogMTJoCiAgc3RvcmVfZ2F0ZXdheV9hZGRyZXNzZXM6IHwtCiAgICAKcXVlcnlfcmFuZ2U6CiAgYWxpZ25fcXVlcmllc193aXRoX3N0ZXA6IHRydWUKICBjYWNoZV9yZXN1bHRzOiB0cnVlCiAgcmVzdWx0c19jYWNoZToKICAgIGNhY2hlOgogICAgICBtZW1jYWNoZWQ6CiAgICAgICAgZXhwaXJhdGlvbjogMWgKICAgICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgICB0aW1lb3V0OiAxcwogIHNwbGl0X3F1ZXJpZXNfYnlfaW50ZXJ2YWw6IDI0aApydWxlcjoKICBlbmFibGVfYWxlcnRtYW5hZ2VyX2Rpc2NvdmVyeTogZmFsc2UKICBlbmFibGVfYXBpOiBmYWxzZQogIHN0b3JhZ2U6IHt9CnJ1bnRpbWVfY29uZmlnOgogIGZpbGU6IC9ldGMvY29ydGV4LXJ1bnRpbWUtY29uZmlnL3J1bnRpbWVfY29uZmlnLnlhbWwKc2NoZW1hOgogIGNvbmZpZ3M6CiAgLSBjaHVua3M6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGNodW5rc18KICAgIGZyb206ICIyMDIwLTExLTAxIgogICAgaW5kZXg6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGluZGV4XwogICAgb2JqZWN0X3N0b3JlOiBjYXNzYW5kcmEKICAgIHNjaGVtYTogdjEwCiAgICBzdG9yZTogY2Fzc2FuZHJhCnNlcnZlcjoKICBncnBjX2xpc3Rlbl9wb3J0OiA5MDk1CiAgZ3JwY19zZXJ2ZXJfbWF4X2NvbmN1cnJlbnRfc3RyZWFtczogMTAwMAogIGdycGNfc2VydmVyX21heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICBncnBjX3NlcnZlcl9tYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgaHR0cF9saXN0ZW5fcG9ydDogODA4MApzdG9yYWdlOgogIGF6dXJlOiB7fQogIGNhc3NhbmRyYToKICAgIGF1dGg6IHRydWUKICAgIGtleXNwYWNlOiBjb3J0ZXgKICBlbmdpbmU6IGNodW5rcwogIGluZGV4X3F1ZXJpZXNfY2FjaGVfY29uZmlnOgogICAgbWVtY2FjaGVkOgogICAgICBleHBpcmF0aW9uOiAxaAogICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgdGltZW91dDogMXMKc3RvcmVfZ2F0ZXdheToge30KdGFibGVfbWFuYWdlcjoKICByZXRlbnRpb25fZGVsZXRlc19lbmFibGVkOiBmYWxzZQogIHJldGVudGlvbl9wZXJpb2Q6IDBz
 ---
-# Source: cortex/templates/nginx/nginx-config.yaml
+# Source: cortex/charts/cortex/templates/nginx/nginx-config.yaml
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -250,7 +250,7 @@ data:
       }
     }
 ---
-# Source: cortex/templates/runtime-configmap.yaml
+# Source: cortex/charts/cortex/templates/runtime-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -266,7 +266,7 @@ data:
   runtime_config.yaml: |
     {}
 ---
-# Source: cortex/templates/alertmanager/alertmanager-svc.yaml
+# Source: cortex/charts/cortex/templates/alertmanager/alertmanager-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -293,7 +293,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: alertmanager
 ---
-# Source: cortex/templates/distributor/distributor-svc-headless.yaml
+# Source: cortex/charts/cortex/templates/distributor/distributor-svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -322,7 +322,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: distributor
 ---
-# Source: cortex/templates/distributor/distributor-svc.yaml
+# Source: cortex/charts/cortex/templates/distributor/distributor-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -349,7 +349,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: distributor
 ---
-# Source: cortex/templates/ingester/ingester-svc-headless.yaml
+# Source: cortex/charts/cortex/templates/ingester/ingester-svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -377,7 +377,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: ingester
 ---
-# Source: cortex/templates/ingester/ingester-svc.yaml
+# Source: cortex/charts/cortex/templates/ingester/ingester-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -404,7 +404,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: ingester
 ---
-# Source: cortex/templates/nginx/nginx-svc.yaml
+# Source: cortex/charts/cortex/templates/nginx/nginx-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -431,7 +431,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: nginx
 ---
-# Source: cortex/templates/querier/querier-svc.yaml
+# Source: cortex/charts/cortex/templates/querier/querier-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -458,7 +458,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: querier
 ---
-# Source: cortex/templates/query-frontend/query-frontend-svc-headless.yaml
+# Source: cortex/charts/cortex/templates/query-frontend/query-frontend-svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -487,7 +487,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: query-frontend
 ---
-# Source: cortex/templates/query-frontend/query-frontend-svc.yaml
+# Source: cortex/charts/cortex/templates/query-frontend/query-frontend-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -514,7 +514,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: query-frontend
 ---
-# Source: cortex/templates/ruler/ruler-svc.yaml
+# Source: cortex/charts/cortex/templates/ruler/ruler-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -541,7 +541,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: ruler
 ---
-# Source: cortex/templates/svc-memberlist-headless.yaml
+# Source: cortex/charts/cortex/templates/svc-memberlist-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -566,7 +566,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/part-of: memberlist
 ---
-# Source: cortex/templates/table-manager/table-manager-svc.yaml
+# Source: cortex/charts/cortex/templates/table-manager/table-manager-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -593,7 +593,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: table-manager
 ---
-# Source: cortex/templates/alertmanager/alertmanager-dep.yaml
+# Source: cortex/charts/cortex/templates/alertmanager/alertmanager-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -632,7 +632,7 @@ spec:
         app.kubernetes.io/component: alertmanager
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -696,7 +696,7 @@ spec:
         - name: storage
           emptyDir: {}
 ---
-# Source: cortex/templates/distributor/distributor-dep.yaml
+# Source: cortex/charts/cortex/templates/distributor/distributor-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -735,7 +735,7 @@ spec:
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -812,7 +812,7 @@ spec:
         - name: storage
           emptyDir: {}
 ---
-# Source: cortex/templates/ingester/ingester-dep.yaml
+# Source: cortex/charts/cortex/templates/ingester/ingester-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -851,7 +851,7 @@ spec:
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -937,7 +937,7 @@ spec:
         - name: storage
           emptyDir: {}
 ---
-# Source: cortex/templates/nginx/nginx-dep.yaml
+# Source: cortex/charts/cortex/templates/nginx/nginx-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1022,7 +1022,7 @@ spec:
           configMap:
             name: RELEASE-NAME-cortex-nginx
 ---
-# Source: cortex/templates/querier/querier-dep.yaml
+# Source: cortex/charts/cortex/templates/querier/querier-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1059,7 +1059,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: querier
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -1132,7 +1132,7 @@ spec:
         - name: storage
           emptyDir: {}
 ---
-# Source: cortex/templates/query-frontend/query-frontend-dep.yaml
+# Source: cortex/charts/cortex/templates/query-frontend/query-frontend-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1169,7 +1169,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-frontend
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -1239,7 +1239,7 @@ spec:
           configMap:
             name: RELEASE-NAME-cortex-runtime-config
 ---
-# Source: cortex/templates/ruler/ruler-dep.yaml
+# Source: cortex/charts/cortex/templates/ruler/ruler-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1278,7 +1278,7 @@ spec:
         app.kubernetes.io/component: ruler
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
@@ -1348,7 +1348,7 @@ spec:
         - name: storage
           emptyDir: {}
 ---
-# Source: cortex/templates/table-manager/table-manager-dep.yaml
+# Source: cortex/charts/cortex/templates/table-manager/table-manager-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1385,7 +1385,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: table-manager
       annotations:
-        checksum/config: e671e12f4bb1dc7d4d52965c486a03eb61b0aa1ebf43c50c56661470e0275340
+        checksum/config: f6b782a352188a744709a7b73eed77399154b2d0fe9c70f57097f2b84922e1d9
         prometheus.io/port: http-metrics
         prometheus.io/scrape: "true"
     spec:
