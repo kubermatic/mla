@@ -1,5 +1,5 @@
 ---
-# Source: loki-distributed/templates/serviceaccount.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 ---
-# Source: loki-distributed/templates/configmap.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -120,7 +120,7 @@ data:
       alertmanager_url: https://alertmanager.xx
       external_url: https://alertmanager.xx
 ---
-# Source: loki-distributed/templates/gateway/configmap-gateway.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/gateway/configmap-gateway.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -198,7 +198,7 @@ data:
       }
     }
 ---
-# Source: loki-distributed/templates/distributor/service-distributor.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/distributor/service-distributor.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -226,7 +226,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: distributor
 ---
-# Source: loki-distributed/templates/gateway/service-gateway.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/gateway/service-gateway.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -250,7 +250,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: gateway
 ---
-# Source: loki-distributed/templates/ingester/service-ingester-headless.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/ingester/service-ingester-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -276,7 +276,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: ingester
 ---
-# Source: loki-distributed/templates/ingester/service-ingester.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/ingester/service-ingester.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -304,7 +304,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: ingester
 ---
-# Source: loki-distributed/templates/querier/service-querier-headless.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/querier/service-querier-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -330,7 +330,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: querier
 ---
-# Source: loki-distributed/templates/querier/service-querier.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/querier/service-querier.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -358,7 +358,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: querier
 ---
-# Source: loki-distributed/templates/query-frontend/service-query-frontend.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/query-frontend/service-query-frontend.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -387,7 +387,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/component: query-frontend
 ---
-# Source: loki-distributed/templates/service-memberlist.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/service-memberlist.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -411,7 +411,7 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/part-of: memberlist
 ---
-# Source: loki-distributed/templates/distributor/deployment-distributor.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/distributor/deployment-distributor.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -512,7 +512,7 @@ spec:
           configMap:
             name: RELEASE-NAME-loki-distributed
 ---
-# Source: loki-distributed/templates/gateway/deployment-gateway.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/gateway/deployment-gateway.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -608,7 +608,7 @@ spec:
         - name: docker-entrypoint-d-override
           emptyDir: {}
 ---
-# Source: loki-distributed/templates/query-frontend/deployment-query-frontend.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/query-frontend/deployment-query-frontend.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -698,7 +698,7 @@ spec:
           configMap:
             name: RELEASE-NAME-loki-distributed
 ---
-# Source: loki-distributed/templates/ingester/statefulset-ingester.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/ingester/statefulset-ingester.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -804,7 +804,7 @@ spec:
         - name: data
           emptyDir: {}
 ---
-# Source: loki-distributed/templates/querier/statefulset-querier.yaml
+# Source: loki-distributed/charts/loki-distributed/templates/querier/statefulset-querier.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
