@@ -2,10 +2,10 @@ cortex:
   #  Container image settings.
   #  Since the image is unique for all microservices, so are image settings.
 
-  image:
-    repository: quay.io/cortexproject/cortex
-    tag: v1.10.0
-    pullPolicy: IfNotPresent
+  # image:
+  #   repository: quay.io/cortexproject/cortex
+  #   tag: v1.10.0
+  #   pullPolicy: IfNotPresent
 
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
