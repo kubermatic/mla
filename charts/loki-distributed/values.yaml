@@ -31,11 +31,11 @@ loki-distributed:
       timeoutSeconds: 1
     image:
       # -- The Docker registry
-      registry: docker.io
+      #registry: docker.io
       # -- Docker image repository
-      repository: grafana/loki
+      #repository: grafana/loki
       # -- Overrides the image tag whose default is the chart's appVersion
-      tag: null
+      #tag: null
       # -- Docker image pull policy
       pullPolicy: IfNotPresent
     # -- Common annotations for all pods
