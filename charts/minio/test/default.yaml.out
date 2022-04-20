@@ -6,59 +6,6 @@ metadata:
   name: "minio-sa"
   namespace: "default"
 ---
-# Source: minio/templates/post-install-prometheus-metrics-serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: RELEASE-NAME-minio-update-prometheus-secret
-  labels:
-    app: minio-update-prometheus-secret
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
----
-# Source: minio/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: "RELEASE-NAME-minio"
-  namespace: "default"
-  labels:
-    app: minio
-    chart: minio-8.0.10
-    release: "RELEASE-NAME"
----
-# Source: minio/charts/minio/templates/secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: RELEASE-NAME-minio
-  namespace: "default"
-  labels:
-    app: minio
-    chart: minio-3.6.5
-    release: RELEASE-NAME
-    heritage: Helm
-type: Opaque
-data:
-  rootUser: "dEZ4RU11bTQzUVdSelVyQm9wVUE="
-  rootPassword: "VG10dWV2NDFLZ3B3NG1URnRaTEx0Z0UxNU1aTVVIUnM4dzd6ejlFMQ=="
----
-# Source: minio/templates/secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: RELEASE-NAME-minio
-  labels:
-    app: minio
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
-type: Opaque
-data:
-  accesskey: "cW5HNW9JWEVneXhxZ3poSVBBQmQ="
-  secretkey: "T0hoUjNkYVZ3VWR5clRHNm9FUGtoVW5mRXJiajZOeFFmR3lsVzg2NA=="
----
 # Source: minio/charts/minio/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -67,7 +14,7 @@ metadata:
   namespace: "default"
   labels:
     app: minio
-    chart: minio-3.6.5
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
 data:
@@ -347,119 +294,15 @@ data:
     scheme=http
     connectToMinio $scheme
 ---
-# Source: minio/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: RELEASE-NAME-minio
-  labels:
-    app: minio
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
-data:
-  initialize: |-
-    #!/bin/sh
-    set -e ; # Have script exit in the event of a failed command.
-    MC_CONFIG_DIR="/etc/minio/mc/"
-    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
-    
-    # connectToMinio
-    # Use a check-sleep-check loop to wait for Minio service to be available
-    connectToMinio() {
-      SCHEME=$1
-      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
-      set -e ; # fail if we can't read the keys.
-      ACCESS=$(cat /config/accesskey) ; SECRET=$(cat /config/secretkey) ;
-      set +e ; # The connections to minio are allowed to fail.
-      echo "Connecting to Minio server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
-      MC_COMMAND="${MC} config host add myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
-      $MC_COMMAND ;
-      STATUS=$? ;
-      until [ $STATUS = 0 ]
-      do
-        ATTEMPTS=`expr $ATTEMPTS + 1` ;
-        echo \"Failed attempts: $ATTEMPTS\" ;
-        if [ $ATTEMPTS -gt $LIMIT ]; then
-          exit 1 ;
-        fi ;
-        sleep 2 ; # 1 second intervals between attempts
-        $MC_COMMAND ;
-        STATUS=$? ;
-      done ;
-      set -e ; # reset `e` as active
-      return 0
-    }
-    
-    # checkBucketExists ($bucket)
-    # Check if the bucket exists, by using the exit code of `mc ls`
-    checkBucketExists() {
-      BUCKET=$1
-      CMD=$(${MC} ls myminio/$BUCKET > /dev/null 2>&1)
-      return $?
-    }
-    
-    # createBucket ($bucket, $policy, $purge)
-    # Ensure bucket exists, purging if asked to
-    createBucket() {
-      BUCKET=$1
-      POLICY=$2
-      PURGE=$3
-      VERSIONING=$4
-    
-      # Purge the bucket, if set & exists
-      # Since PURGE is user input, check explicitly for `true`
-      if [ $PURGE = true ]; then
-        if checkBucketExists $BUCKET ; then
-          echo "Purging bucket '$BUCKET'."
-          set +e ; # don't exit if this fails
-          ${MC} rm -r --force myminio/$BUCKET
-          set -e ; # reset `e` as active
-        else
-          echo "Bucket '$BUCKET' does not exist, skipping purge."
-        fi
-      fi
-    
-      # Create the bucket if it does not exist
-      if ! checkBucketExists $BUCKET ; then
-        echo "Creating bucket '$BUCKET'"
-        ${MC} mb myminio/$BUCKET
-      else
-        echo "Bucket '$BUCKET' already exists."
-      fi
-    
-    
-      # set versioning for bucket
-      if [ ! -z $VERSIONING ] ; then
-        if [ $VERSIONING = true ] ; then
-            echo "Enabling versioning for '$BUCKET'"
-            ${MC} version enable myminio/$BUCKET
-        elif [ $VERSIONING = false ] ; then
-            echo "Suspending versioning for '$BUCKET'"
-            ${MC} version suspend myminio/$BUCKET
-        fi
-      else
-          echo "Bucket '$BUCKET' versioning unchanged."
-      fi
-    
-      # At this point, the bucket should exist, skip checking for existence
-      # Set policy on the bucket
-      echo "Setting policy of bucket '$BUCKET' to '$POLICY'."
-      ${MC} policy set $POLICY myminio/$BUCKET
-    }
-    
-    # Try connecting to Minio instance
-    scheme=http
-    connectToMinio $scheme
----
-# Source: minio/templates/pvc.yaml
+# Source: minio/charts/minio/templates/pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: RELEASE-NAME-minio
+  namespace: "default"
   labels:
     app: minio
-    chart: minio-8.0.10
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
 spec:
@@ -469,62 +312,6 @@ spec:
     requests:
       storage: "500Gi"
 ---
-# Source: minio/templates/post-install-prometheus-metrics-role.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: RELEASE-NAME-minio-update-prometheus-secret
-  labels:
-    app: minio-update-prometheus-secret
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - get
-      - create
-      - update
-      - patch
-    resourceNames:
-      - RELEASE-NAME-minio-prometheus
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - create
-  - apiGroups:
-      - monitoring.coreos.com
-    resources:
-      - servicemonitors
-    verbs:
-      - get
-    resourceNames:
-      - RELEASE-NAME-minio
----
-# Source: minio/templates/post-install-prometheus-metrics-rolebinding.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: RELEASE-NAME-minio-update-prometheus-secret
-  labels:
-    app: minio-update-prometheus-secret
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: RELEASE-NAME-minio-update-prometheus-secret
-subjects:
-  - kind: ServiceAccount
-    name: RELEASE-NAME-minio-update-prometheus-secret
-    namespace: "default"
----
 # Source: minio/charts/minio/templates/console-service.yaml
 apiVersion: v1
 kind: Service
@@ -533,7 +320,7 @@ metadata:
   namespace: "default"
   labels:
     app: minio
-    chart: minio-3.6.5
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
 spec:
@@ -555,7 +342,7 @@ metadata:
   namespace: "default"
   labels:
     app: minio
-    chart: minio-3.6.5
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
     monitoring: "true"
@@ -570,57 +357,15 @@ spec:
     app: minio
     release: RELEASE-NAME
 ---
-# Source: minio/charts/minio/templates/statefulset.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: RELEASE-NAME-minio-svc
-  namespace: "default"
-  labels:
-    app: minio
-    chart: minio-3.6.5
-    release: "RELEASE-NAME"
-    heritage: "Helm"
-spec:
-  publishNotReadyAddresses: true
-  clusterIP: None
-  ports:
-    - name: http
-      port: 9000
-      protocol: TCP
-  selector:
-    app: minio
-    release: RELEASE-NAME
----
-# Source: minio/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: RELEASE-NAME-minio
-  labels:
-    app: minio
-    chart: minio-8.0.10
-    release: RELEASE-NAME
-    heritage: Helm
-spec:
-  type: ClusterIP
-  ports:
-    - name: http
-      port: 9000
-      protocol: TCP
-      targetPort: 9000
-  selector:
-    app: minio
-    release: RELEASE-NAME
----
-# Source: minio/templates/deployment.yaml
+# Source: minio/charts/minio/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: RELEASE-NAME-minio
+  namespace: "default"
   labels:
     app: minio
-    chart: minio-8.0.10
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
 spec:
@@ -629,6 +374,7 @@ spec:
     rollingUpdate:
       maxSurge: 100%
       maxUnavailable: 0
+  replicas: 1
   selector:
     matchLabels:
       app: minio
@@ -640,81 +386,8 @@ spec:
         app: minio
         release: RELEASE-NAME
       annotations:
-        checksum/secrets: dcca1b2d5b6e8a71a9f6c3a401e5dbd08d42250a4d8fc76e490d7ded152016d4
-        checksum/config: 305961359a280f29a61c9ece125cf780317c37427c9d4936f8b438670df2ecd5
-    spec:
-      serviceAccountName: "RELEASE-NAME-minio"
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-      containers:
-        - name: minio
-          image: "minio/minio:RELEASE.2021-02-14T04-01-33Z"
-          imagePullPolicy: IfNotPresent
-          command:
-            - "/bin/sh"
-            - "-ce"
-            - "/usr/bin/docker-entrypoint.sh minio -S /etc/minio/certs/ server /export"
-          volumeMounts:
-            - name: export
-              mountPath: /export            
-          ports:
-            - name: http
-              containerPort: 9000
-          env:
-            - name: MINIO_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: RELEASE-NAME-minio
-                  key: accesskey
-            - name: MINIO_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: RELEASE-NAME-minio
-                  key: secretkey
-          resources:
-            requests:
-              memory: 4Gi      
-      volumes:
-        - name: export
-          persistentVolumeClaim:
-            claimName: RELEASE-NAME-minio
-        - name: minio-user
-          secret:
-            secretName: RELEASE-NAME-minio
----
-# Source: minio/charts/minio/templates/statefulset.yaml
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: RELEASE-NAME-minio
-  namespace: "default"
-  labels:
-    app: minio
-    chart: minio-3.6.5
-    release: RELEASE-NAME
-    heritage: Helm
-spec:
-  updateStrategy:
-    type: RollingUpdate
-  podManagementPolicy: "Parallel"
-  serviceName: RELEASE-NAME-minio-svc
-  replicas: 16
-  selector:
-    matchLabels:
-      app: minio
-      release: RELEASE-NAME
-  template:
-    metadata:
-      name: RELEASE-NAME-minio
-      labels:
-        app: minio
-        release: RELEASE-NAME
-      annotations:
-        checksum/secrets: 2c87a10ba4a3bad1191aa105fb6e6e7e9a4a6098e40dd56075f098dc70afc6b9
-        checksum/config: 70b3ea526f8fe23a7116f2fc81972b3bcda4b6a58e72a98c92a71fedbd4b926b
+        checksum/secrets: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/config: b859cfd3dda35c884bf0ec1750ce64f8635ec37e01e7229783f83ec6ee046009
     spec:
       securityContext:
         runAsUser: 1000
@@ -725,13 +398,16 @@ spec:
       serviceAccountName: minio-sa
       containers:
         - name: minio
-          image: quay.io/minio/minio:RELEASE.2022-04-09T15-09-52Z
+          image: "quay.io/minio/minio:RELEASE.2022-04-16T04-26-02Z"
           imagePullPolicy: IfNotPresent
-
-          command: [ "/bin/sh",
-            "-ce",
-            "/usr/bin/docker-entrypoint.sh minio server  http://RELEASE-NAME-minio-{0...15}.RELEASE-NAME-minio-svc.default.svc.cluster.local/export -S /etc/minio/certs/ --address :9000 --console-address :9001" ]
+          command:
+            - "/bin/sh"
+            - "-ce"
+            - "/usr/bin/docker-entrypoint.sh minio server /export -S /etc/minio/certs/ --address :9000 --console-address :9001"
           volumeMounts:
+            - name: minio-user
+              mountPath: "/tmp/credentials"
+              readOnly: true
             - name: export
               mountPath: /export            
           ports:
@@ -743,30 +419,25 @@ spec:
             - name: MINIO_ROOT_USER
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-minio
+                  name: minio
                   key: rootUser
             - name: MINIO_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-minio
+                  name: minio
                   key: rootPassword
             - name: MINIO_PROMETHEUS_AUTH_TYPE
               value: "public"
           resources:
             requests:
-              memory: 16Gi      
+              memory: 4Gi      
       volumes:
+        - name: export
+          persistentVolumeClaim:
+            claimName: RELEASE-NAME-minio
         - name: minio-user
           secret:
-            secretName: RELEASE-NAME-minio        
-  volumeClaimTemplates:
-    - metadata:
-        name: export
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 500Gi
+            secretName: minio
 ---
 # Source: minio/charts/minio/templates/post-install-create-user-job.yaml
 apiVersion: batch/v1
@@ -776,7 +447,7 @@ metadata:
   namespace: "default"
   labels:
     app: minio-make-user-job
-    chart: minio-3.6.5
+    chart: minio-3.6.6
     release: RELEASE-NAME
     heritage: Helm
   annotations:
@@ -797,10 +468,10 @@ spec:
             - configMap:
                 name: RELEASE-NAME-minio
             - secret:
-                name: RELEASE-NAME-minio
+                name: minio
       containers:
       - name: minio-mc
-        image: "quay.io/minio/mc:RELEASE.2022-04-07T21-43-27Z"
+        image: "quay.io/minio/mc:RELEASE.2022-04-16T21-11-21Z"
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/config/add-user"]
         env:
