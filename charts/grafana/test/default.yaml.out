@@ -109,24 +109,6 @@ metadata:
   name: RELEASE-NAME-grafana-test
   namespace: default
 ---
-# Source: grafana/charts/grafana/templates/secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: RELEASE-NAME-grafana
-  namespace: default
-  labels:
-    helm.sh/chart: grafana-6.17.5
-    app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: RELEASE-NAME
-    app.kubernetes.io/version: "8.2.3"
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  admin-user: "YWRtaW4="
-  admin-password: "eWJOcmpPMERJYUN0aWhNWTNodkpCTng2N09IbG1jS3pOY0IxS3hkTA=="
-  ldap-toml: ""
----
 # Source: grafana/charts/grafana/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -339,7 +321,6 @@ spec:
         checksum/config: 52916a1285ed44cf014f5c1944a003449e724217e6a3b4400c913dca007dbc72
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: 79fafb72a1805c318ca2dddebaa07244e6124fbd747eff9a57cbf8d0c6c97193
     spec:
       
       serviceAccountName: RELEASE-NAME-grafana
@@ -370,12 +351,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-grafana
+                  name: grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-grafana
+                  name: grafana
                   key: admin-password
             
             - name: GF_PATHS_DATA

@@ -71,7 +71,7 @@ grafana:
 
   image:
     repository: grafana/grafana
-    tag: 8.2.3
+    #tag: 8.2.3
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -327,7 +327,7 @@ grafana:
 
   # Use an existing secret for the admin user.
   admin:
-    existingSecret: ""
+    existingSecret: grafana
     userKey: admin-user
     passwordKey: admin-password
 
