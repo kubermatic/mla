@@ -29,7 +29,7 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: secretkey
+            key: rootPassword
     podAnnotations:
       prometheus.io/port: '8080'
     extraVolumeMounts:
