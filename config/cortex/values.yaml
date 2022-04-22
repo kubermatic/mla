@@ -1,331 +1,332 @@
-ingress:
-  enabled: false
+cortex:
+  ingress:
+    enabled: false
 
-distributor:
-  replicas: 2
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
+  distributor:
+    replicas: 2
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
 
-ruler:
-  replicas: 1
-  extraArgs:
-    ruler.storage.s3.access-key-id: $(ACCESS_KEY)
-    ruler.storage.s3.secret-access-key: $(SECRET_KEY)
-  env:
-    - name: ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: accesskey
-    - name: SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: secretkey
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  resources:
-    requests:
-      cpu: 5m
+  ruler:
+    replicas: 1
+    extraArgs:
+      ruler.storage.s3.access-key-id: $(ACCESS_KEY)
+      ruler.storage.s3.secret-access-key: $(SECRET_KEY)
+    env:
+      - name: ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: accesskey
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: secretkey
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    resources:
+      requests:
+        cpu: 5m
 
-compactor:
-  replicas: 1
-  persistentVolume:
-    enabled: true
-    storageClass: "kubermatic-fast"
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
+  compactor:
+    replicas: 1
+    persistentVolume:
+      enabled: true
+      storageClass: "kubermatic-fast"
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
 
-store_gateway:
-  replicas: 1
-  persistentVolume:
-    enabled: true
-    storageClass: "kubermatic-fast"
-  extraArgs:
-    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
-    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
-  env:
-    - name: ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: accesskey
-    - name: SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: secretkey
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  resources:
-    requests:
-      cpu: 5m
+  store_gateway:
+    replicas: 1
+    persistentVolume:
+      enabled: true
+      storageClass: "kubermatic-fast"
+    extraArgs:
+      blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+      blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+    env:
+      - name: ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: accesskey
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: secretkey
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    resources:
+      requests:
+        cpu: 5m
 
-ingester:
-  replicas: 3
-  statefulSet:
-    enabled: true
-  persistentVolume:
-    enabled: true
-    storageClass: "kubermatic-fast"
-    size: 10Gi
-  extraArgs:
-    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
-    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  env:
-    - name: ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: accesskey
-    - name: SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: secretkey
-  podAnnotations:
-    prometheus.io/port: '8080'
-
-querier:
-  replicas: 1
-  extraArgs:
-    blocks-storage.s3.access-key-id: $(ACCESS_KEY)
-    blocks-storage.s3.secret-access-key: $(SECRET_KEY)
-  env:
-    - name: ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: accesskey
-    - name: SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: secretkey
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  resources:
-    requests:
-      cpu: 5m
-
-query_frontend:
-  replicas: 1
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  resources:
-    requests:
-      cpu: 5m
-
-tags:
-  blocks-storage-memcached: true
-
-nginx:
-  enabled: false
-
-alertmanager:
-  replicas: 2
-  statefulSet:
-    enabled: true
-  persistentVolume:
-    enabled: true
-    storageClass: "kubermatic-fast"
-  extraArgs:
-    alertmanager.storage.s3.access-key-id: $(ACCESS_KEY)
-    alertmanager.storage.s3.secret-access-key: $(SECRET_KEY)
-  env:
-    - name: ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: accesskey
-    - name: SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio
-          key: secretkey
-  podAnnotations:
-    prometheus.io/port: '8080'
-  extraVolumeMounts:
-    - mountPath: /tmp
-      name: storage
-    - mountPath: "/etc/cortex-runtime-cfg"
-      name: "cortex-runtime-config"
-  extraVolumes:
-    - name: cortex-runtime-config
-      configMap:
-        name: cortex-runtime-config
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: target
-                  operator: In
-                  values:
-                    - alertmanager
-            topologyKey: 'kubernetes.io/hostname'
-
-config:
-  auth_enabled: true
   ingester:
-    lifecycler:
+    replicas: 3
+    statefulSet:
+      enabled: true
+    persistentVolume:
+      enabled: true
+      storageClass: "kubermatic-fast"
+      size: 10Gi
+    extraArgs:
+      blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+      blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    env:
+      - name: ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: accesskey
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: secretkey
+    podAnnotations:
+      prometheus.io/port: '8080'
+
+  querier:
+    replicas: 1
+    extraArgs:
+      blocks-storage.s3.access-key-id: $(ACCESS_KEY)
+      blocks-storage.s3.secret-access-key: $(SECRET_KEY)
+    env:
+      - name: ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: accesskey
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: secretkey
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    resources:
+      requests:
+        cpu: 5m
+
+  query_frontend:
+    replicas: 1
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    resources:
+      requests:
+        cpu: 5m
+
+  tags:
+    blocks-storage-memcached: true
+
+  nginx:
+    enabled: false
+
+  alertmanager:
+    replicas: 2
+    statefulSet:
+      enabled: true
+    persistentVolume:
+      enabled: true
+      storageClass: "kubermatic-fast"
+    extraArgs:
+      alertmanager.storage.s3.access-key-id: $(ACCESS_KEY)
+      alertmanager.storage.s3.secret-access-key: $(SECRET_KEY)
+    env:
+      - name: ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: accesskey
+      - name: SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: minio
+            key: secretkey
+    podAnnotations:
+      prometheus.io/port: '8080'
+    extraVolumeMounts:
+      - mountPath: /tmp
+        name: storage
+      - mountPath: "/etc/cortex-runtime-cfg"
+        name: "cortex-runtime-config"
+    extraVolumes:
+      - name: cortex-runtime-config
+        configMap:
+          name: cortex-runtime-config
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: target
+                    operator: In
+                    values:
+                      - alertmanager
+              topologyKey: 'kubernetes.io/hostname'
+
+  config:
+    auth_enabled: true
+    ingester:
+      lifecycler:
+        ring:
+          kvstore:
+            store: memberlist
+    distributor:
+      ha_tracker:
+        enable_ha_tracker: true
+        # consul is required as ha_tracker does not support memberlist
+        kvstore:
+          store: consul
+          consul:
+            host: consul-consul-server:8500
       ring:
         kvstore:
           store: memberlist
-  distributor:
-    ha_tracker:
-      enable_ha_tracker: true
-      # consul is required as ha_tracker does not support memberlist
-      kvstore:
-        store: consul
-        consul:
-          host: consul-consul-server:8500
-    ring:
-      kvstore:
-        store: memberlist
-  store_gateway:
-    sharding_enabled: true
-    sharding_ring:
-      replication_factor: 2
-      kvstore:
-        store: memberlist
-  compactor:
-    block_deletion_marks_migration_enabled: false
-    data_dir: /data/cortex/compactor
-    compaction_interval: 30m
-    sharding_enabled: true
-    sharding_ring:
-      kvstore:
-        store: memberlist
-  memberlist:
-    join_members:
-      - cortex-ingester-headless
-  runtime_config:
-    period: "10s"
-    file: "/etc/cortex-runtime-cfg/runtime-config.yaml"
-  ruler:
-    enable_alertmanager_discovery: true
-    enable_api: true
-    ring:
-      kvstore:
-        store: memberlist
+    store_gateway:
+      sharding_enabled: true
+      sharding_ring:
+        replication_factor: 2
+        kvstore:
+          store: memberlist
+    compactor:
+      block_deletion_marks_migration_enabled: false
+      data_dir: /data/cortex/compactor
+      compaction_interval: 30m
+      sharding_enabled: true
+      sharding_ring:
+        kvstore:
+          store: memberlist
+    memberlist:
+      join_members:
+        - cortex-ingester-headless
+    runtime_config:
+      period: "10s"
+      file: "/etc/cortex-runtime-cfg/runtime-config.yaml"
+    ruler:
+      enable_alertmanager_discovery: true
+      enable_api: true
+      ring:
+        kvstore:
+          store: memberlist
+      storage:
+        type: s3
+        s3:
+          bucketnames: "cortex-ruler"
+          endpoint: "minio:9000"
+          s3forcepathstyle: true
+          insecure: true
+    alertmanager:
+      enable_api: true
+      data_dir: /data/cortex/alert-data
+      storage:
+        type: s3
+        s3:
+          bucketnames: "alertmanager"
+          endpoint: "minio:9000"
+          s3forcepathstyle: true
+          insecure: true
+    querier:
+      query_store_after: 360m
+      query_ingesters_within: 365m
     storage:
-      type: s3
+      engine: blocks
+    blocks_storage:
+      backend: s3
+      bucket_store:
+        bucket_index:
+          enabled: true
+        sync_dir: /data
+        ignore_deletion_mark_delay: 1h
       s3:
-        bucketnames: "cortex-ruler"
+        bucket_name: "cortex"
         endpoint: "minio:9000"
-        s3forcepathstyle: true
         insecure: true
-  alertmanager:
-    enable_api: true
-    data_dir: /data/cortex/alert-data
-    storage:
-      type: s3
-      s3:
-        bucketnames: "alertmanager"
-        endpoint: "minio:9000"
-        s3forcepathstyle: true
-        insecure: true
-  querier:
-    query_store_after: 360m
-    query_ingesters_within: 365m
-  storage:
-    engine: blocks
-  blocks_storage:
-    backend: s3
-    bucket_store:
-      bucket_index:
-        enabled: true
-      sync_dir: /data
-      ignore_deletion_mark_delay: 1h
-    s3:
-      bucket_name: "cortex"
-      endpoint: "minio:9000"
-      insecure: true
-    tsdb:
-      dir: /data
-      retention_period: 365m
-      close_idle_tsdb_timeout: 365m
-      wal_compression_enabled: true
-      flush_blocks_on_shutdown: true
-  limits:
-    max_query_lookback: 168h
-    accept_ha_samples: true
-    max_label_names_per_series: 40
+      tsdb:
+        dir: /data
+        retention_period: 365m
+        close_idle_tsdb_timeout: 365m
+        wal_compression_enabled: true
+        flush_blocks_on_shutdown: true
+    limits:
+      max_query_lookback: 168h
+      accept_ha_samples: true
+      max_label_names_per_series: 40
 
-runtimeconfigmap:
-  # -- If true, a configmap for the `runtime_config` will be created.
-  # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
-  create: false
-
-memcached-blocks-metadata:
-  resources:
-    requests:
-      cpu: 5m
-  serviceAccount:
+  runtimeconfigmap:
+    # -- If true, a configmap for the `runtime_config` will be created.
+    # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
     create: false
 
-memcached-blocks-index:
-  resources:
-    requests:
-      cpu: 5m
-  serviceAccount:
-    create: false
+  memcached-blocks-metadata:
+    resources:
+      requests:
+        cpu: 5m
+    serviceAccount:
+      create: false
 
-memcached-blocks:
-  resources:
-    requests:
-      cpu: 5m
-  serviceAccount:
-    create: false
+  memcached-blocks-index:
+    resources:
+      requests:
+        cpu: 5m
+    serviceAccount:
+      create: false
+
+  memcached-blocks:
+    resources:
+      requests:
+        cpu: 5m
+    serviceAccount:
+      create: false

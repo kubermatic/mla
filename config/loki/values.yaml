@@ -1,203 +1,204 @@
-loki:
-  config: |
-    server:
-      http_listen_port: 3100
-    distributor:
-      ring:
-        kvstore:
-          store: memberlist
-    memberlist:
-      join_members:
-        - {{ include "loki.fullname" . }}-memberlist
-    ingester:
-      lifecycler:
+loki-distributed:
+  loki:
+    config: |
+      server:
+        http_listen_port: 3100
+      distributor:
         ring:
           kvstore:
             store: memberlist
-          replication_factor: 3
-      chunk_idle_period: 30m
-      chunk_block_size: 262144
-      chunk_encoding: snappy
-      chunk_retain_period: 1m
-      max_transfer_retries: 0
-      wal:
-        dir: /var/loki/wal
-    limits_config:
-      enforce_metric_name: false
-      reject_old_samples: true
-      reject_old_samples_max_age: 168h
-      max_cache_freshness_per_query: 10m
-    schema_config:
-      configs:
-        - chunks:
-            period: 360h
-            prefix: loki_chunk_
-          from: "2021-02-01"
-          index:
-            period: 24h
-            prefix: loki_index_
-          object_store: aws
-          schema: v11
-          store: boltdb-shipper
-    storage_config:
-      boltdb_shipper:
-        shared_store: aws
-        active_index_directory: /var/loki/index
-        cache_location: /var/loki/cache
-        cache_ttl: 168h
-      aws:
-        bucketnames: "loki"
-        endpoint: "minio:9000"
-        s3forcepathstyle: true
-        insecure: true
-    chunk_store_config:
-      max_look_back_period: 168h
-    table_manager:
-      creation_grace_period: 3h
-      poll_interval: 10m
-      retention_deletes_enabled: false
-      retention_period: 0s
-    query_range:
-      align_queries_with_step: true
-      max_retries: 5
-      split_queries_by_interval: 15m
-      cache_results: true
-      results_cache:
-        cache:
-          enable_fifocache: true
-          fifocache:
-            max_size_items: 1024
-            validity: 24h
-    frontend_worker:
-      frontend_address: {{ include "loki.queryFrontendFullname" . }}:9095
-    frontend:
-      log_queries_longer_than: 5s
-      compress_responses: true
-    compactor:
-      shared_store: aws
-    ruler:
-      enable_api: true
-      storage:
-        type: s3
-        s3:
-          bucketnames: "loki-ruler"
+      memberlist:
+        join_members:
+          - {{ include "loki.fullname" . }}-memberlist
+      ingester:
+        lifecycler:
+          ring:
+            kvstore:
+              store: memberlist
+            replication_factor: 3
+        chunk_idle_period: 30m
+        chunk_block_size: 262144
+        chunk_encoding: snappy
+        chunk_retain_period: 1m
+        max_transfer_retries: 0
+        wal:
+          dir: /var/loki/wal
+      limits_config:
+        enforce_metric_name: false
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+        max_cache_freshness_per_query: 10m
+      schema_config:
+        configs:
+          - chunks:
+              period: 360h
+              prefix: loki_chunk_
+            from: "2021-02-01"
+            index:
+              period: 24h
+              prefix: loki_index_
+            object_store: aws
+            schema: v11
+            store: boltdb-shipper
+      storage_config:
+        boltdb_shipper:
+          shared_store: aws
+          active_index_directory: /var/loki/index
+          cache_location: /var/loki/cache
+          cache_ttl: 168h
+        aws:
+          bucketnames: "loki"
           endpoint: "minio:9000"
           s3forcepathstyle: true
           insecure: true
-      ring:
-        kvstore:
-          store: memberlist
-      rule_path: /tmp/loki/scratch
-      alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless/api/prom/alertmanager/
+      chunk_store_config:
+        max_look_back_period: 168h
+      table_manager:
+        creation_grace_period: 3h
+        poll_interval: 10m
+        retention_deletes_enabled: false
+        retention_period: 0s
+      query_range:
+        align_queries_with_step: true
+        max_retries: 5
+        split_queries_by_interval: 15m
+        cache_results: true
+        results_cache:
+          cache:
+            enable_fifocache: true
+            fifocache:
+              max_size_items: 1024
+              validity: 24h
+      frontend_worker:
+        frontend_address: {{ include "loki.queryFrontendFullname" . }}:9095
+      frontend:
+        log_queries_longer_than: 5s
+        compress_responses: true
+      compactor:
+        shared_store: aws
+      ruler:
+        enable_api: true
+        storage:
+          type: s3
+          s3:
+            bucketnames: "loki-ruler"
+            endpoint: "minio:9000"
+            s3forcepathstyle: true
+            insecure: true
+        ring:
+          kvstore:
+            store: memberlist
+        rule_path: /tmp/loki/scratch
+        alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless/api/prom/alertmanager/
 
-tableManager:
-  enabled: true
-  extraArgs:
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
-  extraEnvFrom:
-    - secretRef:
-        name: minio
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
-
-
-memcachedExporter:
-  enabled: true
-
-memcachedChunks:
-  enabled: true
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9150"
-
-memcachedFrontend:
-  enabled: true
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9150"
-
-memcachedIndexQueries:
-  enabled: true
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9150"
-
-memcachedIndexWrites:
-  enabled: true
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9150"
-
-distributor:
-  replicas: 2
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
-
-ingester:
-  replicas: 3
-  extraArgs:
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
-  extraEnvFrom:
-    - secretRef:
-        name: minio
-  persistence:
+  tableManager:
     enabled: true
-    storageClass: "kubermatic-fast"
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
+    extraArgs:
+      - -s3.access-key-id=$(accesskey)
+      - -s3.secret-access-key=$(secretkey)
+    extraEnvFrom:
+      - secretRef:
+          name: minio
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
 
-querier:
-  replicas: 1
-  extraArgs:
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
-  extraEnvFrom:
-    - secretRef:
-        name: minio
-  persistence:
+
+  memcachedExporter:
     enabled: true
-    storageClass: "kubermatic-fast"
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
 
-queryFrontend:
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
+  memcachedChunks:
+    enabled: true
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9150"
 
-gateway:
-  enabled: false
+  memcachedFrontend:
+    enabled: true
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9150"
 
-ruler:
-  enabled: true
-  replicas: 1
-  extraArgs:
-    - -ruler.storage.s3.access-key-id=$(accesskey)
-    - -ruler.storage.s3.secret-access-key=$(secretkey)
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
-    - -ruler.alertmanager-discovery
-  extraEnvFrom:
-    - secretRef:
-        name: minio
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
+  memcachedIndexQueries:
+    enabled: true
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9150"
 
-compactor:
-  enabled: true
-  extraArgs:
-    - -s3.access-key-id=$(accesskey)
-    - -s3.secret-access-key=$(secretkey)
-  extraEnvFrom:
-    - secretRef:
-        name: minio
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3100"
+  memcachedIndexWrites:
+    enabled: true
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9150"
+
+  distributor:
+    replicas: 2
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
+
+  ingester:
+    replicas: 3
+    extraArgs:
+      - -s3.access-key-id=$(accesskey)
+      - -s3.secret-access-key=$(secretkey)
+    extraEnvFrom:
+      - secretRef:
+          name: minio
+    persistence:
+      enabled: true
+      storageClass: "kubermatic-fast"
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
+
+  querier:
+    replicas: 1
+    extraArgs:
+      - -s3.access-key-id=$(accesskey)
+      - -s3.secret-access-key=$(secretkey)
+    extraEnvFrom:
+      - secretRef:
+          name: minio
+    persistence:
+      enabled: true
+      storageClass: "kubermatic-fast"
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
+
+  queryFrontend:
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
+
+  gateway:
+    enabled: false
+
+  ruler:
+    enabled: true
+    replicas: 1
+    extraArgs:
+      - -ruler.storage.s3.access-key-id=$(accesskey)
+      - -ruler.storage.s3.secret-access-key=$(secretkey)
+      - -s3.access-key-id=$(accesskey)
+      - -s3.secret-access-key=$(secretkey)
+      - -ruler.alertmanager-discovery
+    extraEnvFrom:
+      - secretRef:
+          name: minio
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
+
+  compactor:
+    enabled: true
+    extraArgs:
+      - -s3.access-key-id=$(accesskey)
+      - -s3.secret-access-key=$(secretkey)
+    extraEnvFrom:
+      - secretRef:
+          name: minio
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3100"
