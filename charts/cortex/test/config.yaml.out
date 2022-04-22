@@ -99,6 +99,97 @@ metadata:
     {}
 automountServiceAccountToken: true
 ---
+# Source: cortex/charts/memcached-blocks-index/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-blocks-index
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-index
+    helm.sh/chart: memcached-blocks-index-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached-blocks-metadata/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-blocks-metadata
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-metadata
+    helm.sh/chart: memcached-blocks-metadata-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached-blocks/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-blocks
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks
+    helm.sh/chart: memcached-blocks-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached-frontend/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-frontend
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-frontend
+    helm.sh/chart: memcached-frontend-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached-index-read/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-index-read
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-read
+    helm.sh/chart: memcached-index-read-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached-index-write/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached-index-write
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-write
+    helm.sh/chart: memcached-index-write-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cortex/charts/memcached/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: RELEASE-NAME-memcached
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached
+    helm.sh/chart: memcached-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+---
 # Source: cortex/charts/cortex/templates/secret.yaml
 apiVersion: v1
 kind: Secret
@@ -112,7 +203,7 @@ metadata:
     app.kubernetes.io/version: "v1.10.0"
     app.kubernetes.io/managed-by: Helm
 data:
-  cortex.yaml: YWxlcnRtYW5hZ2VyOgogIGRhdGFfZGlyOiAvZGF0YS9jb3J0ZXgvYWxlcnQtZGF0YQogIGVuYWJsZV9hcGk6IHRydWUKICBleHRlcm5hbF91cmw6IC9hcGkvcHJvbS9hbGVydG1hbmFnZXIKICBzdG9yYWdlOgogICAgczM6CiAgICAgIGJ1Y2tldG5hbWVzOiBhbGVydG1hbmFnZXIKICAgICAgZW5kcG9pbnQ6IG1pbmlvOjkwMDAKICAgICAgaW5zZWN1cmU6IHRydWUKICAgICAgczNmb3JjZXBhdGhzdHlsZTogdHJ1ZQogICAgdHlwZTogczMKYXBpOgogIHByb21ldGhldXNfaHR0cF9wcmVmaXg6IC9wcm9tZXRoZXVzCiAgcmVzcG9uc2VfY29tcHJlc3Npb25fZW5hYmxlZDogdHJ1ZQphdXRoX2VuYWJsZWQ6IHRydWUKYmxvY2tzX3N0b3JhZ2U6CiAgYmFja2VuZDogczMKICBidWNrZXRfc3RvcmU6CiAgICBidWNrZXRfaW5kZXg6CiAgICAgIGVuYWJsZWQ6IHRydWUKICAgIGlnbm9yZV9kZWxldGlvbl9tYXJrX2RlbGF5OiAxaAogICAgc3luY19kaXI6IC9kYXRhCiAgczM6CiAgICBidWNrZXRfbmFtZTogY29ydGV4CiAgICBlbmRwb2ludDogbWluaW86OTAwMAogICAgaW5zZWN1cmU6IHRydWUKICB0c2RiOgogICAgY2xvc2VfaWRsZV90c2RiX3RpbWVvdXQ6IDM2NW0KICAgIGRpcjogL2RhdGEKICAgIGZsdXNoX2Jsb2Nrc19vbl9zaHV0ZG93bjogdHJ1ZQogICAgcmV0ZW50aW9uX3BlcmlvZDogMzY1bQogICAgd2FsX2NvbXByZXNzaW9uX2VuYWJsZWQ6IHRydWUKY2h1bmtfc3RvcmU6CiAgY2h1bmtfY2FjaGVfY29uZmlnOgogICAgbWVtY2FjaGVkOgogICAgICBleHBpcmF0aW9uOiAxaAogICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgdGltZW91dDogMXMKY29tcGFjdG9yOgogIGJsb2NrX2RlbGV0aW9uX21hcmtzX21pZ3JhdGlvbl9lbmFibGVkOiBmYWxzZQogIGNvbXBhY3Rpb25faW50ZXJ2YWw6IDMwbQogIGRhdGFfZGlyOiAvZGF0YS9jb3J0ZXgvY29tcGFjdG9yCiAgc2hhcmRpbmdfZW5hYmxlZDogdHJ1ZQogIHNoYXJkaW5nX3Jpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdApkaXN0cmlidXRvcjoKICBoYV90cmFja2VyOgogICAgZW5hYmxlX2hhX3RyYWNrZXI6IHRydWUKICAgIGt2c3RvcmU6CiAgICAgIGNvbnN1bDoKICAgICAgICBob3N0OiBjb25zdWwtY29uc3VsLXNlcnZlcjo4NTAwCiAgICAgIHN0b3JlOiBjb25zdWwKICBwb29sOgogICAgaGVhbHRoX2NoZWNrX2luZ2VzdGVyczogdHJ1ZQogIHJpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdAogIHNoYXJkX2J5X2FsbF9sYWJlbHM6IHRydWUKZnJvbnRlbmQ6CiAgbG9nX3F1ZXJpZXNfbG9uZ2VyX3RoYW46IDEwcwppbmdlc3RlcjoKICBsaWZlY3ljbGVyOgogICAgZmluYWxfc2xlZXA6IDBzCiAgICBqb2luX2FmdGVyOiAwcwogICAgbnVtX3Rva2VuczogNTEyCiAgICByaW5nOgogICAgICBrdnN0b3JlOgogICAgICAgIGNvbnN1bDoKICAgICAgICAgIGNvbnNpc3RlbnRfcmVhZHM6IHRydWUKICAgICAgICAgIGhvc3Q6IGNvbnN1bDo4NTAwCiAgICAgICAgICBodHRwX2NsaWVudF90aW1lb3V0OiAyMHMKICAgICAgICBwcmVmaXg6IGNvbGxlY3RvcnMvCiAgICAgICAgc3RvcmU6IG1lbWJlcmxpc3QKICAgICAgcmVwbGljYXRpb25fZmFjdG9yOiAzCiAgbWF4X3RyYW5zZmVyX3JldHJpZXM6IDAKaW5nZXN0ZXJfY2xpZW50OgogIGdycGNfY2xpZW50X2NvbmZpZzoKICAgIG1heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICAgIG1heF9zZW5kX21zZ19zaXplOiAxMDQ4NTc2MDAKbGltaXRzOgogIGFjY2VwdF9oYV9zYW1wbGVzOiB0cnVlCiAgZW5mb3JjZV9tZXRyaWNfbmFtZTogZmFsc2UKICBtYXhfbGFiZWxfbmFtZXNfcGVyX3NlcmllczogNDAKICBtYXhfcXVlcnlfbG9va2JhY2s6IDE2OGgKICByZWplY3Rfb2xkX3NhbXBsZXM6IHRydWUKICByZWplY3Rfb2xkX3NhbXBsZXNfbWF4X2FnZTogMTY4aAptZW1iZXJsaXN0OgogIGJpbmRfcG9ydDogNzk0NgogIGpvaW5fbWVtYmVyczoKICAtIGNvcnRleC1pbmdlc3Rlci1oZWFkbGVzcwpxdWVyaWVyOgogIGFjdGl2ZV9xdWVyeV90cmFja2VyX2RpcjogL2RhdGEvY29ydGV4L3F1ZXJpZXIKICBxdWVyeV9pbmdlc3RlcnNfd2l0aGluOiAzNjVtCiAgcXVlcnlfc3RvcmVfYWZ0ZXI6IDM2MG0KICBzdG9yZV9nYXRld2F5X2FkZHJlc3NlczogfC0KICAgIApxdWVyeV9yYW5nZToKICBhbGlnbl9xdWVyaWVzX3dpdGhfc3RlcDogdHJ1ZQogIGNhY2hlX3Jlc3VsdHM6IHRydWUKICByZXN1bHRzX2NhY2hlOgogICAgY2FjaGU6CiAgICAgIG1lbWNhY2hlZDoKICAgICAgICBleHBpcmF0aW9uOiAxaAogICAgICBtZW1jYWNoZWRfY2xpZW50OgogICAgICAgIHRpbWVvdXQ6IDFzCiAgc3BsaXRfcXVlcmllc19ieV9pbnRlcnZhbDogMjRoCnJ1bGVyOgogIGVuYWJsZV9hbGVydG1hbmFnZXJfZGlzY292ZXJ5OiB0cnVlCiAgZW5hYmxlX2FwaTogdHJ1ZQogIHJpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdAogIHN0b3JhZ2U6CiAgICBzMzoKICAgICAgYnVja2V0bmFtZXM6IGNvcnRleC1ydWxlcgogICAgICBlbmRwb2ludDogbWluaW86OTAwMAogICAgICBpbnNlY3VyZTogdHJ1ZQogICAgICBzM2ZvcmNlcGF0aHN0eWxlOiB0cnVlCiAgICB0eXBlOiBzMwpydW50aW1lX2NvbmZpZzoKICBmaWxlOiAvZXRjL2NvcnRleC1ydW50aW1lLWNmZy9ydW50aW1lLWNvbmZpZy55YW1sCiAgcGVyaW9kOiAxMHMKc2NoZW1hOgogIGNvbmZpZ3M6CiAgLSBjaHVua3M6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGNodW5rc18KICAgIGZyb206ICIyMDIwLTExLTAxIgogICAgaW5kZXg6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGluZGV4XwogICAgb2JqZWN0X3N0b3JlOiBjYXNzYW5kcmEKICAgIHNjaGVtYTogdjEwCiAgICBzdG9yZTogY2Fzc2FuZHJhCnNlcnZlcjoKICBncnBjX2xpc3Rlbl9wb3J0OiA5MDk1CiAgZ3JwY19zZXJ2ZXJfbWF4X2NvbmN1cnJlbnRfc3RyZWFtczogMTAwMAogIGdycGNfc2VydmVyX21heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICBncnBjX3NlcnZlcl9tYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgaHR0cF9saXN0ZW5fcG9ydDogODA4MApzdG9yYWdlOgogIGF6dXJlOiB7fQogIGNhc3NhbmRyYToKICAgIGF1dGg6IHRydWUKICAgIGtleXNwYWNlOiBjb3J0ZXgKICBlbmdpbmU6IGJsb2NrcwogIGluZGV4X3F1ZXJpZXNfY2FjaGVfY29uZmlnOgogICAgbWVtY2FjaGVkOgogICAgICBleHBpcmF0aW9uOiAxaAogICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgdGltZW91dDogMXMKc3RvcmVfZ2F0ZXdheToKICBzaGFyZGluZ19lbmFibGVkOiB0cnVlCiAgc2hhcmRpbmdfcmluZzoKICAgIGt2c3RvcmU6CiAgICAgIHN0b3JlOiBtZW1iZXJsaXN0CiAgICByZXBsaWNhdGlvbl9mYWN0b3I6IDIKdGFibGVfbWFuYWdlcjoKICByZXRlbnRpb25fZGVsZXRlc19lbmFibGVkOiBmYWxzZQogIHJldGVudGlvbl9wZXJpb2Q6IDBz
+  cortex.yaml: YWxlcnRtYW5hZ2VyOgogIGRhdGFfZGlyOiAvZGF0YS9jb3J0ZXgvYWxlcnQtZGF0YQogIGVuYWJsZV9hcGk6IHRydWUKICBleHRlcm5hbF91cmw6IC9hcGkvcHJvbS9hbGVydG1hbmFnZXIKICBzdG9yYWdlOgogICAgczM6CiAgICAgIGJ1Y2tldG5hbWVzOiBhbGVydG1hbmFnZXIKICAgICAgZW5kcG9pbnQ6IG1pbmlvOjkwMDAKICAgICAgaW5zZWN1cmU6IHRydWUKICAgICAgczNmb3JjZXBhdGhzdHlsZTogdHJ1ZQogICAgdHlwZTogczMKYXBpOgogIHByb21ldGhldXNfaHR0cF9wcmVmaXg6IC9wcm9tZXRoZXVzCiAgcmVzcG9uc2VfY29tcHJlc3Npb25fZW5hYmxlZDogdHJ1ZQphdXRoX2VuYWJsZWQ6IHRydWUKYmxvY2tzX3N0b3JhZ2U6CiAgYmFja2VuZDogczMKICBidWNrZXRfc3RvcmU6CiAgICBidWNrZXRfaW5kZXg6CiAgICAgIGVuYWJsZWQ6IHRydWUKICAgIGlnbm9yZV9kZWxldGlvbl9tYXJrX2RlbGF5OiAxaAogICAgc3luY19kaXI6IC9kYXRhCiAgczM6CiAgICBidWNrZXRfbmFtZTogY29ydGV4CiAgICBlbmRwb2ludDogbWluaW86OTAwMAogICAgaW5zZWN1cmU6IHRydWUKICB0c2RiOgogICAgY2xvc2VfaWRsZV90c2RiX3RpbWVvdXQ6IDM2NW0KICAgIGRpcjogL2RhdGEKICAgIGZsdXNoX2Jsb2Nrc19vbl9zaHV0ZG93bjogdHJ1ZQogICAgcmV0ZW50aW9uX3BlcmlvZDogMzY1bQogICAgd2FsX2NvbXByZXNzaW9uX2VuYWJsZWQ6IHRydWUKY2h1bmtfc3RvcmU6CiAgY2h1bmtfY2FjaGVfY29uZmlnOgogICAgbWVtY2FjaGVkOgogICAgICBleHBpcmF0aW9uOiAxaAogICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgdGltZW91dDogMXMKY29tcGFjdG9yOgogIGJsb2NrX2RlbGV0aW9uX21hcmtzX21pZ3JhdGlvbl9lbmFibGVkOiBmYWxzZQogIGNvbXBhY3Rpb25faW50ZXJ2YWw6IDMwbQogIGRhdGFfZGlyOiAvZGF0YS9jb3J0ZXgvY29tcGFjdG9yCiAgc2hhcmRpbmdfZW5hYmxlZDogdHJ1ZQogIHNoYXJkaW5nX3Jpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdApkaXN0cmlidXRvcjoKICBoYV90cmFja2VyOgogICAgZW5hYmxlX2hhX3RyYWNrZXI6IHRydWUKICAgIGt2c3RvcmU6CiAgICAgIGNvbnN1bDoKICAgICAgICBob3N0OiBjb25zdWwtY29uc3VsLXNlcnZlcjo4NTAwCiAgICAgIHN0b3JlOiBjb25zdWwKICBwb29sOgogICAgaGVhbHRoX2NoZWNrX2luZ2VzdGVyczogdHJ1ZQogIHJpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdAogIHNoYXJkX2J5X2FsbF9sYWJlbHM6IHRydWUKZnJvbnRlbmQ6CiAgbG9nX3F1ZXJpZXNfbG9uZ2VyX3RoYW46IDEwcwppbmdlc3RlcjoKICBsaWZlY3ljbGVyOgogICAgZmluYWxfc2xlZXA6IDBzCiAgICBqb2luX2FmdGVyOiAwcwogICAgbnVtX3Rva2VuczogNTEyCiAgICByaW5nOgogICAgICBrdnN0b3JlOgogICAgICAgIGNvbnN1bDoKICAgICAgICAgIGNvbnNpc3RlbnRfcmVhZHM6IHRydWUKICAgICAgICAgIGhvc3Q6IGNvbnN1bDo4NTAwCiAgICAgICAgICBodHRwX2NsaWVudF90aW1lb3V0OiAyMHMKICAgICAgICBwcmVmaXg6IGNvbGxlY3RvcnMvCiAgICAgICAgc3RvcmU6IG1lbWJlcmxpc3QKICAgICAgcmVwbGljYXRpb25fZmFjdG9yOiAzCiAgbWF4X3RyYW5zZmVyX3JldHJpZXM6IDAKaW5nZXN0ZXJfY2xpZW50OgogIGdycGNfY2xpZW50X2NvbmZpZzoKICAgIG1heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICAgIG1heF9zZW5kX21zZ19zaXplOiAxMDQ4NTc2MDAKbGltaXRzOgogIGFjY2VwdF9oYV9zYW1wbGVzOiB0cnVlCiAgZW5mb3JjZV9tZXRyaWNfbmFtZTogZmFsc2UKICBtYXhfbGFiZWxfbmFtZXNfcGVyX3NlcmllczogNDAKICBtYXhfcXVlcnlfbG9va2JhY2s6IDE2OGgKICByZWplY3Rfb2xkX3NhbXBsZXM6IHRydWUKICByZWplY3Rfb2xkX3NhbXBsZXNfbWF4X2FnZTogMTY4aAptZW1iZXJsaXN0OgogIGJpbmRfcG9ydDogNzk0NgogIGpvaW5fbWVtYmVyczoKICAtIGNvcnRleC1pbmdlc3Rlci1oZWFkbGVzcwpxdWVyaWVyOgogIGFjdGl2ZV9xdWVyeV90cmFja2VyX2RpcjogL2RhdGEvY29ydGV4L3F1ZXJpZXIKICBxdWVyeV9pbmdlc3RlcnNfd2l0aGluOiAzNjVtCiAgcXVlcnlfc3RvcmVfYWZ0ZXI6IDM2MG0KICBzdG9yZV9nYXRld2F5X2FkZHJlc3NlczogfC0KICAgIApxdWVyeV9yYW5nZToKICBhbGlnbl9xdWVyaWVzX3dpdGhfc3RlcDogdHJ1ZQogIGNhY2hlX3Jlc3VsdHM6IHRydWUKICByZXN1bHRzX2NhY2hlOgogICAgY2FjaGU6CiAgICAgIG1lbWNhY2hlZDoKICAgICAgICBleHBpcmF0aW9uOiAxaAogICAgICBtZW1jYWNoZWRfY2xpZW50OgogICAgICAgIHRpbWVvdXQ6IDFzCiAgc3BsaXRfcXVlcmllc19ieV9pbnRlcnZhbDogMjRoCnJ1bGVyOgogIGVuYWJsZV9hbGVydG1hbmFnZXJfZGlzY292ZXJ5OiB0cnVlCiAgZW5hYmxlX2FwaTogdHJ1ZQogIHJpbmc6CiAgICBrdnN0b3JlOgogICAgICBzdG9yZTogbWVtYmVybGlzdAogIHN0b3JhZ2U6CiAgICBzMzoKICAgICAgYnVja2V0bmFtZXM6IGNvcnRleC1ydWxlcgogICAgICBlbmRwb2ludDogbWluaW86OTAwMAogICAgICBpbnNlY3VyZTogdHJ1ZQogICAgICBzM2ZvcmNlcGF0aHN0eWxlOiB0cnVlCiAgICB0eXBlOiBzMwpydW50aW1lX2NvbmZpZzoKICBmaWxlOiAvZXRjL2NvcnRleC1ydW50aW1lLWNmZy9ydW50aW1lX2NvbmZpZy55YW1sCiAgcGVyaW9kOiAxMHMKc2NoZW1hOgogIGNvbmZpZ3M6CiAgLSBjaHVua3M6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGNodW5rc18KICAgIGZyb206ICIyMDIwLTExLTAxIgogICAgaW5kZXg6CiAgICAgIHBlcmlvZDogMTY4aAogICAgICBwcmVmaXg6IGluZGV4XwogICAgb2JqZWN0X3N0b3JlOiBjYXNzYW5kcmEKICAgIHNjaGVtYTogdjEwCiAgICBzdG9yZTogY2Fzc2FuZHJhCnNlcnZlcjoKICBncnBjX2xpc3Rlbl9wb3J0OiA5MDk1CiAgZ3JwY19zZXJ2ZXJfbWF4X2NvbmN1cnJlbnRfc3RyZWFtczogMTAwMAogIGdycGNfc2VydmVyX21heF9yZWN2X21zZ19zaXplOiAxMDQ4NTc2MDAKICBncnBjX3NlcnZlcl9tYXhfc2VuZF9tc2dfc2l6ZTogMTA0ODU3NjAwCiAgaHR0cF9saXN0ZW5fcG9ydDogODA4MApzdG9yYWdlOgogIGF6dXJlOiB7fQogIGNhc3NhbmRyYToKICAgIGF1dGg6IHRydWUKICAgIGtleXNwYWNlOiBjb3J0ZXgKICBlbmdpbmU6IGJsb2NrcwogIGluZGV4X3F1ZXJpZXNfY2FjaGVfY29uZmlnOgogICAgbWVtY2FjaGVkOgogICAgICBleHBpcmF0aW9uOiAxaAogICAgbWVtY2FjaGVkX2NsaWVudDoKICAgICAgdGltZW91dDogMXMKc3RvcmVfZ2F0ZXdheToKICBzaGFyZGluZ19lbmFibGVkOiB0cnVlCiAgc2hhcmRpbmdfcmluZzoKICAgIGt2c3RvcmU6CiAgICAgIHN0b3JlOiBtZW1iZXJsaXN0CiAgICByZXBsaWNhdGlvbl9mYWN0b3I6IDIKdGFibGVfbWFuYWdlcjoKICByZXRlbnRpb25fZGVsZXRlc19lbmFibGVkOiBmYWxzZQogIHJldGVudGlvbl9wZXJpb2Q6IDBz
 ---
 # Source: cortex/charts/cortex/templates/runtime-configmap.yaml
 apiVersion: v1
@@ -514,6 +605,167 @@ spec:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/part-of: memberlist
 ---
+# Source: cortex/charts/memcached-blocks-index/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-blocks-index
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-index
+    helm.sh/chart: memcached-blocks-index-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-blocks-index
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached-blocks-metadata/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-blocks-metadata
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-metadata
+    helm.sh/chart: memcached-blocks-metadata-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-blocks-metadata
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached-blocks/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-blocks
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks
+    helm.sh/chart: memcached-blocks-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-blocks
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached-frontend/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-frontend
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-frontend
+    helm.sh/chart: memcached-frontend-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-frontend
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached-index-read/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-index-read
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-read
+    helm.sh/chart: memcached-index-read-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-index-read
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached-index-write/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached-index-write
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-write
+    helm.sh/chart: memcached-index-write-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached-index-write
+    app.kubernetes.io/instance: RELEASE-NAME
+---
+# Source: cortex/charts/memcached/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-memcached
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached
+    helm.sh/chart: memcached-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: memcache
+      port: 11211
+      targetPort: memcache
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: memcached
+    app.kubernetes.io/instance: RELEASE-NAME
+---
 # Source: cortex/charts/cortex/templates/distributor/distributor-dep.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -553,7 +805,7 @@ spec:
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -673,7 +925,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: querier
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -808,7 +1060,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-frontend
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -924,7 +1176,7 @@ spec:
         app.kubernetes.io/component: ruler
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -995,7 +1247,7 @@ spec:
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  key: secretkey
+                  key: rootPassword
                   name: minio
       nodeSelector:
         {}
@@ -1017,6 +1269,594 @@ spec:
             name: cortex-runtime-config
           name: cortex-runtime-config
         - name: storage
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-blocks-index/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-blocks-index
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-index
+    helm.sh/chart: memcached-blocks-index-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-blocks-index
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-blocks-index
+        helm.sh/chart: memcached-blocks-index-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-blocks-index
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-blocks-index
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-blocks-metadata/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-blocks-metadata
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks-metadata
+    helm.sh/chart: memcached-blocks-metadata-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-blocks-metadata
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-blocks-metadata
+        helm.sh/chart: memcached-blocks-metadata-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-blocks-metadata
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-blocks-metadata
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-blocks/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-blocks
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-blocks
+    helm.sh/chart: memcached-blocks-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-blocks
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-blocks
+        helm.sh/chart: memcached-blocks-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-blocks
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-blocks
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-frontend/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-frontend
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-frontend
+    helm.sh/chart: memcached-frontend-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-frontend
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-frontend
+        helm.sh/chart: memcached-frontend-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-frontend
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-frontend
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-index-read/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-index-read
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-read
+    helm.sh/chart: memcached-index-read-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-index-read
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-index-read
+        helm.sh/chart: memcached-index-read-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-index-read
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-index-read
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached-index-write/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached-index-write
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached-index-write
+    helm.sh/chart: memcached-index-write-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached-index-write
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached-index-write
+        helm.sh/chart: memcached-index-write-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached-index-write
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached-index-write
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+# Source: cortex/charts/memcached/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-memcached
+  namespace: default
+  labels:
+    app.kubernetes.io/name: memcached
+    helm.sh/chart: memcached-5.15.4
+    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memcached
+      app.kubernetes.io/instance: RELEASE-NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memcached
+        helm.sh/chart: memcached-5.15.4
+        app.kubernetes.io/instance: RELEASE-NAME
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: memcached
+                    app.kubernetes.io/instance: RELEASE-NAME
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: RELEASE-NAME-memcached
+      containers:
+        - name: memcached
+          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /run.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: memcache
+              containerPort: 11211
+          livenessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: memcache
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 5
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            readOnlyRootFilesystem: false
+      volumes:
+        - name: tmp
           emptyDir: {}
 ---
 # Source: cortex/charts/cortex/templates/alertmanager/alertmanager-statefulset.yaml
@@ -1067,7 +1907,7 @@ spec:
         app.kubernetes.io/component: alertmanager
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -1212,7 +2052,7 @@ spec:
         app.kubernetes.io/component: compactor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -1349,7 +2189,7 @@ spec:
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
@@ -1506,7 +2346,7 @@ spec:
         app.kubernetes.io/component: store-gateway
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 5fedecbea2cd2988896db375315ea5063fd00f3cf91cd9036cc8ce869d4b7375
+        checksum/config: 4d41f4fdcd8252f3835d781cef638034534fd0b171af5c6e1b9d92a528fe3deb
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
     spec:
