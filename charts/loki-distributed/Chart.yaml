@@ -12,3 +12,7 @@ sources:
 - https://grafana.com/docs/loki/latest/
 type: application
 version: 0.39.0
+dependencies:
+  - name: loki-distributed
+    version: 0.39.0
+    repository: https://grafana.github.io/helm-charts

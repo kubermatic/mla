@@ -1,24 +1,6 @@
 dependencies:
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-- name: memcached
-  repository: file://subcharts/memcached
-  version: 5.15.4
-digest: sha256:348773be0cfbd2d728138b8aa1966af63f725effe83da4e43fac9668e1e3cd5f
-generated: "2021-11-10T18:20:19.680971+08:00"
+- name: cortex
+  repository: https://cortexproject.github.io/cortex-helm-chart
+  version: 0.7.0
+digest: sha256:0c8df2526a3a6d7edc351f0793ea426c749a7603b3738251b9bd37c46f74f9cd
+generated: "2022-04-15T13:20:05.2419094+02:00"
