@@ -53,6 +53,7 @@ helm --namespace mla upgrade --atomic --create-namespace --install consul charts
 
 echo ""
 echo "Installing Cortex"
+kubectl create -n mla configmap cortex-runtime-config --from-file=config/cortex/runtime-config.yaml || true
 helm --namespace mla upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
 
 echo ""

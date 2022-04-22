@@ -55,6 +55,7 @@ helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul 
 
 echodate ""
 echodate "Installing Cortex"
+kubectl create -n mla configmap cortex-runtime-config --from-file=config/cortex/runtime-config.yaml || true
 helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
 
 echodate ""
