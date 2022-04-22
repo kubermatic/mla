@@ -21,7 +21,7 @@ set -euo pipefail
 
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../.."
 REALDIR="$(cd "$(dirname $(readlink -f "${BASH_SOURCE[0]}"))" && pwd)"
-source ${REALDIR}/../lib.sh
+source ${REALDIR}/lib.sh
 
 cd ${BASEDIR}
 charts=$(find charts/ -name Chart.yaml | sort)
