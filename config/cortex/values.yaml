@@ -254,7 +254,7 @@ cortex:
         - cortex-ingester-headless
     runtime_config:
       period: "10s"
-      file: "/etc/cortex-runtime-cfg/runtime_config.yaml"
+      file: "/etc/cortex-runtime-cfg/runtime-config.yaml"
     ruler:
       enable_alertmanager_discovery: true
       enable_api: true
