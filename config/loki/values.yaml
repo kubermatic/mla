@@ -94,8 +94,8 @@ loki-distributed:
   tableManager:
     enabled: true
     extraArgs:
-      - -s3.access-key-id=$(accesskey)
-      - -s3.secret-access-key=$(secretkey)
+      - -s3.access-key-id=$(rootUser)
+      - -s3.secret-access-key=$(rootPassword)
     extraEnvFrom:
       - secretRef:
           name: minio
@@ -140,8 +140,8 @@ loki-distributed:
   ingester:
     replicas: 3
     extraArgs:
-      - -s3.access-key-id=$(accesskey)
-      - -s3.secret-access-key=$(secretkey)
+      - -s3.access-key-id=$(rootUser)
+      - -s3.secret-access-key=$(rootPassword)
     extraEnvFrom:
       - secretRef:
           name: minio
@@ -155,8 +155,8 @@ loki-distributed:
   querier:
     replicas: 1
     extraArgs:
-      - -s3.access-key-id=$(accesskey)
-      - -s3.secret-access-key=$(secretkey)
+      - -s3.access-key-id=$(rootUser)
+      - -s3.secret-access-key=$(rootPassword)
     extraEnvFrom:
       - secretRef:
           name: minio
@@ -179,10 +179,10 @@ loki-distributed:
     enabled: true
     replicas: 1
     extraArgs:
-      - -ruler.storage.s3.access-key-id=$(accesskey)
-      - -ruler.storage.s3.secret-access-key=$(secretkey)
-      - -s3.access-key-id=$(accesskey)
-      - -s3.secret-access-key=$(secretkey)
+      - -ruler.storage.s3.access-key-id=$(rootUser)
+      - -ruler.storage.s3.secret-access-key=$(rootPassword)
+      - -s3.access-key-id=$(rootUser)
+      - -s3.secret-access-key=$(rootPassword)
       - -ruler.alertmanager-discovery
     extraEnvFrom:
       - secretRef:
@@ -194,8 +194,8 @@ loki-distributed:
   compactor:
     enabled: true
     extraArgs:
-      - -s3.access-key-id=$(accesskey)
-      - -s3.secret-access-key=$(secretkey)
+      - -s3.access-key-id=$(rootUser)
+      - -s3.secret-access-key=$(rootPassword)
     extraEnvFrom:
       - secretRef:
           name: minio
