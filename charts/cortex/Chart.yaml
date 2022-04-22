@@ -8,6 +8,44 @@ name: cortex
 sources:
   - https://github.com/cortexproject/cortex-helm-chart
 dependencies:
-  - name: cortex
-    repository: https://cortexproject.github.io/cortex-helm-chart
-    version: 0.7.0
+- name: cortex
+  repository: https://cortexproject.github.io/cortex-helm-chart
+  version: 0.7.0
+- alias: memcached
+  condition: cortex.memcached.enabled
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.15.4
+- alias: memcached-index-read
+  condition: cortex.memcached-index-read.enabled
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.15.4
+- alias: memcached-index-write
+  condition: cortex.memcached-index-write.enabled
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.15.4
+- alias: memcached-frontend
+  condition: cortex.memcached-frontend.enabled
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.15.4
+- alias: memcached-blocks-index
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - blocks-storage-memcached
+  version: 5.15.4
+- alias: memcached-blocks
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - blocks-storage-memcached
+  version: 5.15.4
+- alias: memcached-blocks-metadata
+  name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  tags:
+  - blocks-storage-memcached
+  version: 5.15.4
