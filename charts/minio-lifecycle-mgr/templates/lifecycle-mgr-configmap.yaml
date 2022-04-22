@@ -18,7 +18,7 @@ metadata:
   name:  minio-lifecycle-mgr-scripts
 data:
   ensure-lifecycle.sh: |
-    mc alias set minio {{ .Values.lifecycleMgr.minio.endpoint }} $accesskey $secretkey
+    mc alias set minio {{ .Values.lifecycleMgr.minio.endpoint }} $rootUser $rootPassword
     {{- range .Values.lifecycleMgr.buckets }}
     mc ilm import minio/{{ .name }} <<EOF
     {
