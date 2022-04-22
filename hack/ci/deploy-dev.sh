@@ -37,14 +37,13 @@ echodate "Successfully got secrets for dev from Vault"
 echodate "Fetching dependencies for the charts"
 hack/fetch-chart-dependencies.sh
 
-## We have to use helm3 since `--create-namespace` is not available in helm2
 echodate ""
 echodate "Installing Minio"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
 
 echodate ""
 echodate "Installing Grafana"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
 
 echo ""
 echo "Installing Grafana Dashboards"
@@ -52,22 +51,22 @@ kubectl apply -f dashboards/
 
 echodate ""
 echodate "Installing Consul for Cortex"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
 
 echodate ""
 echodate "Installing Cortex"
 kubectl create -n mla configmap cortex-runtime-config --from-file=config/cortex/runtime-config.yaml || true
-helm3 dependency update charts/cortex  # need that to store memcached in charts directory
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
+helm dependency update charts/cortex  # need that to store memcached in charts directory
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex charts/cortex --values config/cortex/values.yaml --timeout 1200s
 
 echodate ""
 echodate "Installing Loki"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml --timeout 600s
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml --timeout 600s
 
 echodate ""
 echodate "Installing Alertmanager Proxy"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install alertmanager-proxy charts/alertmanager-proxy
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install alertmanager-proxy charts/alertmanager-proxy
 
 echodate ""
 echodate "Installing Minio Bucket Lifecycle Manager"
-helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr --values config/minio-lifecycle-mgr/values.yaml
+helm --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio-lifecycle-mgr charts/minio-lifecycle-mgr --values config/minio-lifecycle-mgr/values.yaml
