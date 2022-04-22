@@ -12,22 +12,22 @@ dependencies:
   repository: https://cortexproject.github.io/cortex-helm-chart
   version: 0.7.0
 - alias: memcached
-  condition: memcached.enabled
+  condition: cortex.memcached.enabled
   name: memcached
   repository: https://charts.bitnami.com/bitnami
   version: 5.15.4
 - alias: memcached-index-read
-  condition: memcached-index-read.enabled
+  condition: cortex.memcached-index-read.enabled
   name: memcached
   repository: https://charts.bitnami.com/bitnami
   version: 5.15.4
 - alias: memcached-index-write
-  condition: memcached-index-write.enabled
+  condition: cortex.memcached-index-write.enabled
   name: memcached
   repository: https://charts.bitnami.com/bitnami
   version: 5.15.4
 - alias: memcached-frontend
-  condition: memcached-frontend.enabled
+  condition: cortex.memcached-frontend.enabled
   name: memcached
   repository: https://charts.bitnami.com/bitnami
   version: 5.15.4
