@@ -575,8 +575,8 @@ spec:
             - -config.file=/etc/loki/config/config.yaml
             - -target=compactor
             - -boltdb.shipper.compactor.working-directory=/var/loki/compactor
-            - -s3.access-key-id=$(accesskey)
-            - -s3.secret-access-key=$(secretkey)
+            - -s3.access-key-id=$(rootUser)
+            - -s3.secret-access-key=$(rootPassword)
           ports:
             - name: http
               containerPort: 3100
@@ -861,10 +861,10 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=ruler
-            - -ruler.storage.s3.access-key-id=$(accesskey)
-            - -ruler.storage.s3.secret-access-key=$(secretkey)
-            - -s3.access-key-id=$(accesskey)
-            - -s3.secret-access-key=$(secretkey)
+            - -ruler.storage.s3.access-key-id=$(rootUser)
+            - -ruler.storage.s3.secret-access-key=$(rootPassword)
+            - -s3.access-key-id=$(rootUser)
+            - -s3.secret-access-key=$(rootPassword)
             - -ruler.alertmanager-discovery
           ports:
             - name: http
@@ -971,8 +971,8 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=table-manager
-            - -s3.access-key-id=$(accesskey)
-            - -s3.secret-access-key=$(secretkey)
+            - -s3.access-key-id=$(rootUser)
+            - -s3.secret-access-key=$(rootPassword)
           ports:
             - name: http
               containerPort: 3100
@@ -1077,8 +1077,8 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=ingester
-            - -s3.access-key-id=$(accesskey)
-            - -s3.secret-access-key=$(secretkey)
+            - -s3.access-key-id=$(rootUser)
+            - -s3.secret-access-key=$(rootPassword)
           ports:
             - name: http
               containerPort: 3100
@@ -1582,8 +1582,8 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=querier
-            - -s3.access-key-id=$(accesskey)
-            - -s3.secret-access-key=$(secretkey)
+            - -s3.access-key-id=$(rootUser)
+            - -s3.secret-access-key=$(rootPassword)
           ports:
             - name: http
               containerPort: 3100
