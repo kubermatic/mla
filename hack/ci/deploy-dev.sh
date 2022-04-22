@@ -34,15 +34,16 @@ export KUBECONFIG=/tmp/kubeconfig
 vault kv get -field=kubeconfig dev/seed-clusters/dev.kubermatic.io > ${KUBECONFIG}
 echodate "Successfully got secrets for dev from Vault"
 
+echodate "Fetching dependencies for the charts"
+hack/fetch-chart-dependencies.sh
+
 ## We have to use helm3 since `--create-namespace` is not available in helm2
 echodate ""
 echodate "Installing Minio"
-helm3 dep build charts/minio
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install minio charts/minio --values config/minio/values.yaml
 
 echodate ""
 echodate "Installing Grafana"
-helm3 dep build charts/grafana
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install grafana charts/grafana --values config/grafana/values.yaml
 
 echo ""
@@ -51,7 +52,6 @@ kubectl apply -f dashboards/
 
 echodate ""
 echodate "Installing Consul for Cortex"
-helm3 dep build charts/consul
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install consul charts/consul --values config/consul/values.yaml
 
 echodate ""
@@ -62,7 +62,6 @@ helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install cortex
 
 echodate ""
 echodate "Installing Loki"
-helm3 dep build charts/loki-distributed
 helm3 --namespace ${MLA_NS} upgrade --atomic --create-namespace --install loki-distributed charts/loki-distributed --values config/loki/values.yaml --timeout 600s
 
 echodate ""

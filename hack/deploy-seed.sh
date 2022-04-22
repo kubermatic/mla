@@ -13,6 +13,10 @@ fi
 skip_minio=false
 skip_minio_lifecycle_mgr=false
 
+echo ""
+echo "fetching charts"
+hack/fetch-chart-dependencies.sh
+
 for var in $@
 do
     if [ "$var" = "--skip-minio" ]; then
