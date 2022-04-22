@@ -35,7 +35,7 @@ vault kv get -field=kubeconfig dev/seed-clusters/dev.kubermatic.io > ${KUBECONFI
 echodate "Successfully got secrets for dev from Vault"
 
 echodate "Fetching dependencies for the charts"
-hack/ci/fetch-chart-dependencies.sh
+hack/fetch-chart-dependencies.sh
 
 ## We have to use helm3 since `--create-namespace` is not available in helm2
 echodate ""

@@ -15,7 +15,7 @@ skip_minio_lifecycle_mgr=false
 
 echo ""
 echo "fetching charts"
-hack/ci/fetch-chart-dependencies.sh
+hack/fetch-chart-dependencies.sh
 
 for var in $@
 do
