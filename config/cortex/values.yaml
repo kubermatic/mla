@@ -24,7 +24,7 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: accesskey
+            key: rootUser
       - name: SECRET_KEY
         valueFrom:
           secretKeyRef:
@@ -71,12 +71,12 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: accesskey
+            key: rootUser
       - name: SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: minio
-            key: secretkey
+            key: rootPassword
     podAnnotations:
       prometheus.io/port: '8080'
     extraVolumeMounts:
@@ -113,12 +113,12 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: accesskey
+            key: rootUser
       - name: SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: minio
-            key: secretkey
+            key: rootPassword
     podAnnotations:
       prometheus.io/port: '8080'
 
@@ -132,12 +132,12 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: accesskey
+            key: rootUser
       - name: SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: minio
-            key: secretkey
+            key: rootPassword
     podAnnotations:
       prometheus.io/port: '8080'
     extraVolumeMounts:
@@ -187,12 +187,12 @@ cortex:
         valueFrom:
           secretKeyRef:
             name: minio
-            key: accesskey
+            key: rootUser
       - name: SECRET_KEY
         valueFrom:
           secretKeyRef:
             name: minio
-            key: secretkey
+            key: rootPassword
     podAnnotations:
       prometheus.io/port: '8080'
     extraVolumeMounts:
