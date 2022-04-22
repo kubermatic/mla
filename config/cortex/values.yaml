@@ -308,7 +308,7 @@ cortex:
   runtimeconfigmap:
     # -- If true, a configmap for the `runtime_config` will be created.
     # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
-    create: false
+    create: true
 
   memcached-blocks-metadata:
     resources:
@@ -330,11 +330,3 @@ cortex:
         cpu: 5m
     serviceAccount:
       create: false
-
-  runtimeconfigmap:
-    # -- If true, a configmap for the `runtime_config` will be created.
-    # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
-    create: true
-    annotations: {}
-    # -- https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file
-    runtime_config: {}
