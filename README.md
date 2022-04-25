@@ -18,7 +18,7 @@ Please use the version tag of this repo matching with your Kubermatic Kubernetes
 
 | MLA Version Tag | Compatible KKP Versions
 |-----------------|-------------
-| v0.1.0          |  v2.18.0
+| v0.1.x          |  v2.18.x, v2.19.x
 
 ## Installing MLA Stack in a KKP Seed Cluster
 
