@@ -257,6 +257,8 @@ cortex:
       file: "/etc/cortex-runtime-cfg/runtime-config.yaml"
     ruler:
       enable_alertmanager_discovery: true
+      # This is a KKP-specific headless alertmanager service, used to work around the Cortex helm chart bug in chart versions below v1.0.0
+      alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless-kkp/api/prom/alertmanager/
       enable_api: true
       ring:
         kvstore:
