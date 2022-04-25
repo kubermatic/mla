@@ -89,7 +89,8 @@ loki-distributed:
           kvstore:
             store: memberlist
         rule_path: /tmp/loki/scratch
-        alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless/api/prom/alertmanager/
+        # This is a KKP-specific headless alertmanager service, used to work around the Cortex helm chart bug in chart versions below v1.0.0
+        alertmanager_url: http://_http-metrics._tcp.cortex-alertmanager-headless-kkp/api/prom/alertmanager/
 
   tableManager:
     enabled: true
