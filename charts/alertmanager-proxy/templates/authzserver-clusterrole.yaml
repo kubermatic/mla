@@ -18,7 +18,7 @@ metadata:
   name: alertmanager-authz-server
 rules:
   - apiGroups:
-      - kubermatic.k8s.io
+      - kubermatic.k8c.io
     resources:
       - clusters
       - users
