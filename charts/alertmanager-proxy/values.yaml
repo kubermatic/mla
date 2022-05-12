@@ -13,51 +13,52 @@
 # limitations under the License.
 
 alertmanagerProxy:
-  backendAddress: cortex-alertmanager
-  backendPort: 8080
-  image:
-    repository: "envoyproxy/envoy"
-    tag: "v1.18.3"
-  replicas: 1
-  resources:
-    requests:
-      cpu: 50m
-      memory: 32Mi
-    limits:
-      cpu: 200m
-      memory: 64Mi
-  nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - podAffinityTerm:
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: alertmanager-proxy
-            topologyKey: kubernetes.io/hostname
-          weight: 100
-  tolerations: []
+  proxy:
+    backendAddress: cortex-alertmanager
+    backendPort: 8080
+    image:
+      repository: "envoyproxy/envoy"
+      tag: "v1.18.3"
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 32Mi
+      limits:
+        cpu: 200m
+        memory: 64Mi
+    nodeSelector: {}
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: alertmanager-proxy
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+    tolerations: []
 
-alertmanagerAuthzServer:
-  image:
-    repository: "quay.io/kubermatic/alertmanager-authorization-server"
-    tag: "0.2.0"
-  replicas: 1
-  resources:
-    requests:
-      cpu: 50m
-      memory: 32Mi
-    limits:
-      cpu: 200m
-      memory: 64Mi
-  nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - podAffinityTerm:
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: alertmanager-authz-server
-            topologyKey: kubernetes.io/hostname
-          weight: 100
-  tolerations: []
+  authz:
+    image:
+      repository: "quay.io/kubermatic/alertmanager-authorization-server"
+      tag: "0.2.0"
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 32Mi
+      limits:
+        cpu: 200m
+        memory: 64Mi
+    nodeSelector: {}
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: alertmanager-authz-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+    tolerations: []
