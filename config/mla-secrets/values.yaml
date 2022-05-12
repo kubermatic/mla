@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-grafana:
-  ## Set enabled to false if you want to re-use an existing secret for grafana.
-  enabled: true
-  adminuser: admin
+mlaSecrets:
+  grafana:
+    ## Set enabled to false if you want to re-use an existing secret for grafana.
+    enabled: true
+    adminuser: admin
 
-minio:
-  ## Set enabled to false if you want to re-use an existing secret for minio.
-  enabled: true
+  minio:
+    ## Set enabled to false if you want to re-use an existing secret for minio.
+    enabled: true

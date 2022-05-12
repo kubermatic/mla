@@ -12,57 +12,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-minio:
-  ## Set enabled to false if you want to re-use an existing secret for minio.
-  enabled: true
-  ## Set default accesskey, secretkey
-  ## AccessKey and secretKey is generated when not set
-  accessKey: ""
-  secretKey: ""
-
-  ## Use minio as GCS (Google Cloud Storage) gateway.
-  ## https://docs.minio.io/docs/minio-gateway-for-gcs
-  gcsgateway:
-    enabled: false
-    # credential json file of service account key
-    gcsKeyJson: ""
-
-  s3gateway:
-    enabled: false
-    replicas: 4
-    serviceEndpoint: ""
+mlaSecrets:
+  minio:
+    ## Set enabled to false if you want to re-use an existing secret for minio.
+    enabled: true
+    ## Set default accesskey, secretkey
+    ## AccessKey and secretKey is generated when not set
     accessKey: ""
     secretKey: ""
 
-  ## ETCD settings: https://github.com/minio/minio/blob/master/docs/sts/etcd.md
-  ## Define endpoints to enable this section.
-  etcd:
-    clientCert: ""
-    clientCertKey: ""
+    ## Use minio as GCS (Google Cloud Storage) gateway.
+    ## https://docs.minio.io/docs/minio-gateway-for-gcs
+    gcsgateway:
+      enabled: false
+      # credential json file of service account key
+      gcsKeyJson: ""
 
-grafana:
-  ## Set enabled to false if you want to re-use an existing secret for grafana.
-  enabled: true
-  adminUser: admin
-#  adminPassword: strongpassword
+    s3gateway:
+      enabled: false
+      replicas: 4
+      serviceEndpoint: ""
+      accessKey: ""
+      secretKey: ""
 
-  ## Grafana's LDAP configuration
-  ## Templated by the template in _helpers.tpl
-  ## NOTE: To enable the grafana.ini must be configured with auth.ldap.enabled
-  ## ref: http://docs.grafana.org/installation/configuration/#auth-ldap
-  ## ref: http://docs.grafana.org/installation/ldap/#configuration
-  ldap:
-    enabled: false
-    # `config` is the content of `ldap.toml` that will be stored in the created secret
-    config: ""
-    # config: |-
-    #   verbose_logging = true
+    ## ETCD settings: https://github.com/minio/minio/blob/master/docs/sts/etcd.md
+    ## Define endpoints to enable this section.
+    etcd:
+      clientCert: ""
+      clientCertKey: ""
 
-    #   [[servers]]
-    #   host = "my-ldap-server"
-    #   port = 636
-    #   use_ssl = true
-    #   start_tls = false
-    #   ssl_skip_verify = false
-    #   bind_dn = "uid=%s,ou=users,dc=myorg,dc=com"
+  grafana:
+    ## Set enabled to false if you want to re-use an existing secret for grafana.
+    enabled: true
+    adminUser: admin
+  #  adminPassword: strongpassword
+
+    ## Grafana's LDAP configuration
+    ## Templated by the template in _helpers.tpl
+    ## NOTE: To enable the grafana.ini must be configured with auth.ldap.enabled
+    ## ref: http://docs.grafana.org/installation/configuration/#auth-ldap
+    ## ref: http://docs.grafana.org/installation/ldap/#configuration
+    ldap:
+      enabled: false
+      # `config` is the content of `ldap.toml` that will be stored in the created secret
+      config: ""
+      # config: |-
+      #   verbose_logging = true
+
+      #   [[servers]]
+      #   host = "my-ldap-server"
+      #   port = 636
+      #   use_ssl = true
+      #   start_tls = false
+      #   ssl_skip_verify = false
+      #   bind_dn = "uid=%s,ou=users,dc=myorg,dc=com"
