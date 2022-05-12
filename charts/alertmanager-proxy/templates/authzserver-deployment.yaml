@@ -20,7 +20,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: alertmanager-authz-server
-  replicas: {{ .Values.alertmanagerAuthzServer.replicas }}
+  replicas: {{ .Values.alertmanagerProxy.authz.replicas }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -36,7 +36,7 @@ spec:
       serviceAccountName: alertmanager-authz-server
       containers:
         - name: authz-server
-          image: '{{ .Values.alertmanagerAuthzServer.image.repository }}:{{ .Values.alertmanagerAuthzServer.image.tag }}'
+          image: '{{ .Values.alertmanagerProxy.authz.image.repository }}:{{ .Values.alertmanagerProxy.authz.image.tag }}'
           ports:
             - containerPort: 50051
           command:
@@ -44,10 +44,10 @@ spec:
           args:
             - -log-debug=true
           resources:
-{{ toYaml .Values.alertmanagerAuthzServer.resources | indent 12 }}
+{{ toYaml .Values.alertmanagerProxy.authz.resources | indent 12 }}
       nodeSelector:
-{{ toYaml .Values.alertmanagerAuthzServer.nodeSelector | indent 8 }}
+{{ toYaml .Values.alertmanagerProxy.authz.nodeSelector | indent 8 }}
       affinity:
-{{ toYaml .Values.alertmanagerAuthzServer.affinity | indent 8 }}
+{{ toYaml .Values.alertmanagerProxy.authz.affinity | indent 8 }}
       tolerations:
-{{ toYaml .Values.alertmanagerAuthzServer.tolerations | indent 8 }}
+{{ toYaml .Values.alertmanagerProxy.authz.tolerations | indent 8 }}

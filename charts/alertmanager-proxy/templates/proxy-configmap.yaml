@@ -135,8 +135,8 @@ data:
             - endpoint:
                 address:
                   socket_address:
-                    address: {{ .Values.alertmanagerProxy.backendAddress }}
-                    port_value: {{ .Values.alertmanagerProxy.backendPort }}
+                    address: {{ .Values.alertmanagerProxy.proxy.backendAddress }}
+                    port_value: {{ .Values.alertmanagerProxy.proxy.backendPort }}
 
       - name: ext-authz
         type: STRICT_DNS
