@@ -5,7 +5,7 @@ cortex:
   distributor:
     replicas: 2
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -31,7 +31,7 @@ cortex:
             name: minio
             key: rootPassword
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -49,7 +49,7 @@ cortex:
       enabled: true
       storageClass: "kubermatic-fast"
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -78,7 +78,7 @@ cortex:
             name: minio
             key: rootPassword
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -120,7 +120,7 @@ cortex:
             name: minio
             key: rootPassword
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
 
   querier:
     replicas: 1
@@ -139,7 +139,7 @@ cortex:
             name: minio
             key: rootPassword
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -154,7 +154,7 @@ cortex:
   query_frontend:
     replicas: 1
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: "/etc/cortex-runtime-cfg"
         name: "cortex-runtime-config"
@@ -194,7 +194,7 @@ cortex:
             name: minio
             key: rootPassword
     podAnnotations:
-      prometheus.io/port: '8080'
+      prometheus.io/port: "8080"
     extraVolumeMounts:
       - mountPath: /tmp
         name: storage
@@ -215,7 +215,7 @@ cortex:
                     operator: In
                     values:
                       - alertmanager
-              topologyKey: 'kubernetes.io/hostname'
+              topologyKey: "kubernetes.io/hostname"
 
   config:
     auth_enabled: true
