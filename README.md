@@ -61,5 +61,5 @@ See [the list of releases][3] to find out about feature changes.
 [15]: http://slack.kubermatic.io/
 
 [20]: https://docs.kubermatic.com/kubermatic/master/architecture/monitoring_logging_alerting/user_cluster/
-[21]: https://docs.kubermatic.com/kubermatic/master/guides/monitoring_logging_alerting/user_cluster/admin_guide/
-[22]: https://docs.kubermatic.com/kubermatic/master/guides/monitoring_logging_alerting/user_cluster/user_guide/
+[21]: https://docs.kubermatic.com/kubermatic/master/tutorials_howtos/monitoring_logging_alerting/user_cluster/admin_guide/
+[22]: https://docs.kubermatic.com/kubermatic/master/tutorials_howtos/monitoring_logging_alerting/user_cluster/user_guide/
