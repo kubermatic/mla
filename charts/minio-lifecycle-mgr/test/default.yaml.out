@@ -68,3 +68,20 @@ spec:
               configMap:
                 name: minio-lifecycle-mgr-scripts
                 defaultMode: 0777
+          nodeSelector:
+            key1: value1
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - store
+                topologyKey: kubernetes.io/hostname
+          tolerations:
+            - effect: NoSchedule
+              key: key1
+              operator: Equal
+              value: value1

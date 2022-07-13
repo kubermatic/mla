@@ -43,3 +43,15 @@ spec:
               configMap:
                 name: minio-lifecycle-mgr-scripts
                 defaultMode: 0777
+{{- with .Values.lifecycleMgr.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.lifecycleMgr.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.lifecycleMgr.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+{{- end }}
