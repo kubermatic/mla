@@ -10,12 +10,12 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-minio
+  name: release-name-minio
   namespace: "default"
   labels:
     app: minio
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
 data:
   initialize: |-
@@ -298,12 +298,12 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: RELEASE-NAME-minio
+  name: release-name-minio
   namespace: "default"
   labels:
     app: minio
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
 spec:
   accessModes:
@@ -316,12 +316,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-minio-console
+  name: release-name-minio-console
   namespace: "default"
   labels:
     app: minio
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
 spec:
   type: ClusterIP
@@ -332,18 +332,18 @@ spec:
       targetPort: 9001
   selector:
     app: minio
-    release: RELEASE-NAME
+    release: release-name
 ---
 # Source: minio/charts/minio/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-minio
+  name: release-name-minio
   namespace: "default"
   labels:
     app: minio
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
     monitoring: "true"
 spec:
@@ -355,18 +355,18 @@ spec:
       targetPort: 9000
   selector:
     app: minio
-    release: RELEASE-NAME
+    release: release-name
 ---
 # Source: minio/charts/minio/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: RELEASE-NAME-minio
+  name: release-name-minio
   namespace: "default"
   labels:
     app: minio
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
 spec:
   strategy:
@@ -378,16 +378,16 @@ spec:
   selector:
     matchLabels:
       app: minio
-      release: RELEASE-NAME
+      release: release-name
   template:
     metadata:
-      name: RELEASE-NAME-minio
+      name: release-name-minio
       labels:
         app: minio
-        release: RELEASE-NAME
+        release: release-name
       annotations:
         checksum/secrets: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/config: b859cfd3dda35c884bf0ec1750ce64f8635ec37e01e7229783f83ec6ee046009
+        checksum/config: dd64a9e510171f07546c6324e554dc1733bce5625dc8c3dcffe2a28ba36ddece
     spec:
       securityContext:
         runAsUser: 1000
@@ -434,7 +434,7 @@ spec:
       volumes:
         - name: export
           persistentVolumeClaim:
-            claimName: RELEASE-NAME-minio
+            claimName: release-name-minio
         - name: minio-user
           secret:
             secretName: minio
@@ -443,12 +443,12 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: RELEASE-NAME-minio-make-user-job
+  name: release-name-minio-make-user-job
   namespace: "default"
   labels:
     app: minio-make-user-job
     chart: minio-3.6.6
-    release: RELEASE-NAME
+    release: release-name
     heritage: Helm
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -458,7 +458,7 @@ spec:
     metadata:
       labels:
         app: minio-job
-        release: RELEASE-NAME
+        release: release-name
     spec:
       restartPolicy: OnFailure      
       volumes:
@@ -466,7 +466,7 @@ spec:
           projected:
             sources:
             - configMap:
-                name: RELEASE-NAME-minio
+                name: release-name-minio
             - secret:
                 name: minio
       containers:
@@ -476,7 +476,7 @@ spec:
         command: ["/bin/sh", "/config/add-user"]
         env:
           - name: MINIO_ENDPOINT
-            value: RELEASE-NAME-minio
+            value: release-name-minio
           - name: MINIO_PORT
             value: "9000"
         volumeMounts:

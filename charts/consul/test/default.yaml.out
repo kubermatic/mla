@@ -5,44 +5,44 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app: consul
-      release: "RELEASE-NAME"
+      release: "release-name"
       component: server
 ---
 # Source: consul/charts/consul/templates/client-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-consul-client
+  name: release-name-consul-client
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 ---
 # Source: consul/charts/consul/templates/server-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 ---
 # Source: consul/charts/consul/templates/client-config-configmap.yaml
 # ConfigMap with extra configuration specified directly to the chart
@@ -50,13 +50,13 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-consul-client-config
+  name: release-name-consul-client-config
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 data:
   extra-from-values.json: |-
     {}
@@ -71,13 +71,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-consul-server-config
+  name: release-name-consul-server-config
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 data:
   extra-from-values.json: |-
     {}
@@ -101,78 +101,78 @@ data:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: RELEASE-NAME-consul-client
+  name: release-name-consul-client
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 rules: []
 ---
 # Source: consul/charts/consul/templates/server-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 rules: []
 ---
 # Source: consul/charts/consul/templates/client-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: RELEASE-NAME-consul-client
+  name: release-name-consul-client
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: RELEASE-NAME-consul-client
+  name: release-name-consul-client
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-consul-client
+    name: release-name-consul-client
 ---
 # Source: consul/charts/consul/templates/server-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-consul-server
+    name: release-name-consul-server
 ---
 # Source: consul/charts/consul/templates/dns-service.yaml
 # Service for Consul DNS.
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-consul-dns
+  name: release-name-consul-dns
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
     component: dns
 spec:
   type: ClusterIP
@@ -187,7 +187,7 @@ spec:
       targetPort: dns-udp
   selector:
     app: consul
-    release: "RELEASE-NAME"
+    release: "release-name"
     hasDNS: "true"
 ---
 # Source: consul/charts/consul/templates/server-service.yaml
@@ -199,13 +199,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
     component: server
   annotations:
     # This must be set in addition to publishNotReadyAddresses due
@@ -250,7 +250,7 @@ spec:
       targetPort: dns-udp
   selector:
     app: consul
-    release: "RELEASE-NAME"
+    release: "release-name"
     component: server
 ---
 # Source: consul/charts/consul/templates/ui-service.yaml
@@ -258,18 +258,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-consul-ui
+  name: release-name-consul-ui
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
     component: ui
 spec:
   selector:
     app: consul
-    release: "RELEASE-NAME"
+    release: "release-name"
     component: server
   ports:
     - name: http
@@ -281,19 +281,19 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: RELEASE-NAME-consul
+  name: release-name-consul
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
 spec:
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-      release: RELEASE-NAME
+      release: release-name
       component: client
       hasDNS: "true"
   template:
@@ -301,15 +301,15 @@ spec:
       labels:
         app: consul
         chart: consul-helm
-        release: RELEASE-NAME
+        release: release-name
         component: client
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
-        "consul.hashicorp.com/config-checksum": 779a0e24c2ed561c727730698a75b1c552f562c100f0c3315ff2cb925f5e296b
+        "consul.hashicorp.com/config-checksum": db1cb14f20d2a2f9fe0b3a1f5a65446a32126faeeadf3813f9fe610ba8ee549b
     spec:
       terminationGracePeriodSeconds: 10
-      serviceAccountName: RELEASE-NAME-consul-client
+      serviceAccountName: release-name-consul-client
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
@@ -321,7 +321,7 @@ spec:
           emptyDir: {}
         - name: config
           configMap:
-            name: RELEASE-NAME-consul-client-config
+            name: release-name-consul-client-config
       containers:
         - name: consul
           image: "hashicorp/consul:1.10.3"
@@ -353,7 +353,7 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              CONSUL_FULLNAME="RELEASE-NAME-consul"
+              CONSUL_FULLNAME="release-name-consul"
 
               mkdir -p /consul/extra-config
               cp /consul/config/extra-from-values.json /consul/extra-config/extra-from-values.json
@@ -427,23 +427,23 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: RELEASE-NAME-consul-server
+  name: release-name-consul-server
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
     component: server
 spec:
-  serviceName: RELEASE-NAME-consul-server
+  serviceName: release-name-consul-server
   podManagementPolicy: Parallel
   replicas: 3
   selector:
     matchLabels:
       app: consul
       chart: consul-helm
-      release: RELEASE-NAME
+      release: release-name
       component: server
       hasDNS: "true"
   template:
@@ -451,12 +451,12 @@ spec:
       labels:
         app: consul
         chart: consul-helm
-        release: RELEASE-NAME
+        release: release-name
         component: server
         hasDNS: "true"
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
-        "consul.hashicorp.com/config-checksum": df8f3705556144cfb39ae46653965f84faf85001af69306f74d01793503908f4
+        "consul.hashicorp.com/config-checksum": 260d3d20d852dceccaf30d9580cd799eb4cf70b6952ca089313a2779d25348f8
     spec:
       affinity:
         podAntiAffinity:
@@ -464,11 +464,11 @@ spec:
             - labelSelector:
                 matchLabels:
                   app: consul
-                  release: "RELEASE-NAME"
+                  release: "release-name"
                   component: server
               topologyKey: kubernetes.io/hostname
       terminationGracePeriodSeconds: 30
-      serviceAccountName: RELEASE-NAME-consul-server
+      serviceAccountName: release-name-consul-server
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
@@ -477,7 +477,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: RELEASE-NAME-consul-server-config
+            name: release-name-consul-server-config
       containers:
         - name: consul
           image: "hashicorp/consul:1.10.3"
@@ -505,7 +505,7 @@ spec:
             - "/bin/sh"
             - "-ec"
             - |
-              CONSUL_FULLNAME="RELEASE-NAME-consul"
+              CONSUL_FULLNAME="release-name-consul"
 
               mkdir -p /consul/extra-config
               cp /consul/config/extra-from-values.json /consul/extra-config/extra-from-values.json
@@ -596,13 +596,13 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "RELEASE-NAME-consul-test"
+  name: "release-name-consul-test"
   namespace: default
   labels:
     app: consul
     chart: consul-helm
     heritage: Helm
-    release: RELEASE-NAME
+    release: release-name
   annotations:
     "helm.sh/hook": test-success
 spec:
