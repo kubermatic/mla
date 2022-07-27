@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -o pipefail
+set -o errexit
 
 if [ "$1" = "-h" ]; then
    cat << EOF
@@ -6,16 +8,16 @@ Usage: deploy-seed.sh [--skip-minio] [--skip-minio-lifecycle-mgr]
 Deploy MLA backend components on a KKP Seed cluster.
 --skip-minio               this can be used if you want to configure MLA backend components to user existing minio in the cluster, if this flag is not specified, it will deploy a minio instance for you.
 --skip-minio-lifecycle-mgr this will skip the installation of minio lifecycle manager.
+--skip-dependencies        this will skip downloading dependencies for the charts from external repositories
+--download-only            this will only download the dependencies without installing MLA stack
 EOF
    exit 0
 fi
 
 skip_minio=false
 skip_minio_lifecycle_mgr=false
-
-echo ""
-echo "fetching charts"
-hack/fetch-chart-dependencies.sh
+skip_dependencies=false
+download_only=false
 
 for var in $@
 do
@@ -25,7 +27,26 @@ do
     if [ "$var" = "--skip-minio-lifecycle-mgr" ]; then
         skip_minio_lifecycle_mgr=true
     fi
+    if [ "$var" = "--skip-dependencies" ]; then
+        skip_dependencies=true
+    fi
+    if [ "$var" = "--download-only" ]; then
+        download_only=true
+    fi
 done
+
+if [ "$skip_dependencies" != true ]; then
+    echo ""
+    echo "fetching charts..."
+    hack/fetch-chart-dependencies.sh
+    echo "done."
+fi
+
+if [ "$download_only" = true ]; then
+    echo ""
+    echo "exiting without installing the stack due to --download-only"
+    exit 0
+fi
 
 if [ "$skip_minio" != true ]; then
     echo ""
