@@ -19,6 +19,14 @@
 
 set -euo pipefail
 
+# make sure we use yq version 4.x, sometimes known as yq4
+if `which yq4`; then
+  YQ=yq4
+else
+  yq --version | grep "version 4" >/dev/null || (echo "yq version 3 not supported, exiting..."; exit 1)
+  YQ=yq
+fi
+
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 REALDIR="$(cd "$(dirname $(readlink -f "${BASH_SOURCE[0]}"))" && pwd)"
 source ${REALDIR}/lib.sh
@@ -28,11 +36,11 @@ charts=$(find charts/ -name Chart.yaml | sort)
 
 [ -n "$charts" ] && while read -r chartYAML; do
   dirname="$(dirname $(echo "$chartYAML"))"
-  chartname=$(yq read "$chartYAML" name)
+  chartname=$($YQ eval .name "$chartYAML" )
   echodate "Fetching dependencies for ${chartname}..."
 
   i=0
-  for url in $(yq r "$chartYAML" dependencies --tojson | jq -r .[].repository); do
+  for url in $($YQ eval .dependencies "$chartYAML" --tojson | jq -r 'try .[] | .repository'); do
     i=$((i + 1))
     helm repo add ${chartname}-dep-${i} ${url}
   done
