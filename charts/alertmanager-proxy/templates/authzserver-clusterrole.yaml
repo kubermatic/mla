@@ -23,6 +23,7 @@ rules:
       - clusters
       - users
       - userprojectbindings
+      - groupprojectbindings
     verbs:
       - get
       - list
