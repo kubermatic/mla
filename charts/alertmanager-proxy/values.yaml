@@ -42,7 +42,7 @@ alertmanagerProxy:
   authz:
     image:
       repository: "quay.io/kubermatic/alertmanager-authorization-server"
-      tag: "0.2.0"
+      tag: "0.2.1"
     replicas: 1
     resources:
       requests:
