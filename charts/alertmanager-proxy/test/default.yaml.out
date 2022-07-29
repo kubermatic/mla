@@ -214,6 +214,7 @@ rules:
       - clusters
       - users
       - userprojectbindings
+      - groupprojectbindings
     verbs:
       - get
       - list
@@ -348,7 +349,7 @@ spec:
       serviceAccountName: alertmanager-authz-server
       containers:
         - name: authz-server
-          image: 'quay.io/kubermatic/alertmanager-authorization-server:0.2.0'
+          image: 'quay.io/kubermatic/alertmanager-authorization-server:0.2.1'
           ports:
             - containerPort: 50051
           command:
