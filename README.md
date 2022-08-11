@@ -60,6 +60,6 @@ See [the list of releases][3] to find out about feature changes.
 [13]: https://github.com/kubermatic/mla/blob/master/Zenhub.md
 [15]: http://slack.kubermatic.io/
 
-[20]: https://docs.kubermatic.com/kubermatic/master/architecture/monitoring_logging_alerting/user_cluster/
-[21]: https://docs.kubermatic.com/kubermatic/master/tutorials_howtos/monitoring_logging_alerting/user_cluster/admin_guide/
-[22]: https://docs.kubermatic.com/kubermatic/master/tutorials_howtos/monitoring_logging_alerting/user_cluster/user_guide/
+[20]: https://docs.kubermatic.com/kubermatic/master/architecture/monitoring-logging-alerting/user-cluster/
+[21]: https://docs.kubermatic.com/kubermatic/master/tutorials-howtos/monitoring-logging-alerting/user-cluster/admin-guide/
+[22]: https://docs.kubermatic.com/kubermatic/master/tutorials-howtos/monitoring-logging-alerting/user-cluster/user-guide/
