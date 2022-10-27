@@ -5,7 +5,7 @@ postsubmits:
     decorate: true
     clone_uri: "ssh://git@github.com/kubermatic/mla.git"
     branches:
-      - ^main$
+      - ^release/.*$
     reporter_config:
       slack:
         channel: dev-mla
