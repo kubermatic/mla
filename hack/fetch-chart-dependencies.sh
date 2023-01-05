@@ -32,7 +32,7 @@ REALDIR="$(cd "$(dirname $(readlink -f "${BASH_SOURCE[0]}"))" && pwd)"
 source ${REALDIR}/lib.sh
 
 cd ${BASEDIR}
-charts=$(find charts/ -name Chart.yaml | sort)
+charts=$(find charts/ -maxdepth 3 -name Chart.yaml | sort)
 
 [ -n "$charts" ] && while read -r chartYAML; do
   dirname="$(dirname $(echo "$chartYAML"))"
@@ -40,7 +40,7 @@ charts=$(find charts/ -name Chart.yaml | sort)
   echodate "Fetching dependencies for ${chartname}..."
 
   i=0
-  for url in $($YQ eval .dependencies "$chartYAML" --tojson | jq -r 'try .[] | .repository'); do
+  for url in $($YQ eval '.dependencies[]|select(.repository != null)|.repository' "$chartYAML"); do
     i=$((i + 1))
     helm repo add ${chartname}-dep-${i} ${url}
   done
