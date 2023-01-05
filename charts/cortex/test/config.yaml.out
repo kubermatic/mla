@@ -684,7 +684,7 @@ spec:
             - "-target=distributor"
             - "-config.file=/etc/cortex/cortex.yaml"
           volumeMounts:
-
+              
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -693,7 +693,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -804,7 +804,7 @@ spec:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
             - "-querier.frontend-address=release-name-cortex-query-frontend-headless.default.svc.cluster.local:9095"
-
+            
             - "-blocks-storage.bucket-store.index-cache.backend=memcached"
             - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+release-name-memcached-blocks-index.default.svc.cluster.local:11211"
             - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
@@ -814,7 +814,7 @@ spec:
             - "-blocks-storage.s3.access-key-id=$(ACCESS_KEY)"
             - "-blocks-storage.s3.secret-access-key=$(SECRET_KEY)"
           volumeMounts:
-
+              
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -823,7 +823,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -938,9 +938,9 @@ spec:
           args:
             - "-target=query-frontend"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
           volumeMounts:
-
+              
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -1054,7 +1054,7 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
             - "-blocks-storage.bucket-store.index-cache.backend=memcached"
             - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+release-name-memcached-blocks-index.default.svc.cluster.local:11211"
             - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
@@ -1064,7 +1064,7 @@ spec:
             - "-ruler.storage.s3.access-key-id=$(ACCESS_KEY)"
             - "-ruler.storage.s3.secret-access-key=$(SECRET_KEY)"
           volumeMounts:
-
+              
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -1073,7 +1073,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath:
+              subPath: 
             - name: tmp
               mountPath: /rules
           ports:
@@ -1159,10 +1159,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1175,14 +1175,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks-index
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
@@ -1243,10 +1243,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1259,14 +1259,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks-metadata
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
@@ -1327,10 +1327,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1343,14 +1343,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
@@ -1418,7 +1418,7 @@ spec:
       spec:
         storageClassName: "kubermatic-fast"
         accessModes:
-
+          
           - ReadWriteOnce
         resources:
           requests:
@@ -1465,7 +1465,7 @@ spec:
         - name: runtime-config
           configMap:
             name: release-name-cortex-runtime-config
-
+        
         - configMap:
             name: cortex-runtime-config
           name: cortex-runtime-config
@@ -1481,7 +1481,7 @@ spec:
             - "-alertmanager.storage.s3.access-key-id=$(ACCESS_KEY)"
             - "-alertmanager.storage.s3.secret-access-key=$(SECRET_KEY)"
           volumeMounts:
-
+            
             - mountPath: /tmp
               name: storage
             - mountPath: /etc/cortex-runtime-cfg
@@ -1563,7 +1563,7 @@ spec:
       spec:
         storageClassName: "kubermatic-fast"
         accessModes:
-
+          
           - ReadWriteOnce
         resources:
           requests:
@@ -1610,7 +1610,7 @@ spec:
         - name: runtime-config
           configMap:
             name: release-name-cortex-runtime-config
-
+        
         - configMap:
             name: cortex-runtime-config
           name: cortex-runtime-config
@@ -1621,7 +1621,7 @@ spec:
           args:
             - "-target=compactor"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
             - "-blocks-storage.bucket-store.index-cache.backend=memcached"
             - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+release-name-memcached-blocks-index.default.svc.cluster.local:11211"
             - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
@@ -1629,7 +1629,7 @@ spec:
             - "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
             - "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+release-name-memcached-blocks-metadata.default.svc.cluster.local:11211"
           volumeMounts:
-
+            
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -1692,7 +1692,7 @@ spec:
       app.kubernetes.io/instance: release-name
       app.kubernetes.io/component: ingester
   updateStrategy:
-    type: RollingUpdate
+    type: RollingUpdate          
   serviceName: release-name-cortex-ingester-headless
   volumeClaimTemplates:
     - metadata:
@@ -1700,7 +1700,7 @@ spec:
       spec:
         storageClassName: "kubermatic-fast"
         accessModes:
-
+          
           - ReadWriteOnce
         resources:
           requests:
@@ -1747,7 +1747,7 @@ spec:
         - name: runtime-config
           configMap:
             name: release-name-cortex-runtime-config
-
+        
         - configMap:
             name: cortex-runtime-config
           name: cortex-runtime-config
@@ -1758,7 +1758,7 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
             - "-blocks-storage.bucket-store.index-cache.backend=memcached"
             - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+release-name-memcached-blocks-index.default.svc.cluster.local:11211"
             - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
@@ -1768,7 +1768,7 @@ spec:
             - "-blocks-storage.s3.access-key-id=$(ACCESS_KEY)"
             - "-blocks-storage.s3.secret-access-key=$(SECRET_KEY)"
           volumeMounts:
-
+            
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config
@@ -1857,7 +1857,7 @@ spec:
       spec:
         storageClassName: "kubermatic-fast"
         accessModes:
-
+          
           - ReadWriteOnce
         resources:
           requests:
@@ -1904,7 +1904,7 @@ spec:
         - name: runtime-config
           configMap:
             name: release-name-cortex-runtime-config
-
+        
         - configMap:
             name: cortex-runtime-config
           name: cortex-runtime-config
@@ -1915,7 +1915,7 @@ spec:
           args:
             - "-target=store-gateway"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
             - "-blocks-storage.bucket-store.index-cache.backend=memcached"
             - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+release-name-memcached-blocks-index.default.svc.cluster.local:11211"
             - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
@@ -1925,7 +1925,7 @@ spec:
             - "-blocks-storage.s3.access-key-id=$(ACCESS_KEY)"
             - "-blocks-storage.s3.secret-access-key=$(SECRET_KEY)"
           volumeMounts:
-
+            
             - mountPath: /etc/cortex-runtime-cfg
               name: cortex-runtime-config
             - name: config

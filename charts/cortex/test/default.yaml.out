@@ -216,7 +216,7 @@ data:
         proxy_read_timeout 300s;
         proxy_http_version 1.1;
 
-
+        
 
         location = /healthz {
           # auth_basic off is not set here, even when a basic auth directive is
@@ -785,7 +785,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -888,7 +888,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -997,7 +997,7 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
           volumeMounts:
             - name: config
               mountPath: /etc/cortex
@@ -1206,7 +1206,7 @@ spec:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
             - "-querier.frontend-address=release-name-cortex-query-frontend-headless.default.svc.cluster.local:9095"
-
+            
           volumeMounts:
             - name: config
               mountPath: /etc/cortex
@@ -1214,7 +1214,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -1315,7 +1315,7 @@ spec:
           args:
             - "-target=query-frontend"
             - "-config.file=/etc/cortex/cortex.yaml"
-
+            
           volumeMounts:
             - name: config
               mountPath: /etc/cortex
@@ -1425,7 +1425,7 @@ spec:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
             - "-ruler.alertmanager-url=http://release-name-cortex-alertmanager.default.svc.cluster.local:8080/api/prom/alertmanager/"
-
+            
           volumeMounts:
             - name: config
               mountPath: /etc/cortex
@@ -1433,7 +1433,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath:
+              subPath: 
             - name: tmp
               mountPath: /rules
           ports:
@@ -1538,7 +1538,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath:
+              subPath: 
           ports:
             - name: http-metrics
               containerPort: 8080
@@ -1603,10 +1603,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1619,14 +1619,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks-index
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
@@ -1687,10 +1687,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1703,14 +1703,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks-metadata
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
@@ -1771,10 +1771,10 @@ spec:
         app.kubernetes.io/instance: release-name
         app.kubernetes.io/managed-by: Helm
     spec:
-
+      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -1787,14 +1787,14 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: release-name-memcached-blocks
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.12-debian-10-r0
+          image: docker.io/bitnami/memcached:1.6.13-debian-10-r0
           imagePullPolicy: "IfNotPresent"
           args:
             - /run.sh
