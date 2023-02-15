@@ -23,7 +23,7 @@ set -euo pipefail
 if `which yq4`; then
   YQ=yq4
 else
-  yq --version | grep "version 4" >/dev/null || (echo "yq version 3 not supported, exiting..."; exit 1)
+  yq --version | grep "version.*4" >/dev/null || (echo "yq version 3 not supported, exiting..."; exit 1)
   YQ=yq
 fi
 
