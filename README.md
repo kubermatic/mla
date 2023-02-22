@@ -50,9 +50,9 @@ Feedback and discussion are available on [the mailing list][11].
 See [the list of releases][3] to find out about feature changes.
 
 [1]: https://github.com/kubermatic/mla/issues
-[2]: https://github.com/kubermatic/mla/blob/master/CONTRIBUTING.md
+[2]: https://github.com/kubermatic/mla/blob/main/CONTRIBUTING.md
 [3]: https://github.com/kubermatic/mla/releases
-[4]: https://github.com/kubermatic/mla/blob/master/CODE_OF_CONDUCT.md
+[4]: https://github.com/kubermatic/mla/blob/main/CODE_OF_CONDUCT.md
 
 [10]: https://docs.kubermatic.com/
 [11]: https://groups.google.com/forum/#!forum/kubermatic-dev
@@ -60,6 +60,6 @@ See [the list of releases][3] to find out about feature changes.
 [13]: https://github.com/kubermatic/mla/blob/master/Zenhub.md
 [15]: http://slack.kubermatic.io/
 
-[20]: https://docs.kubermatic.com/kubermatic/master/architecture/monitoring-logging-alerting/user-cluster/
-[21]: https://docs.kubermatic.com/kubermatic/master/tutorials-howtos/monitoring-logging-alerting/user-cluster/admin-guide/
-[22]: https://docs.kubermatic.com/kubermatic/master/tutorials-howtos/monitoring-logging-alerting/user-cluster/user-guide/
+[20]: https://docs.kubermatic.com/kubermatic/main/architecture/monitoring-logging-alerting/user-cluster/
+[21]: https://docs.kubermatic.com/kubermatic/main/tutorials-howtos/monitoring-logging-alerting/user-cluster/admin-guide/
+[22]: https://docs.kubermatic.com/kubermatic/main/tutorials-howtos/monitoring-logging-alerting/user-cluster/user-guide/
