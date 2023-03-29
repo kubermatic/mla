@@ -2,7 +2,7 @@
 
 KKP_REPO_DIR="${KKP_REPO_DIR:-}"
 KKP_REPO_URL="${KKP_REPO_URL:-https://github.com/kubermatic/kubermatic.git}"
-KKP_REPO_TAG="${KKP_REPO_TAG:-weekly-2021-33}"
+KKP_REPO_TAG="${KKP_REPO_TAG:-release/v2.21}"
 
 TMP_REPO_DIR="${TMP_REPO_DIR:-/tmp/kubermatic-sources}"
 TMP_DASHBOARD_DIR="${TMP_DASHBOARD_DIR:-/tmp/kkp-dashboards}"

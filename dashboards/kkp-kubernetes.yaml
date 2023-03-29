@@ -54,7 +54,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg by (node_name) (sum by (node_name) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
+              "expr": "avg by (node_name) (100 - (irate(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ node_name }}",
@@ -165,7 +165,7 @@ data:
           "tableColumn": "",
           "targets": [
             {
-              "expr": "avg (sum by (node_name) (irate(node_cpu_seconds_total{job=\"node-exporter\", mode!=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
+              "expr": "avg (100 - (irate(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", node_name=~\"$nodes\"}[2m]) * 100))",
               "format": "time_series",
               "intervalFactor": 2,
               "refId": "A"
@@ -2273,7 +2273,7 @@ data:
               "refId": "B"
             },
             {
-              "expr": "sum (kube_pod_container_resource_limits_memory_bytes{job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\"})",
+              "expr": "sum (kube_pod_container_resource_limits{resource=\"memory\", job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Limit",
@@ -2376,7 +2376,7 @@ data:
               "refId": "B"
             },
             {
-              "expr": "sum by(container) (kube_pod_container_resource_limits_memory_bytes{job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"})",
+              "expr": "sum by(container) (kube_pod_container_resource_limits{resource=\"memory\", job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Limit: {{ container }}",
