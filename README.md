@@ -1,4 +1,9 @@
-# User Cluster Monitoring Logging & Alerting Stack for Kubermatic Kubernetes Platform
+# [DEPRECATED] User Cluster Monitoring Logging & Alerting Stack for Kubermatic Kubernetes Platform
+
+**Deprecation Notice**: Starting with KKP 2.22, this repository has been deprecated in favor of MLA installation using the KKP Installer as desribed [in the docs](https://docs.kubermatic.com/kubermatic/v2.22/tutorials-howtos/monitoring-logging-alerting/user-cluster/admin-guide/). Please don't use this as instalaltion source with KKP versions *2.22* and up.
+
+
+---
 
 This repository contains Helm Charts of the Seed Cluster components for the [User Cluster Monitoring Logging & Alerting (MLA) stack][20] of the [Kubermatic Kubernetes Platform][10] (KKP).
 
